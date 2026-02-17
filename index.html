@@ -1,163 +1,115 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MiniFabrika | Profesyonel 3D Baskı Hizmeti</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-color: #1a1a1a;
-            --card-bg: #2d2d2d;
-            --accent-color: #f39c12; /* Endüstriyel Turuncu */
-            --text-main: #ffffff;
-            --text-dim: #b3b3b3;
-            --border: #404040;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; }
-        
-        /* Layout */
-        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
-        section { padding: 80px 0; border-bottom: 1px solid var(--border); }
-
-        /* Hero Section */
-        header { 
-            height: 90vh; 
-            display: flex; 
-            align-items: center; 
-            background: linear-gradient(rgba(26,26,26,0.8), rgba(26,26,26,0.9)), url('https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&q=80&w=2070'); /* Teknik Görsel */
-            background-size: cover;
-            background-position: center;
-        }
-        .hero-content h1 { font-size: 3.5rem; font-weight: 700; margin-bottom: 10px; line-height: 1.2; }
-        .hero-content h2 { color: var(--accent-color); font-size: 1.5rem; font-weight: 400; margin-bottom: 20px; }
-        .hero-content p { max-width: 600px; color: var(--text-dim); margin-bottom: 30px; font-size: 1.1rem; }
-
-        /* Buttons */
-        .btn { 
-            display: inline-block; 
-            background: var(--accent-color); 
-            color: #000; padding: 15px 35px; 
-            text-decoration: none; 
-            font-weight: 700; 
-            border-radius: 4px; 
-            transition: 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .btn:hover { background: #e67e22; transform: translateY(-2px); }
-
-        /* Grid Sections */
-        h3 { font-size: 2rem; margin-bottom: 40px; text-align: center; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
-        .card { background: var(--card-bg); padding: 30px; border-radius: 4px; border-left: 4px solid var(--accent-color); }
-        .card i { font-size: 2rem; color: var(--accent-color); margin-bottom: 20px; }
-        .card h4 { margin-bottom: 10px; font-size: 1.2rem; }
-
-        /* Form */
-        .form-container { max-width: 700px; margin: 0 auto; background: var(--card-bg); padding: 40px; border-radius: 4px; }
-        .form-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-size: 0.9rem; color: var(--text-dim); }
-        input, select, textarea { 
-            width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid var(--border); 
-            color: white; border-radius: 4px; font-family: inherit;
-        }
-        input:focus { border-color: var(--accent-color); outline: none; }
-        .min-order-note { margin-top: 20px; text-align: center; font-size: 0.85rem; color: var(--text-dim); }
-
-        /* Footer */
-        footer { padding: 50px 0; background: #111; text-align: center; color: var(--text-dim); }
-        footer b { color: var(--text-main); }
-
-        /* Mobile */
-        @media (max-width: 768px) {
-            .hero-content h1 { font-size: 2.2rem; }
-            section { padding: 50px 0; }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MiniFabrika | Kişiye Özel 3D Baskı</title>
+  <meta name="description" content="MakerWorld'den modelini seç, adetini yaz, MiniFabrika'ya mail at. Kişiye özel 3D baskı üretimi." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a href="index.html" class="logo">mini<span>fabrika</span>.net</a>
+      <nav>
+        <a class="active" href="index.html">Ana Sayfa</a>
+        <a href="malzeme-uretim.html">Malzeme & Üretim</a>
+        <a href="iletisim.html">İletişim</a>
+      </nav>
+    </div>
+  </header>
 
-    <header>
-        <div class="container hero-content">
-            <h1>Türkiye Geneli Profesyonel 3D Baskı Hizmeti</h1>
-            <h2>Hızlı Prototip. Net Çözüm.</h2>
-            <p>Prototip, teknik parça ve küçük seri üretimler için hızlı ve güvenilir 3D baskı hizmeti sunuyoruz. Dosyanızı gönderin, 24 saat içinde teklif alın.</p>
-            <a href="#teklif" class="btn">Dosya Yükle & Teklif Al</a>
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="badge">Kişiye özel üretim · Türkiye geneli gönderim</span>
+          <h1>MakerWorld'den modelini seç,<br />biz senin için üretelim.</h1>
+          <p class="lead">
+            Bizim odak noktamız cihaz satmak değil, müşterinin beğendiği modeli kaliteli şekilde üretip teslim etmek.
+            İstediğin ürünü <strong>makerworld.com</strong> üzerinden bul, linki ve adet bilgisini bize e-posta ile gönder.
+          </p>
+          <ul class="list">
+            <li>Hazır modelden hızlı sipariş</li>
+            <li>İstediğin adet kadar üretim</li>
+            <li>Malzeme, renk ve teslimat seçeneği</li>
+          </ul>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <a class="btn btn-primary" href="mailto:cihat.oz@minifabrika.com?subject=MakerWorld%20Siparis%20Talebi">Mail ile sipariş talebi gönder</a>
+            <a class="btn btn-secondary" target="_blank" rel="noopener noreferrer" href="https://makerworld.com">MakerWorld'e git</a>
+          </div>
         </div>
-    </header>
+        <div class="image-card">
+          <img src="https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=1200&q=80" alt="Kişiye özel 3D baskı ürünleri" />
+        </div>
+      </div>
+    </section>
 
     <section>
-        <div class="container">
-            <h3>Hizmetlerimiz</h3>
-            <div class="grid">
-                <div class="card"><i class="fas fa-microchip"></i><h4>Prototip Üretim</h4><p>Fikirlerinizi fiziksel modellere dönüştürüyoruz.</p></div>
-                <div class="card"><i class="fas fa-cogs"></i><h4>Teknik Parça Baskısı</h4><p>Yüksek mukavemetli mekanik parçalar.</p></div>
-                <div class="card"><i class="fas fa-layer-group"></i><h4>Küçük Seri Üretim</h4><p>Kalıp maliyeti olmadan adetli üretim.</p></div>
-                <div class="card"><i class="fas fa-pencil-ruler"></i><h4>Ürün Geliştirme</h4><p>Tasarım iyileştirme ve teknik destek.</p></div>
-            </div>
+      <div class="container">
+        <h2>Nasıl sipariş verebilirsin?</h2>
+        <p class="lead">Satın alma akışını çok basit tuttuk: model linki + adet + iletişim bilgisi yeterli.</p>
+        <div class="steps">
+          <article class="step">
+            <div class="num">1</div>
+            <h3>Modeli Bul</h3>
+            <p>MakerWorld'de beğendiğin modeli aç ve sayfa linkini kopyala.</p>
+          </article>
+          <article class="step">
+            <div class="num">2</div>
+            <h3>Adet ve Notları Yaz</h3>
+            <p>Kaç adet istediğini, renk/malzeme tercihini ve varsa ölçü notunu ekle.</p>
+          </article>
+          <article class="step">
+            <div class="num">3</div>
+            <h3>Mail Gönder</h3>
+            <p>Link + adet bilgisiyle mail at. Kısa sürede dönüş yapıp fiyatlandırma paylaşalım.</p>
+          </article>
         </div>
+      </div>
     </section>
 
-    <section style="background: #151515;">
-        <div class="container">
-            <h3>Neden MiniFabrika?</h3>
-            <div class="grid">
-                <div class="card"><i class="fas fa-clock"></i><h4>24 Saat İçinde Teklif</h4></div>
-                <div class="card"><i class="fas fa-check-circle"></i><h4>Profesyonel PLA & PETG</h4></div>
-                <div class="card"><i class="fas fa-file-invoice-dollar"></i><h4>Kurumsal Faturalı Hizmet</h4></div>
-                <div class="card"><i class="fas fa-truck"></i><h4>Türkiye Geneli Kargo</h4></div>
-            </div>
+    <section>
+      <div class="container">
+        <h2>Neler üretebiliriz?</h2>
+        <div class="cards">
+          <article class="card">
+            <h3>Dekoratif Ürünler</h3>
+            <p>Ev/ofis dekoru, figür, stand ve kişiselleştirilmiş hediyelikler.</p>
+          </article>
+          <article class="card">
+            <h3>Fonksiyonel Parçalar</h3>
+            <p>Düzenleyici aksesuarlar, aparat ve günlük kullanım ürünleri.</p>
+          </article>
+          <article class="card">
+            <h3>Küçük Adet Üretim</h3>
+            <p>Aynı modelin birden fazla adette üretimi ve kargoya hazır paketleme.</p>
+          </article>
         </div>
+      </div>
     </section>
 
-    <section id="teklif">
-        <div class="container">
-            <h3>Teklif Formu</h3>
-            <div class="form-container">
-                <form>
-                    <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 15px;">
-                        <div class="form-group"><label>Ad Soyad</label><input type="text" required></div>
-                        <div class="form-group"><label>Firma</label><input type="text"></div>
-                    </div>
-                    <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 15px;">
-                        <div class="form-group"><label>Telefon</label><input type="tel" required></div>
-                        <div class="form-group"><label>E-posta</label><input type="email" required></div>
-                    </div>
-                    <div class="form-group"><label>Dosya Yükle (STL, STEP)</label><input type="file"></div>
-                    <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 15px;">
-                        <div class="form-group"><label>Malzeme Tercihi</label>
-                            <select>
-                                <option>PLA</option>
-                                <option>PETG</option>
-                            </select>
-                        </div>
-                        <div class="form-group"><label>Acil mi?</label>
-                            <select>
-                                <option>Hayır</option>
-                                <option>Evet</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group"><label>Açıklama</label><textarea rows="4"></textarea></div>
-                    <button type="submit" class="btn" style="width:100%; border:none; cursor:pointer;">Teklifi Gönder</button>
-                    <p class="min-order-note">Minimum sipariş tutarı 350 TL’dir.</p>
-                </form>
-            </div>
+    <section>
+      <div class="container">
+        <div class="cta-box">
+          <div>
+            <h2>Hemen sipariş talebi oluştur.</h2>
+            <p class="lead" style="margin-bottom:0;">Mail içeriğine model linki, adet ve tercih ettiğin rengi eklemen yeterli.</p>
+          </div>
+          <a class="btn btn-primary" href="mailto:cihat.oz@minifabrika.com?subject=MakerWorld%20Model%20Talebi">Talep Gönder</a>
         </div>
+      </div>
     </section>
+  </main>
 
-    <footer>
-        <div class="container">
-            <p><b>MiniFabrika</b></p>
-            <p>Profesyonel 3D Baskı Hizmeti</p>
-            <p>İstanbul – Türkiye</p>
-            <p style="margin-top:10px;"><i class="fas fa-envelope"></i> cihat.oz@minifabrika.com</p>
-        </div>
-    </footer>
-
+  <footer>
+    <div class="container">
+      <p><strong>MiniFabrika</strong> · Kişiye özel 3D baskı üretimi</p>
+      <p>İstanbul, Türkiye · cihat.oz@minifabrika.com</p>
+    </div>
+  </footer>
 </body>
 </html>
