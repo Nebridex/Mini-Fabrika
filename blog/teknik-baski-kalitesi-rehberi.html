@@ -1,67 +1,25 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
+<!DOCTYPE html><html lang="tr"><head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-  <meta name="referrer" content="strict-origin-when-cross-origin" />
-  <meta http-equiv="Permissions-Policy" content="geolocation=(), camera=(), microphone=()" />
-  <title>3D Baskıda Teknik Kalite Rehberi: Katman, Tolerans ve Dayanım</title>
-  <meta name="description" content="3D baskıda katman çizgileri, tolerans sorunları, warping, stringing ve dayanım problemlerini teknik olarak çözmek için kapsamlı rehber." />
+  <title>3D Baskıda Teknik Kalite Rehberi: Katman, Tolerans ve Dayanım | MiniFabrika</title>
+  <meta name="description" content="Katman izi, tolerans ve dayanım sorunlarını azaltmak için teknik kontrol adımları." />
   <link rel="canonical" href="https://minifabrika.com/blog/teknik-baski-kalitesi-rehberi.html" />
   <meta property="og:type" content="article" />
-  <meta property="og:title" content="3D Baskıda Teknik Kalite Rehberi" />
-  <meta property="og:description" content="Katman kalitesi, tolerans yönetimi ve mekanik dayanım için teknik yaklaşım." />
-  <meta property="og:image" content="https://minifabrika.com/assets/minifabrika-logo.svg" />
-  <meta name="twitter:image" content="https://minifabrika.com/assets/minifabrika-logo.svg" />
+  <meta property="og:title" content="3D Baskıda Teknik Kalite Rehberi: Katman, Tolerans ve Dayanım | MiniFabrika" />
+  <meta property="og:description" content="Katman izi, tolerans ve dayanım sorunlarını azaltmak için teknik kontrol adımları." />
   <meta property="og:url" content="https://minifabrika.com/blog/teknik-baski-kalitesi-rehberi.html" />
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="3D Baskıda Teknik Kalite Rehberi" />
-  <meta name="twitter:description" content="Stringing, warping, tolerans ve dayanım problemlerini çözün." />
-  <link rel="stylesheet" href="../styles.min.css" />
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"MiniFabrika","url":"https://minifabrika.com","logo":"https://minifabrika.com/assets/minifabrika-logo.svg","sameAs":["https://www.youtube.com/@minifabrikam","https://www.instagram.com/minifabrikacom/","https://x.com/minifabrikacom"]}</script>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","name":"MiniFabrika","url":"https://minifabrika.com","areaServed":"Turkey","address":{"@type":"PostalAddress","addressLocality":"İstanbul","addressCountry":"TR"},"contactPoint":{"@type":"ContactPoint","telephone":"+90 545 690 00 94","contactType":"customer service","availableLanguage":"tr"}}</script>
-</head>
-<body>
-<header class="topbar"><div class="container topbar-inner"><a class="logo" href="../index.html"><img src="../assets/minifabrika-logo.svg" alt="Mini Fabrika logo" width="34" height="34" loading="eager" decoding="async" /><span class="logo-text">mini<span>fabrika</span>.com</span></a><button class="menu-toggle" aria-label="Menüyü aç" aria-expanded="false">Menü</button><nav><a href="../index.html">Ana Sayfa</a><a href="../malzeme-uretim.html">Malzeme & Üretim</a><a href="../islerimiz.html">İşlerimiz</a><a class="active" href="index.html">Blog</a><a href="../teklif.html">Teklif Formu</a><a href="../iletisim.html">İletişim</a></nav></div></header>
-<main>
-  <section class="page-head"><div class="container"><h1>3D Baskıda Teknik Kalite Rehberi</h1><p class="lead">Okuma süresi: 9 dk · Güncelleme: 2026-02-20</p></div></section>
-  <section><div class="container"><article class="card blog-article">
-    <div class="summary-box"><h2>Bu yazıda ne öğreneceksiniz?</h2><ul class="list"><li>Katman çizgisi, stringing ve warping sorunlarının kök nedenleri</li><li>Tolerans yönetimi ve montaj uyumu için tasarım ipuçları</li><li>Mekanik dayanımı artıran baskı yönü ve duvar stratejileri</li><li>Üretim öncesi teknik kontrol listesi</li></ul></div>
-
-    <p>3D baskıda “güzel görünen parça” ile “işlevini uzun süre koruyan parça” her zaman aynı şey değildir. Teknik kalite, yalnızca yüzey estetiğinden ibaret değildir; ölçü doğruluğu, montaj toleransı, katman bağ dayanımı, çevresel dayanım ve kullanım senaryosuna uyum birlikte değerlendirilmelidir. Örneğin vitrin amaçlı bir modelde yüzey pürüzsüzlüğü kritik olabilirken, bir atölye aparatında esas belirleyici kriter darbe dayanımı ve montaj uyumudur. Bu nedenle kalite yaklaşımı, parçanın nerede ve nasıl kullanılacağına göre yapılandırılmalıdır. MiniFabrika’da teknik değerlendirme süreci, “dosya geldi basalım” anlayışının ötesine geçerek tasarım-geometri, malzeme ve baskı parametrelerini birlikte ele alır.</p>
-
-    <h2>Katman çizgileri: Ne zaman doğal, ne zaman problem?</h2>
-    <p>FDM teknolojisinde katmanlı üretim doğası gereği yüzeyde çizgiler oluşur. Bu çizgilerin tamamen yok edilmesi çoğu durumda mümkün değildir; ancak doğru katman yüksekliği, hız ve akış dengesiyle görsel etkisi ciddi oranda azaltılabilir. Düşük katman yüksekliği daha iyi yüzey verir fakat süreyi artırır. Daha yüksek hızda baskı almak üretkenliği artırır ama titreşim ve köşe bozulması riskini yükseltir. Bu dengeyi kurarken modelin görünür yüzeyleri ve fonksiyonel bölgeleri ayrıştırılmalıdır. Örneğin montaj yüzeylerinde ölçü tutarlılığı öncelikliyken, görünmeyen bölgelerde daha agresif hız tercih edilebilir. Böylece hem kalite hem maliyet dengelenir.</p>
-
-    <h2>Stringing (ipliklenme): Sıcaklık ve retraksiyon dengesinin sonucu</h2>
-    <p>Stringing, nozulun boşta hareketlerinde ince filament telleri bırakmasıdır ve özellikle PETG/TPU gibi malzemelerde daha sık görülür. Kök neden çoğunlukla yüksek nozul sıcaklığı, yetersiz retraksiyon veya nemli filamenttir. Çözüm için tek parametre değiştirmek yerine adımlı bir yaklaşım gerekir: önce filament kuruluğu kontrol edilir, ardından sıcaklık kademeli düşürülür, sonra retraksiyon mesafesi/hızı optimize edilir. Seyahat hareketleri için “combing” veya “wipe” gibi slicer özellikleri doğru kullanıldığında sonuç daha da iyileşir. Burada önemli olan, görsel temizliği artırırken katman bağını zayıflatmamaktır; aşırı düşük sıcaklık iyi görünüm verse de mekanik dayanımı olumsuz etkileyebilir.</p>
-
-    <h2>Warping ve köşe kalkması: Tabla ve termal yönetim problemi</h2>
-    <p>Warping genellikle malzemenin soğurken büzülmesi ve tabladan ayrılmasıyla başlar. ABS/ASA gibi malzemelerde bu risk PLA’ya göre daha yüksektir. İlk katman ayarı, tabla yüzeyi, yapışma yardımcıları ve çevresel sıcaklık kontrolü kritik rol oynar. Kapalı hazne kullanımı, ani hava akımının önlenmesi ve doğru tabla sıcaklığı köşe kaldırmayı ciddi ölçüde azaltır. Tasarım tarafında da keskin köşeler yerine yumuşatılmış geçişler, brim/raft kullanımı ve tabana yakın kritik bölgelerde geometri optimizasyonu warping riskini düşürür. Bu problem yalnızca “yapışmadı” gibi görünse de aslında parça geometrisi ve termal profilin birlikte yönetilmesi gereken bir konudur.</p>
-
-    <h2>Tolerans yönetimi: Ölçü kaçıklığını tasarım aşamasında önleme</h2>
-    <p>3D baskıda ölçü doğruluğu, makine kalibrasyonu kadar tasarım niyetine de bağlıdır. Birbirine geçen parçalarda sıfır boşluk beklentisi çoğu zaman gerçekçi değildir; malzeme akışı ve katman yapısı nedeniyle kontrollü pay bırakmak gerekir. Press-fit, sliding-fit veya bolt-fit gibi montaj türlerinde farklı tolerans stratejileri uygulanmalıdır. Örneğin hareketli geçme gereken bir parçada 0.2–0.4 mm arası boşluk gerekebilirken, sıkı geçme için daha düşük tolerans tercih edilir. Ayrıca delikler genellikle nominal ölçüden biraz dar çıkabildiği için kritik çaplarda telafi yaklaşımı kullanılmalıdır. Bu detaylar erken aşamada planlandığında sonradan zımpara/delme gibi manuel müdahaleler büyük ölçüde azalır.</p>
-
-    <h2>Mekanik dayanım: Infill değil, yönlendirme ve duvar stratejisi belirleyici</h2>
-    <p>Parçayı güçlendirmek için ilk refleks çoğu zaman infill oranını yükseltmektir; fakat dayanımı asıl belirleyen unsur çoğu uygulamada baskı yönü ve duvar konfigürasyonudur. Katmanlara paralel yük alan bir parça, katmanlar arası çekmeye zorlanan parçaya göre çok daha dayanıklı olabilir. Bu nedenle modelin orientasyonu üretimden önce düşünülmelidir. Duvar sayısını artırmak, kritik bölgelerde yerel kalınlaştırma yapmak ve yük taşıyan yüzeyleri katman yönüne göre konumlandırmak, bazen infill’i iki katına çıkarmaktan daha etkili sonuç verir. Mekanik başarı için “çok doluluk” yerine “akıllı geometri + doğru yönlendirme” yaklaşımı tercih edilmelidir.</p>
-
-    <h2>Teknik kontrol listesi: Üretimden önce 60 saniyelik doğrulama</h2>
-    <p>Üretime geçmeden önce kısa bir kontrol listesi, hata oranını dramatik biçimde düşürür: (1) Model manifold mu, yüzey hatası var mı? (2) Minimum duvar kalınlığı malzemeye uygun mu? (3) Kritik delik ve geçmeler için tolerans payı tanımlı mı? (4) Baskı yönü yük hattına uygun mu? (5) Destek gereksinimi kabul edilebilir mi? (6) Malzeme seçimi kullanım ortamına uygun mu? (7) Hedef süre-fiyat-kalite dengesi net mi? Bu yedi adım uygulandığında hem revizyon sayısı azalır hem müşteriye öngörülebilir teslim planı sunulur.</p>
-
-    <h2>Sonuç: Teknik kalite rastgele değil, süreç tasarımıdır</h2>
-    <p>Başarılı 3D baskı, yalnızca iyi bir yazıcıya sahip olmakla açıklanamaz. Model tasarımı, malzeme seçimi, slicer stratejisi, üretim disiplini ve kalite kontrol zincirinin birlikte doğru kurulması gerekir. Teknik kalite bir “şans” değil, yönetilebilir bir süreçtir. Bu yüzden teklif aşamasında kullanım amacı ne kadar net paylaşılırsa, üretim sonucu o kadar güvenilir olur. MiniFabrika olarak amacımız, sadece baskı çıkışı vermek değil; gerçek kullanımda beklentiyi karşılayan, tutarlı ve tekrar üretilebilir parçalar sunmaktır.</p>
-
-    <div class="cta-box"><div><h3>Modelinizi teknik gözle analiz edelim</h3><p class="lead">Katman kalitesi, tolerans ve malzeme açısından hızlı bir ön değerlendirme için teklif formunu kullanın.</p></div><a class="btn btn-primary" href="../teklif.html">Teklif Formuna Git</a></div>
-
-    <h2>Sık Sorulan Sorular</h2>
-    <div class="faq-list"><details><summary>Katman izi tamamen yok edilebilir mi?</summary><p>FDM’de tamamen yok etmek zordur; ancak doğru ayar, post-process ve parça yönlendirmesiyle görünürlük ciddi biçimde azaltılabilir.</p></details><details><summary>Tolerans sorunları sadece yazıcı kalibrasyonundan mı kaynaklanır?</summary><p>Hayır. Tasarımda boşluk stratejisi, malzeme davranışı ve baskı yönü de en az kalibrasyon kadar etkilidir.</p></details><details><summary>Daha dayanıklı parça için infill’i %100 yapmak gerekli mi?</summary><p>Çoğu uygulamada gerekli değildir. Doğru duvar stratejisi ve orientasyon, daha düşük maliyetle daha iyi dayanım sağlayabilir.</p></details></div>
-
-    <h2>İlgili içerikler</h2>
-    <ul class="list"><li><a href="makerworld-model-siparis.html">3D yazıcı türleri ve siparişte teknik kararlar</a></li><li><a href="malzeme-secimi-rehberi.html">Filament özelliklerini detaylı öğrenin</a></li><li><a href="../teklif.html">Teklif formu</a></li></ul>
-  </article></div></section>
-</main>
-<footer><div class="container"><p><strong>MiniFabrika</strong> · İstanbul merkezli üretim · <a href="mailto:info@minifabrika.com">info@minifabrika.com</a> · <a href="tel:+905456900094">+90 545 690 00 94</a></p><div class="socials"><a href="https://www.youtube.com/@minifabrikam" target="_blank" rel="noopener noreferrer">YouTube</a><a href="https://www.instagram.com/minifabrikacom/" target="_blank" rel="noopener noreferrer">Instagram</a><a href="https://x.com/minifabrikacom" target="_blank" rel="noopener noreferrer">X</a></div></div></footer>
-<script src="../script.min.js" defer></script>
-</body>
-</html>
+  <meta property="og:image" content="https://minifabrika.com/assets/img/og-cover.svg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="3D Baskıda Teknik Kalite Rehberi: Katman, Tolerans ve Dayanım | MiniFabrika" />
+  <meta name="twitter:description" content="Katman izi, tolerans ve dayanım sorunlarını azaltmak için teknik kontrol adımları." />
+  <meta name="twitter:image" content="https://minifabrika.com/assets/img/og-cover.svg" />
+  <link rel="icon" href="/assets/minifabrika-logo.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/assets/minifabrika-logo.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.min.css" />
+  <!-- TODO: Google Search Console verification meta tag -->
+  <!-- TODO: GA4 gtag snippet -->
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"3D Baskıda Teknik Kalite Rehberi","datePublished":"2026-02-20","dateModified":"2026-02-20","author":{"@type":"Person","name":"MiniFabrika Editör"},"image":"https://minifabrika.com/assets/img/og-cover.svg","publisher":{"@type":"Organization","name":"MiniFabrika","logo":{"@type":"ImageObject","url":"https://minifabrika.com/assets/minifabrika-logo.svg"}}}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Ana Sayfa","item":"https://minifabrika.com/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://minifabrika.com/blog/index.html"},{"@type":"ListItem","position":3,"name":"3D Baskıda Teknik Kalite Rehberi","item":"https://minifabrika.com/blog/teknik-baski-kalitesi-rehberi.html"}]}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"3D Baskıda Teknik Kalite Rehberi konusunda ilk adım nedir?","acceptedAnswer":{"@type":"Answer","text":"Önce modelin kullanım amacını netleştirip doğru malzeme ve üretim hedefini belirlemek gerekir."}}]}</script>
+</head><body><header class="topbar"><div class="container topbar-inner"><a class="logo" href="/index.html"><img src="/assets/minifabrika-logo.svg" alt="Mini Fabrika logo" width="34" height="34" loading="eager" decoding="async" /><span class="logo-text">mini<span>fabrika</span>.com</span></a><button class="menu-toggle" aria-label="Menüyü aç" aria-expanded="false">Menü</button><nav><a class="" href="/index.html">Ana Sayfa</a><a class="" href="/malzeme-uretim.html">Malzeme & Üretim</a><a class="" href="/islerimiz.html">İşlerimiz</a><a class="active" href="/blog/index.html">Blog</a><a class="" href="/teklif.html">Teklif Formu</a><a class="" href="/iletisim.html">İletişim</a><a class="" href="/hakkimizda.html">Hakkımızda</a></nav></div></header><main><section class="page-head"><div class="container"><p class="breadcrumb"><a href="/index.html">Ana Sayfa</a> > <a href="/blog/index.html">Blog</a> > 3D Baskıda Teknik Kalite Rehberi</p><h1>3D Baskıda Teknik Kalite Rehberi</h1><p class="lead">Kategori: İpuçları · Okuma: 9 dk · Güncelleme: 2026-02-20</p></div></section><section><div class="container"><article class="card"><h2>Temel yaklaşım</h2><p>Katman kalitesi için sıcaklık ve hız dengesini doğru kurun.</p><h2>Uygulama adımları</h2><p>Dayanım için baskı yönü ve duvar kalınlığına odaklanın.</p><p>Detaylı teknik karşılaştırma için <a href="/malzeme-uretim.html">Malzeme & Üretim</a> sayfasını inceleyebilir, örnek parçalar için <a href="/islerimiz.html">İşlerimiz</a> sayfasını ziyaret edebilir ve doğrudan <a href="/teklif.html">teklif formu</a> üzerinden modelinizi iletebilirsiniz.</p><h2>Mini SSS</h2><details><summary>Bu konuda teklif almam ne kadar sürer?</summary><p>Model linkini paylaştıktan sonra genellikle 24 saat içinde geri dönüş sağlıyoruz.</p></details></article></div></section></main><footer><div class="container"><p><strong>MiniFabrika</strong> · İstanbul · <a href="tel:+905456900094">+90 545 690 00 94</a> · <a href="mailto:info@minifabrika.com">info@minifabrika.com</a></p><div class="socials"><a href="https://www.youtube.com/@minifabrikam" target="_blank" rel="noopener noreferrer">YouTube</a><a href="https://www.instagram.com/minifabrikacom/" target="_blank" rel="noopener noreferrer">Instagram</a><a href="https://x.com/minifabrikacom" target="_blank" rel="noopener noreferrer">X</a></div><div class="quick-links"><strong>Hızlı Linkler:</strong> <a href="/malzeme-uretim.html">Malzeme & Üretim</a> · <a href="/islerimiz.html">İşlerimiz</a> · <a href="/blog/index.html">Blog</a> · <a href="/teklif.html">Teklif Formu</a> · <a href="/iletisim.html">İletişim</a> · <a href="/hakkimizda.html">Hakkımızda</a></div><div class="legal-links"><a href="/kvkk.html">KVKK</a><a href="/gizlilik.html">Gizlilik Politikası</a><a href="/cerez.html">Çerez Politikası</a></div></div></footer><script src="/script.min.js" defer></script></body></html>

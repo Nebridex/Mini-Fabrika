@@ -39,3 +39,9 @@
 - Tüm sayfalarda `referrer` politikası `strict-origin-when-cross-origin` olarak ayarlanmıştır.
 - Tarayıcı izinleri için `Permissions-Policy` ile kamera/mikrofon/konum kapatılmıştır.
 - Form endpoint'i `teklif.html` içinde FormSubmit olarak tanımlıdır; alıcı değişecekse action URL'sindeki e-posta güncellenmelidir.
+
+
+## SEO TODO
+- Google Search Console doğrulaması için root'a `googleXXXXXXXX.html` dosyası eklenebilir veya head'deki TODO meta slotu kullanılabilir.
+- www/non-www ve http/https tekilleştirme hosting/DNS seviyesinde 301 yönlendirme ile yapılmalıdır.
+- OG görselleri için build pipeline ile sayfa bazlı WebP/JPG üretimi planlanabilir.
