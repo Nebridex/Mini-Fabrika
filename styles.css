@@ -254,6 +254,138 @@ section { padding: 52px 0; }
   background: rgba(255,255,255,.02);
 }
 
+.contact-links {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.contact-link {
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(255,255,255,.02);
+}
+
+.contact-link .icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(65, 184, 255, 0.2);
+  border: 1px solid rgba(65, 184, 255, 0.45);
+  flex-shrink: 0;
+}
+
+.contact-link span {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-link small {
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.contact-link:hover {
+  border-color: rgba(123, 132, 255, 0.55);
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.product-card .btn {
+  margin-top: auto;
+  width: fit-content;
+}
+
+.video-wrap {
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  background: #000;
+}
+
+.video-wrap iframe {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+}
+
+.faq-list {
+  display: grid;
+  gap: 12px;
+}
+
+.faq-list details {
+  border: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(23, 35, 58, 0.9), rgba(17, 26, 43, 0.9));
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.faq-list summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.faq-list p {
+  margin-top: 10px;
+  color: var(--muted);
+}
+
+.form-card {
+  max-width: 760px;
+}
+
+.quote-form {
+  display: grid;
+  gap: 10px;
+}
+
+.quote-form label {
+  font-weight: 600;
+  color: #d8e3fb;
+}
+
+.quote-form input,
+.quote-form textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px;
+  background: rgba(255,255,255,.03);
+  color: var(--text);
+  font: inherit;
+}
+
+.quote-form input::placeholder,
+.quote-form textarea::placeholder {
+  color: #93a7cd;
+}
+
+.quote-form button {
+  margin-top: 8px;
+  width: fit-content;
+}
+
 footer {
   margin-top: 30px;
   border-top: 1px solid rgba(255,255,255,.08);
@@ -266,5 +398,6 @@ footer {
   .hero-grid,
   .cards,
   .steps,
-  .contact-grid { grid-template-columns: 1fr; }
+  .contact-grid,
+  .product-grid { grid-template-columns: 1fr; }
 }

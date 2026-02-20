@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MiniFabrika | Teklif Formu</title>
+  <meta name="description" content="MiniFabrika sipariş ve teklif formu. Model linkini, adet bilgisini ve notlarını ilet." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a href="index.html" class="logo">mini<span>fabrika</span>.net</a>
+      <nav>
+        <a href="index.html">Ana Sayfa</a>
+        <a href="malzeme-uretim.html">Malzeme & Üretim</a>
+        <a href="islerimiz.html">İşlerimiz</a>
+        <a class="active" href="teklif.html">Teklif Formu</a>
+        <a href="iletisim.html">İletişim</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-head">
+      <div class="container">
+        <h1>Sipariş / Teklif Formu</h1>
+        <p class="lead">Sipariş taleplerini buradaki form üzerinden alıyoruz. Formu doldurduğunda talebin doğrudan bize düşer.</p>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <article class="card form-card">
+          <h2>Formu doldur, teklifini gönder</h2>
+          <p class="lead">Gerekli bilgileri girdikten sonra gönder butonuna basman yeterli.</p>
+          <form class="quote-form" action="https://formsubmit.co/cihat.oz@minifabrika.com" method="POST">
+            <input type="hidden" name="_subject" value="MiniFabrika - Yeni sipariş/teklif formu" />
+            <input type="hidden" name="_captcha" value="false" />
+            <input type="hidden" name="_template" value="table" />
+
+            <label for="adSoyad">Ad Soyad</label>
+            <input id="adSoyad" name="Ad Soyad" type="text" required placeholder="Adınızı ve soyadınızı yazın" />
+
+            <label for="email">E-posta</label>
+            <input id="email" name="E-posta" type="email" required placeholder="ornek@mail.com" />
+
+            <label for="modelLink">Model Linki (MakerWorld)</label>
+            <input id="modelLink" name="Model Linki" type="url" required placeholder="https://makerworld.com/..." />
+
+            <label for="adet">Adet</label>
+            <input id="adet" name="Adet" type="number" min="1" required placeholder="Örn: 3" />
+
+            <label for="not">Notlar (renk, malzeme, teslimat)</label>
+            <textarea id="not" name="Notlar" rows="5" placeholder="Renk tercihi, malzeme veya teslimat notu"></textarea>
+
+            <button class="btn btn-primary" type="submit">Formu Gönder</button>
+          </form>
+          <p style="margin-top:14px;" class="lead">Hızlı konuşmak istersen: <a style="color:#9fd8ff" target="_blank" rel="noopener noreferrer" href="https://wa.me/905456900094?text=Merhaba%2C%20MiniFabrika%20i%C3%A7in%20sipari%C5%9F%20talebi%20olu%C5%9Fturmak%20istiyorum.">WhatsApp 0545 690 00 94</a></p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p><strong>MiniFabrika</strong> · Siparişleri teklif formu üzerinden alıyoruz.</p>
+    </div>
+  </footer>
+</body>
+</html>
