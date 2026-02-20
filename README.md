@@ -6,6 +6,7 @@
 
 - `index.html`: Ana satış sayfası (MakerWorld üzerinden model bulup talep oluşturma akışı)
 - `malzeme-uretim.html`: Malzeme ve üretim detayları
+- `teklif.html`: Sipariş / teklif formu sayfası
 - `iletisim.html`: İletişim ve sosyal medya sayfası
 - `styles.css`: Ortak stiller
 
