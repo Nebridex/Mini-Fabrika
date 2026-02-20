@@ -33,3 +33,10 @@
 1. Bu repoyu GitHub'a gönderin.
 2. **Settings → Pages** bölümünden doğru branch'i seçin.
 3. `CNAME` dosyası sayesinde `minifabrika.net` alan adı korunur.
+
+
+## Güvenlik ve Kalite Kontrol Notları
+
+- Tüm sayfalarda `referrer` politikası `strict-origin-when-cross-origin` olarak ayarlanmıştır.
+- Tarayıcı izinleri için `Permissions-Policy` ile kamera/mikrofon/konum kapatılmıştır.
+- Form endpoint'i canlıya çıkmadan önce mutlaka gerçek `FORM_ID` ile güncellenmelidir.

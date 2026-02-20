@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta http-equiv="Permissions-Policy" content="geolocation=(), camera=(), microphone=()" />
   <title>MiniFabrika | 3D Baskı Teklif Formu</title>
   <meta name="description" content="Model linkinizi gönderin, MiniFabrika'dan 3D baskı teklifi alın. 24 saat içinde dönüş yapalım." />
   <link rel="canonical" href="https://minifabrika.net/teklif.html" />
@@ -14,22 +17,22 @@
   <section class="page-head"><div class="container"><h1>Teklif Al</h1><p class="lead">Talebini detaylı paylaş, 24 saat içinde teknik teklifini iletelim.</p><div class="success-banner" data-prefill-banner hidden>Model bilgisi otomatik dolduruldu.</div></div></section>
   <section id="teklif-formu"><div class="container"><article class="card form-wrap"><h2>3D Baskı Talep Formu</h2>
     <form class="quote-form" action="https://formspree.io/f/FORM_ID" method="POST">
-      <!-- FORM_ID yerine Formspree panelinizdeki gerçek form ID'nizi yazın. -->
+      <!-- TODO: FORM_ID değerini Formspree form ID'nizle değiştirin. -->
       <input type="hidden" name="_subject" value="MiniFabrika Teklif Talebi" />
       <input type="hidden" name="_redirect" value="https://minifabrika.net/tesekkurler.html" />
       <input type="text" name="_gotcha" class="honeypot" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
       <label for="fullName">Ad Soyad *</label>
-      <input id="fullName" name="full_name" type="text" required minlength="3" placeholder="Adınız Soyadınız" />
+      <input id="fullName" name="full_name" type="text" required minlength="3" autocomplete="name" placeholder="Adınız Soyadınız" />
 
       <label for="email">E-posta *</label>
-      <input id="email" name="email" type="email" required placeholder="ornek@mail.com" />
+      <input id="email" name="email" type="email" required autocomplete="email" placeholder="ornek@mail.com" />
 
       <label for="phone">Telefon</label>
-      <input id="phone" name="phone" type="tel" placeholder="05xx xxx xx xx" />
+      <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="05xx xxx xx xx" />
 
       <label for="address">Adres *</label>
-      <input id="address" name="address" type="text" required placeholder="Adres (il/ilçe/mahalle, gerekirse detay)" />
+      <input id="address" name="address" type="text" required autocomplete="street-address" placeholder="Adres (il/ilçe/mahalle, gerekirse detay)" />
 
       <label for="serviceType">Hizmet *</label>
       <select id="serviceType" name="service_type" required>
@@ -51,7 +54,7 @@
       </select>
 
       <label for="quantity">Adet *</label>
-      <input id="quantity" name="quantity" type="number" min="1" required value="1" />
+      <input id="quantity" name="quantity" type="number" min="1" step="1" required value="1" />
 
       <label for="modelLink">Model Linki (MakerWorld / Printables / Drive) *</label>
       <input id="modelLink" name="model_link" type="url" required placeholder="https://..." />
