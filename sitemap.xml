@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://minifabrika.com/</loc></url>
-  <url><loc>https://minifabrika.com/malzeme-uretim.html</loc></url>
-  <url><loc>https://minifabrika.com/islerimiz.html</loc></url>
-  <url><loc>https://minifabrika.com/teklif.html</loc></url>
-  <url><loc>https://minifabrika.com/iletisim.html</loc></url>
-  <url><loc>https://minifabrika.com/blog/</loc></url>
-  <url><loc>https://minifabrika.com/blog/malzeme-secimi-rehberi.html</loc></url>
-  <url><loc>https://minifabrika.com/blog/makerworld-model-siparis.html</loc></url>
-  <url><loc>https://minifabrika.com/blog/teknik-baski-kalitesi-rehberi.html</loc></url>
-  <url><loc>https://minifabrika.com/404.html</loc></url>
-  <url><loc>https://minifabrika.com/tesekkurler.html</loc></url>
+  <url><loc>https://minifabrika.com/</loc><lastmod>2026-02-20</lastmod></url>
+  <url><loc>https://minifabrika.com/malzeme-uretim.html</loc><lastmod>2026-02-20</lastmod></url>
+  <url><loc>https://minifabrika.com/islerimiz.html</loc><lastmod>2026-02-20</lastmod></url>
+  <url><loc>https://minifabrika.com/teklif.html</loc><lastmod>2026-02-20</lastmod></url>
+  <url><loc>https://minifabrika.com/iletisim.html</loc><lastmod>2026-02-20</lastmod></url>
+  <url><loc>https://minifabrika.com/kvkk.html</loc><lastmod>2026-02-20</lastmod></url>
+  <url><loc>https://minifabrika.com/gizlilik.html</loc><lastmod>2026-02-20</lastmod></url>
+  <url><loc>https://minifabrika.com/cerez.html</loc><lastmod>2026-02-20</lastmod></url>
+  <url><loc>https://minifabrika.com/blog/</loc><lastmod>2026-02-20</lastmod></url>
+  <url><loc>https://minifabrika.com/blog/malzeme-secimi-rehberi.html</loc><lastmod>2026-02-20</lastmod></url>
+  <url><loc>https://minifabrika.com/blog/makerworld-model-siparis.html</loc><lastmod>2026-02-20</lastmod></url>
+  <url><loc>https://minifabrika.com/blog/teknik-baski-kalitesi-rehberi.html</loc><lastmod>2026-02-20</lastmod></url>
 </urlset>
