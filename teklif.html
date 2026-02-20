@@ -1,74 +1,34 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MiniFabrika | Teklif Formu</title>
-  <meta name="description" content="MiniFabrika sipariş ve teklif formu. Model linkini, adet bilgisini ve notlarını ilet." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MiniFabrika | 3D Baskı Teklif Formu ve Hızlı Sipariş Talebi</title>
+  <meta name="description" content="3D baskı teklifinizi hızlıca oluşturun. MakerWorld model linki, adet ve malzeme tercihlerinizi paylaşın; 24 saat içinde dönüş alın." />
+  <link rel="canonical" href="https://minifabrika.net/teklif.html" />
+  <meta property="og:type" content="website" /><meta property="og:title" content="MiniFabrika Teklif Formu" /><meta property="og:description" content="Model linkinizi gönderin, 24 saat içinde fiyat ve üretim planı alın." /><meta property="og:url" content="https://minifabrika.net/teklif.html" />
+  <meta name="twitter:card" content="summary" /><meta name="twitter:title" content="MiniFabrika Teklif Formu" /><meta name="twitter:description" content="Hızlı 3D baskı teklifi için formu doldurun." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.min.css" />
 </head>
 <body>
-  <header class="topbar">
-    <div class="container topbar-inner">
-      <a href="index.html" class="logo">mini<span>fabrika</span>.net</a>
-      <nav>
-        <a href="index.html">Ana Sayfa</a>
-        <a href="malzeme-uretim.html">Malzeme & Üretim</a>
-        <a href="islerimiz.html">İşlerimiz</a>
-        <a class="active" href="teklif.html">Teklif Formu</a>
-        <a href="iletisim.html">İletişim</a>
-      </nav>
-    </div>
-  </header>
-
+  <header class="topbar"><div class="container topbar-inner"><a href="index.html" class="logo">mini<span>fabrika</span>.net</a><button class="menu-toggle" aria-label="Menüyü aç" aria-expanded="false">Menü</button><nav><a href="index.html">Ana Sayfa</a><a href="malzeme-uretim.html">Malzeme & Üretim</a><a href="islerimiz.html">İşlerimiz</a><a class="active" href="teklif.html">Teklif Formu</a><a href="iletisim.html">İletişim</a></nav></div></header>
   <main>
-    <section class="page-head">
-      <div class="container">
-        <h1>Sipariş / Teklif Formu</h1>
-        <p class="lead">Sipariş taleplerini buradaki form üzerinden alıyoruz. Formu doldurduğunda talebin doğrudan bize düşer.</p>
-      </div>
-    </section>
-
-    <section>
-      <div class="container">
-        <article class="card form-card">
-          <h2>Formu doldur, teklifini gönder</h2>
-          <p class="lead">Gerekli bilgileri girdikten sonra gönder butonuna basman yeterli.</p>
-          <form class="quote-form" action="https://formsubmit.co/cihat.oz@minifabrika.com" method="POST">
-            <input type="hidden" name="_subject" value="MiniFabrika - Yeni sipariş/teklif formu" />
-            <input type="hidden" name="_captcha" value="false" />
-            <input type="hidden" name="_template" value="table" />
-
-            <label for="adSoyad">Ad Soyad</label>
-            <input id="adSoyad" name="Ad Soyad" type="text" required placeholder="Adınızı ve soyadınızı yazın" />
-
-            <label for="email">E-posta</label>
-            <input id="email" name="E-posta" type="email" required placeholder="ornek@mail.com" />
-
-            <label for="modelLink">Model Linki (MakerWorld)</label>
-            <input id="modelLink" name="Model Linki" type="url" required placeholder="https://makerworld.com/..." />
-
-            <label for="adet">Adet</label>
-            <input id="adet" name="Adet" type="number" min="1" required placeholder="Örn: 3" />
-
-            <label for="not">Notlar (renk, malzeme, teslimat)</label>
-            <textarea id="not" name="Notlar" rows="5" placeholder="Renk tercihi, malzeme veya teslimat notu"></textarea>
-
-            <button class="btn btn-primary" type="submit">Formu Gönder</button>
-          </form>
-          <p style="margin-top:14px;" class="lead">Hızlı konuşmak istersen: <a style="color:#9fd8ff" target="_blank" rel="noopener noreferrer" href="https://wa.me/905456900094?text=Merhaba%2C%20MiniFabrika%20i%C3%A7in%20sipari%C5%9F%20talebi%20olu%C5%9Fturmak%20istiyorum.">WhatsApp 0545 690 00 94</a></p>
-        </article>
-      </div>
-    </section>
+    <section class="page-head"><div class="container"><h1>3D baskı teklif formu</h1><p class="lead">Formu eksiksiz doldurduğunuzda teknik uygunluk ve fiyatlandırmayı daha hızlı paylaşabiliyoruz. <span class="response-time">Ortalama yanıt süresi: 24 saat</span></p></div></section>
+    <section><div class="container"><article class="card" style="max-width:760px;"><h2>Model linki ile sipariş başlat</h2><p class="lead">Model linki, adet, malzeme ve teslim beklentisini yazman yeterli.</p><form class="quote-form" action="https://formsubmit.co/cihat.oz@minifabrika.com" method="POST"><input type="hidden" name="_subject" value="MiniFabrika - Yeni sipariş/teklif formu" /><input type="hidden" name="_captcha" value="false" /><input type="hidden" name="_template" value="table" />
+      <label for="adSoyad">Ad Soyad</label><input id="adSoyad" name="Ad Soyad" type="text" required placeholder="Adınızı ve soyadınızı yazın" />
+      <label for="email">E-posta</label><input id="email" name="E-posta" type="email" required placeholder="ornek@mail.com" />
+      <label for="modelLink">Model Linki (MakerWorld)</label><input id="modelLink" name="Model Linki" type="url" required placeholder="https://makerworld.com/..." />
+      <label for="adet">Adet</label><input id="adet" name="Adet" type="number" min="1" required placeholder="Örn: 3" />
+      <label for="malzeme">Tercih edilen malzeme</label><select id="malzeme" name="Malzeme"><option>PLA</option><option>PETG</option><option>TPU</option><option>Kararsızım, öneri istiyorum</option></select>
+      <label for="not">Notlar (renk, kullanım amacı, teslim)</label><textarea id="not" name="Notlar" rows="5" placeholder="Renk, kalite beklentisi, son teslim tarihi"></textarea>
+      <button class="btn btn-primary" type="submit">Formu Gönder</button></form>
+      <p style="margin-top:14px;" class="lead">Hızlı iletişim: <a style="color:#9fd8ff" target="_blank" rel="noopener noreferrer" href="https://wa.me/905456900094?text=Merhaba%2C%20MiniFabrika%20i%C3%A7in%20sipari%C5%9F%20talebi%20olu%C5%9Fturmak%20istiyorum.">WhatsApp 0545 690 00 94</a></p>
+    </article></div></section>
+    <section><div class="container cta-box"><div><h2>Üretim standartlarımızı incelemek ister misiniz?</h2><p class="lead">Siparişten önce malzeme ve kalite sürecimizi öğrenmek için rehber sayfamıza geçin.</p></div><a class="btn btn-secondary" href="malzeme-uretim.html">Malzeme rehberi</a></div></section>
   </main>
-
-  <footer>
-    <div class="container">
-      <p><strong>MiniFabrika</strong> · Siparişleri teklif formu üzerinden alıyoruz.</p>
-    </div>
-  </footer>
+  <div class="sticky-cta"><a class="floating-btn primary" href="teklif.html">Hızlı Teklif Al</a><a class="floating-btn whatsapp" target="_blank" rel="noopener noreferrer" href="https://wa.me/905456900094?text=Merhaba%2C%20MiniFabrika%20i%C3%A7in%20sipari%C5%9F%20talebi%20olu%C5%9Fturmak%20istiyorum.">WhatsApp</a></div>
+  <footer><div class="container"><p><strong>MiniFabrika</strong> · Siparişleri teklif formu üzerinden alıyoruz.</p></div></footer>
+  <script src="script.min.js" defer></script>
 </body>
 </html>
