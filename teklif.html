@@ -23,7 +23,7 @@
   <section class="page-head"><div class="container"><h1>Teklif Formu</h1><p class="lead">Model linkinizi paylaşın, ortalama 24 saat içinde dönüş yapalım.</p></div></section>
   <section><div class="container"><article class="card" style="max-width:760px"><h2>Sipariş Talebi Oluştur</h2>
     <form class="quote-form" data-formsubmit action="https://formsubmit.co/cihat.oz@minifabrika.com" method="POST" novalidate>
-      <input type="hidden" name="_next" value="https://minifabrika.net/tesekkurler.html" />
+      <input type="hidden" name="_next" value="https://minifabrika.net/iletisim.html?sent=1" />
       <input type="hidden" name="_subject" value="MiniFabrika - Yeni sipariş talebi" />
       <input type="hidden" name="_template" value="table" />
       <input type="hidden" name="_captcha" value="false" />
@@ -36,7 +36,10 @@
       <input id="email" name="E-posta" type="email" required placeholder="ornek@mail.com" />
 
       <label for="telefon">Telefon</label>
-      <input id="telefon" name="Telefon" type="tel" required pattern="[0-9+ ]{10,15}" placeholder="05xx xxx xx xx" />
+      <input id="telefon" name="Telefon" type="tel" pattern="[0-9+ ]{10,15}" placeholder="05xx xxx xx xx" />
+
+      <label for="modelAdi">Model Adı</label>
+      <input id="modelAdi" name="Model Adı" type="text" required placeholder="Örn: Desk Organizer" />
 
       <label for="modelLink">Model Linki (MakerWorld)</label>
       <input id="modelLink" name="Model Linki" type="url" required placeholder="https://makerworld.com/..." />
