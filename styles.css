@@ -43,10 +43,25 @@ body {
 }
 
 .logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   text-decoration: none;
   color: var(--text);
   font-weight: 800;
   letter-spacing: 0.3px;
+}
+
+.logo img {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  display: block;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+}
+
+.logo .logo-text {
+  line-height: 1;
 }
 
 .logo span { color: var(--accent); }
@@ -401,3 +416,7 @@ footer {
   .contact-grid,
   .product-grid { grid-template-columns: 1fr; }
 }
+
+.honeypot{display:none !important}
+.consent{display:flex;gap:10px;align-items:flex-start;color:var(--muted)}
+.consent input{width:auto;margin-top:4px}

@@ -3,22 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta http-equiv="Permissions-Policy" content="geolocation=(), camera=(), microphone=()" />
   <title>MiniFabrika | İşlerimiz ve Üretim Kategorileri</title>
-  <meta name="description" content="Office, Workshop, Gift, Corporate ve Accessories kategorilerinde 3D baskı örneklerini inceleyin; tek tıkla teklif alın." />
-  <link rel="canonical" href="https://minifabrika.net/islerimiz.html" />
+  <meta name="description" content="Ofis, Atölye, Hediye, Kurumsal ve Aksesuar kategorilerinde 3D baskı örneklerini inceleyin; tek tıkla teklif alın." />
+  <link rel="canonical" href="https://minifabrika.com/islerimiz.html" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="MiniFabrika | İşlerimiz" />
   <meta property="og:description" content="20+ üretim kartı, kategori filtreleri ve hızlı teklif akışı." />
-  <meta property="og:url" content="https://minifabrika.net/islerimiz.html" />
+  <meta property="og:image" content="https://minifabrika.com/assets/minifabrika-logo.svg" />
+  <meta name="twitter:image" content="https://minifabrika.com/assets/minifabrika-logo.svg" />
+  <meta property="og:url" content="https://minifabrika.com/islerimiz.html" />
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="MiniFabrika İşlerimiz" />
   <meta name="twitter:description" content="Kategorilere göre 3D baskı modellerini filtreleyin." />
   <link rel="stylesheet" href="styles.min.css" />
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"MiniFabrika","url":"https://minifabrika.net","sameAs":["https://www.youtube.com/@minifabrikam","https://www.instagram.com/minifabrikacom/","https://x.com/minifabrikacom"]}</script>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","name":"MiniFabrika","url":"https://minifabrika.net","areaServed":"Turkey","address":{"@type":"PostalAddress","addressLocality":"İstanbul","addressCountry":"TR"},"contactPoint":{"@type":"ContactPoint","telephone":"+90 545 690 00 94","contactType":"customer service","availableLanguage":"tr"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"MiniFabrika","url":"https://minifabrika.com","logo":"https://minifabrika.com/assets/minifabrika-logo.svg","sameAs":["https://www.youtube.com/@minifabrikam","https://www.instagram.com/minifabrikacom/","https://x.com/minifabrikacom"]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","name":"MiniFabrika","url":"https://minifabrika.com","areaServed":"Turkey","address":{"@type":"PostalAddress","addressLocality":"İstanbul","addressCountry":"TR"},"contactPoint":{"@type":"ContactPoint","telephone":"+90 545 690 00 94","contactType":"customer service","availableLanguage":"tr"}}</script>
 </head>
 <body>
-<header class="topbar"><div class="container topbar-inner"><a class="logo" href="index.html">mini<span>fabrika</span>.net</a><button class="menu-toggle" aria-label="Menüyü aç" aria-expanded="false">Menü</button><nav><a href="index.html">Ana Sayfa</a><a href="malzeme-uretim.html">Malzeme & Üretim</a><a class="active" href="islerimiz.html">İşlerimiz</a><a href="blog/index.html">Blog</a><a href="teklif.html">Teklif Formu</a><a href="iletisim.html">İletişim</a></nav></div></header>
+<header class="topbar"><div class="container topbar-inner"><a class="logo" href="index.html"><img src="assets/minifabrika-logo.svg" alt="Mini Fabrika logo" width="34" height="34" loading="eager" decoding="async" /><span class="logo-text">mini<span>fabrika</span>.com</span></a><button class="menu-toggle" aria-label="Menüyü aç" aria-expanded="false">Menü</button><nav><a href="index.html">Ana Sayfa</a><a href="malzeme-uretim.html">Malzeme & Üretim</a><a class="active" href="islerimiz.html">İşlerimiz</a><a href="blog/index.html">Blog</a><a href="teklif.html">Teklif Formu</a><a href="iletisim.html">İletişim</a></nav></div></header>
 
 <main>
   <section class="page-head"><div class="container"><h1>İşlerimiz</h1><p class="lead">Kategorilere göre filtreleyin, MakerWorld’de açın veya doğrudan “Bunu Bastır” ile ön-dolu teklif formuna geçin.</p></div></section>
@@ -26,41 +31,41 @@
     <div class="container">
       <div class="filter-row" role="group" aria-label="Ürün kategori filtreleri">
         <button class="filter-btn active" type="button" data-filter="all">Tümü</button>
-        <button class="filter-btn" type="button" data-filter="Office">Office</button>
-        <button class="filter-btn" type="button" data-filter="Workshop">Workshop</button>
-        <button class="filter-btn" type="button" data-filter="Gift">Gift</button>
-        <button class="filter-btn" type="button" data-filter="Corporate">Corporate</button>
-        <button class="filter-btn" type="button" data-filter="Accessories">Accessories</button>
+        <button class="filter-btn" type="button" data-filter="Office">Ofis</button>
+        <button class="filter-btn" type="button" data-filter="Workshop">Atölye</button>
+        <button class="filter-btn" type="button" data-filter="Gift">Hediye</button>
+        <button class="filter-btn" type="button" data-filter="Corporate">Kurumsal</button>
+        <button class="filter-btn" type="button" data-filter="Accessories">Aksesuar</button>
       </div>
       <div id="products-grid" class="product-grid"></div>
     </div>
   </section>
 </main>
 
-<footer><div class="container"><p><a href="teklif.html">Teklif Formu</a> · <a href="blog/index.html">Blog</a></p><div class="socials"><a href="https://www.youtube.com/@minifabrikam" target="_blank" rel="noopener noreferrer">YouTube</a><a href="https://www.instagram.com/minifabrikacom/" target="_blank" rel="noopener noreferrer">Instagram</a><a href="https://x.com/minifabrikacom" target="_blank" rel="noopener noreferrer">X</a></div></div></footer>
+<footer><div class="container"><p><strong>MiniFabrika</strong> · İstanbul merkezli üretim · <a href="mailto:info@minifabrika.com">info@minifabrika.com</a> · <a href="tel:+905456900094">+90 545 690 00 94</a></p><div class="socials"><a href="https://www.youtube.com/@minifabrikam" target="_blank" rel="noopener noreferrer">YouTube</a><a href="https://www.instagram.com/minifabrikacom/" target="_blank" rel="noopener noreferrer">Instagram</a><a href="https://x.com/minifabrikacom" target="_blank" rel="noopener noreferrer">X</a></div></div></footer>
 
 <script>
 window.MINIFAB_PRODUCTS=[
-{title:'Desk Organizer',description:'Masa düzeni için çok gözlü organizer.',material:'PLA',time:'3-5 saat',category:'Office',popular:true,link:'https://makerworld.com/en/search/models?keyword=desk%20organizer',img:'https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=700&q=70'},
-{title:'Phone Stand',description:'Telefon ve tablet için ergonomik stand.',material:'PLA',time:'2-4 saat',category:'Office',popular:false,link:'https://makerworld.com/en/search/models?keyword=phone%20stand',img:'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=700&q=70'},
-{title:'Cable Holder',description:'Kablo dağınıklığını azaltan klips model.',material:'PETG',time:'1-2 saat',category:'Office',popular:false,link:'https://makerworld.com/en/search/models?keyword=cable%20holder',img:'https://images.unsplash.com/photo-1550009158-9ebf69173e03?auto=format&fit=crop&w=700&q=70'},
-{title:'Headphone Stand',description:'Masaüstü kulaklık standı.',material:'PLA',time:'3-4 saat',category:'Office',popular:false,link:'https://makerworld.com/en/search/models?keyword=headphone%20stand',img:'https://images.unsplash.com/photo-1545127398-14699f92334b?auto=format&fit=crop&w=700&q=70'},
-{title:'Tool Wall Hook',description:'Atölye el aletleri için duvar kancası.',material:'PETG',time:'2-3 saat',category:'Workshop',popular:true,link:'https://makerworld.com/en/search/models?keyword=tool%20hook',img:'https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=700&q=70'},
-{title:'Bit Holder',description:'Matkap uçları için düzenleyici tutucu.',material:'PLA',time:'1-2 saat',category:'Workshop',popular:false,link:'https://makerworld.com/en/search/models?keyword=bit%20holder',img:'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=700&q=70'},
-{title:'Clamp Knob',description:'Atölye sıkıştırma aparatları için düğme.',material:'PETG',time:'1-2 saat',category:'Workshop',popular:false,link:'https://makerworld.com/en/search/models?keyword=clamp%20knob',img:'https://images.unsplash.com/photo-1558403194-611308249627?auto=format&fit=crop&w=700&q=70'},
-{title:'Spool Holder',description:'Filament makaraları için dayanıklı tutucu.',material:'PETG',time:'3-5 saat',category:'Workshop',popular:false,link:'https://makerworld.com/en/search/models?keyword=spool%20holder',img:'https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?auto=format&fit=crop&w=700&q=70'},
-{title:'Articulated Dragon',description:'Popüler hareketli hediye modeli.',material:'PLA',time:'6-8 saat',category:'Gift',popular:true,link:'https://makerworld.com/en/search/models?keyword=articulated%20dragon',img:'https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&w=700&q=70'},
-{title:'Mini Figure Stand',description:'Figür sergileme standı.',material:'PLA',time:'2-3 saat',category:'Gift',popular:false,link:'https://makerworld.com/en/search/models?keyword=figure%20stand',img:'https://images.unsplash.com/photo-1525186402429-b4ff38bedbec?auto=format&fit=crop&w=700&q=70'},
-{title:'Name Plate',description:'Kişiselleştirilebilir masa isimliği.',material:'PLA',time:'1-2 saat',category:'Gift',popular:false,link:'https://makerworld.com/en/search/models?keyword=name%20plate',img:'https://images.unsplash.com/photo-1473186578172-c141e6798cf4?auto=format&fit=crop&w=700&q=70'},
-{title:'Plant Pot',description:'Dekoratif mini saksı tasarımları.',material:'PLA',time:'3-5 saat',category:'Gift',popular:false,link:'https://makerworld.com/en/search/models?keyword=plant%20pot',img:'https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=700&q=70'},
-{title:'Logo Desk Stand',description:'Kurumsal logo için masaüstü stand.',material:'PLA',time:'4-6 saat',category:'Corporate',popular:true,link:'https://makerworld.com/en/search/models?keyword=logo%20stand',img:'https://images.unsplash.com/photo-1545239351-1141bd82e8a6?auto=format&fit=crop&w=700&q=70'},
-{title:'Card Holder',description:'Ofis kartvizit tutucu.',material:'PLA',time:'1-2 saat',category:'Corporate',popular:false,link:'https://makerworld.com/en/search/models?keyword=card%20holder',img:'https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=700&q=70'},
-{title:'Event Badge Clip',description:'Etkinlikler için isimlik klipsi.',material:'PETG',time:'1-2 saat',category:'Corporate',popular:false,link:'https://makerworld.com/en/search/models?keyword=badge%20clip',img:'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=700&q=70'},
-{title:'Promo Keychain',description:'Toplu üretime uygun anahtarlık.',material:'TPU',time:'1-2 saat',category:'Corporate',popular:false,link:'https://makerworld.com/en/search/models?keyword=keychain',img:'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=700&q=70'},
-{title:'Controller Stand',description:'Oyun kumandası için stand.',material:'PLA',time:'3-4 saat',category:'Accessories',popular:true,link:'https://makerworld.com/en/search/models?keyword=controller%20stand',img:'https://images.unsplash.com/photo-1593305841991-05c297ba4575?auto=format&fit=crop&w=700&q=70'},
-{title:'Watch Dock',description:'Akıllı saat şarj yuvası.',material:'PLA',time:'2-3 saat',category:'Accessories',popular:false,link:'https://makerworld.com/en/search/models?keyword=watch%20dock',img:'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=700&q=70'},
-{title:'Cable Clip Set',description:'Kablo düzenleme klips seti.',material:'TPU',time:'1-2 saat',category:'Accessories',popular:false,link:'https://makerworld.com/en/search/models?keyword=cable%20clip',img:'https://images.unsplash.com/photo-1550009158-9ebf69173e03?auto=format&fit=crop&w=700&q=70'},
-{title:'Camera Mount',description:'Tripod uyumlu kamera aparatı.',material:'PETG',time:'3-5 saat',category:'Accessories',popular:false,link:'https://makerworld.com/en/search/models?keyword=camera%20mount',img:'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=700&q=70'}
+{title:'Masa Düzenleyici',description:'Kalem ve küçük ekipmanları düzenli tutan pratik masa çözümü.',material:'PLA',time:'3-5 saat',category:'Office',popular:true,link:'https://makerworld.com/en/search/models?keyword=desk%20organizer',img:'https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=700&q=70'},
+{title:'Telefon Standı',description:'Telefonu dik ve rahat açıyla konumlandıran masaüstü stand.',material:'PLA',time:'2-4 saat',category:'Office',popular:false,link:'https://makerworld.com/en/search/models?keyword=phone%20stand',img:'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=700&q=70'},
+{title:'Kablo Tutucu',description:'Şarj ve veri kablolarını sabitleyerek dağınıklığı azaltır.',material:'PETG',time:'1-2 saat',category:'Office',popular:false,link:'https://makerworld.com/en/search/models?keyword=cable%20holder',img:'https://images.unsplash.com/photo-1550009158-9ebf69173e03?auto=format&fit=crop&w=700&q=70'},
+{title:'Kulaklık Standı',description:'Kulaklığı masada düzenli saklamak için sağlam stand.',material:'PLA',time:'3-4 saat',category:'Office',popular:false,link:'https://makerworld.com/en/search/models?keyword=headphone%20stand',img:'https://images.unsplash.com/photo-1545127398-14699f92334b?auto=format&fit=crop&w=700&q=70'},
+{title:'Alet Duvar Kancası',description:'Atölye aletlerini duvarda düzenli asmaya yardımcı olur.',material:'PETG',time:'2-3 saat',category:'Workshop',popular:true,link:'https://makerworld.com/en/search/models?keyword=tool%20hook',img:'https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=700&q=70'},
+{title:'Uç Tutucu',description:'Matkap uçlarını tek yerde düzenli tutan kompakt tasarım.',material:'PLA',time:'1-2 saat',category:'Workshop',popular:false,link:'https://makerworld.com/en/search/models?keyword=bit%20holder',img:'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=700&q=70'},
+{title:'Kıskaç Düğmesi',description:'Sıkıştırma aparatları için dayanıklı yedek düğme çözümü.',material:'PETG',time:'1-2 saat',category:'Workshop',popular:false,link:'https://makerworld.com/en/search/models?keyword=clamp%20knob',img:'https://images.unsplash.com/photo-1558403194-611308249627?auto=format&fit=crop&w=700&q=70'},
+{title:'Filament Makara Tutucu',description:'Filament makaralarını dengeli ve güvenli şekilde taşır.',material:'PETG',time:'3-5 saat',category:'Workshop',popular:false,link:'https://makerworld.com/en/search/models?keyword=spool%20holder',img:'https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?auto=format&fit=crop&w=700&q=70'},
+{title:'Eklemli Ejderha',description:'Hareketli yapısıyla öne çıkan dekoratif hediye modeli.',material:'PLA',time:'6-8 saat',category:'Gift',popular:true,link:'https://makerworld.com/en/search/models?keyword=articulated%20dragon',img:'https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&w=700&q=70'},
+{title:'Mini Figür Standı',description:'Koleksiyon figürlerini sergilemek için sade stand.',material:'PLA',time:'2-3 saat',category:'Gift',popular:false,link:'https://makerworld.com/en/search/models?keyword=figure%20stand',img:'https://images.unsplash.com/photo-1525186402429-b4ff38bedbec?auto=format&fit=crop&w=700&q=70'},
+{title:'İsimlik',description:'Masa üstü için kişiselleştirilebilir isim plakası.',material:'PLA',time:'1-2 saat',category:'Gift',popular:false,link:'https://makerworld.com/en/search/models?keyword=name%20plate',img:'https://images.unsplash.com/photo-1473186578172-c141e6798cf4?auto=format&fit=crop&w=700&q=70'},
+{title:'Mini Saksı',description:'Dekoratif bitkiler için şık ve kompakt saksı tasarımı.',material:'PLA',time:'3-5 saat',category:'Gift',popular:false,link:'https://makerworld.com/en/search/models?keyword=plant%20pot',img:'https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=700&q=70'},
+{title:'Logo Masa Standı',description:'Kurumsal logolar için dikkat çeken masaüstü sergileme.',material:'PLA',time:'4-6 saat',category:'Corporate',popular:true,link:'https://makerworld.com/en/search/models?keyword=logo%20stand',img:'https://images.unsplash.com/photo-1545239351-1141bd82e8a6?auto=format&fit=crop&w=700&q=70'},
+{title:'Kartvizit Tutucu',description:'Kartvizitleri düzenli sunmak için ofis tipi stand.',material:'PLA',time:'1-2 saat',category:'Corporate',popular:false,link:'https://makerworld.com/en/search/models?keyword=card%20holder',img:'https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=700&q=70'},
+{title:'Etkinlik Yaka Klipsi',description:'İsimlik kartlarını sabitleyen hafif ve dayanıklı klips.',material:'PETG',time:'1-2 saat',category:'Corporate',popular:false,link:'https://makerworld.com/en/search/models?keyword=badge%20clip',img:'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=700&q=70'},
+{title:'Promosyon Anahtarlık',description:'Kurumsal dağıtım için seri üretime uygun anahtarlık.',material:'TPU',time:'1-2 saat',category:'Corporate',popular:false,link:'https://makerworld.com/en/search/models?keyword=keychain',img:'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=700&q=70'},
+{title:'Oyun Kumandası Standı',description:'Kumandayı düzenli ve erişilebilir tutan masaüstü stand.',material:'PLA',time:'3-4 saat',category:'Accessories',popular:true,link:'https://makerworld.com/en/search/models?keyword=controller%20stand',img:'https://images.unsplash.com/photo-1593305841991-05c297ba4575?auto=format&fit=crop&w=700&q=70'},
+{title:'Saat Şarj Standı',description:'Akıllı saat için düzenli ve sabit şarj yuvası.',material:'PLA',time:'2-3 saat',category:'Accessories',popular:false,link:'https://makerworld.com/en/search/models?keyword=watch%20dock',img:'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=700&q=70'},
+{title:'Kablo Klips Seti',description:'Farklı kalınlıklardaki kablolar için düzenleme seti.',material:'TPU',time:'1-2 saat',category:'Accessories',popular:false,link:'https://makerworld.com/en/search/models?keyword=cable%20clip',img:'https://images.unsplash.com/photo-1550009158-9ebf69173e03?auto=format&fit=crop&w=700&q=70'},
+{title:'Kamera Aparatı',description:'Tripod uyumlu, sağlam bağlantı sağlayan montaj aparatı.',material:'PETG',time:'3-5 saat',category:'Accessories',popular:false,link:'https://makerworld.com/en/search/models?keyword=camera%20mount',img:'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=700&q=70'}
 ];
 </script>
 <script src="script.min.js" defer></script>
