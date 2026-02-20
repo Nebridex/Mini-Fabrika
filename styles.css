@@ -33,7 +33,7 @@ p { max-width: 72ch; overflow-wrap: anywhere; }
 nav { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 nav a { color: var(--muted); text-decoration: none; padding: 8px 12px; border-radius: 999px; border: 1px solid transparent; }
 nav a.active, nav a:hover { color: var(--text); border-color: var(--line); background: rgba(255,255,255,.03); }
-.menu-toggle { display:none; align-items:center; justify-content:center; border:1px solid var(--line); background: rgba(255,255,255,.03); color: var(--text); padding: 8px 12px; border-radius: 10px; font-weight:700; }
+.topbar .menu-toggle { display:none !important; align-items:center; justify-content:center; border:1px solid var(--line); background: rgba(255,255,255,.03); color: var(--text); padding: 8px 12px; border-radius: 10px; font-weight:700; appearance:none; -webkit-appearance:none; }
 
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; border: none; cursor: pointer; padding: 13px 22px; border-radius: 999px; font-weight: 700; transition: transform .2s ease; }
 .btn:hover { transform: translateY(-2px); }
@@ -109,7 +109,7 @@ footer { margin-top: 30px; border-top: 1px solid rgba(255,255,255,.08); color: v
 :focus-visible { outline: 2px solid #8bc6ff; outline-offset: 2px; border-radius: 8px; }
 
 @media (max-width: 900px) {
-  .menu-toggle { display:inline-flex; }
+  .topbar .menu-toggle { display:inline-flex !important; }
   .topbar-inner { align-items:flex-start; flex-wrap: wrap; }
   nav { display:none; width:100%; flex-direction:column; align-items:flex-start; padding-top:8px; }
   nav.open { display:flex; }
