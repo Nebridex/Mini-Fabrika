@@ -1,0 +1,30 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Mini Fabrika Logo</title>
+  <desc id="desc">Dişli içinde 3D yazıcı ve turuncu küp sembolü</desc>
+  <defs>
+    <linearGradient id="g1" x1="96" y1="110" x2="244" y2="370" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3E4B63"/>
+      <stop offset="1" stop-color="#1D2534"/>
+    </linearGradient>
+    <linearGradient id="g2" x1="268" y1="116" x2="430" y2="370" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFCA2F"/>
+      <stop offset="1" stop-color="#F88400"/>
+    </linearGradient>
+    <linearGradient id="g3" x1="214" y1="232" x2="302" y2="338" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFA424"/>
+      <stop offset="1" stop-color="#F06C00"/>
+    </linearGradient>
+  </defs>
+  <path d="M124 292a176 176 0 0 1 86-232l12 28a146 146 0 0 0-72 192l-27 12Z" fill="url(#g1)"/>
+  <path d="M390 304a176 176 0 0 0-78-246l-12 28a146 146 0 0 1 66 204l24 14Z" fill="url(#g2)"/>
+  <path d="M200 44h112v26H200z" fill="#2E394D"/>
+  <path d="M208 70h96v90c0 16-13 28-28 28h-40c-16 0-28-12-28-28V70Z" fill="url(#g1)" stroke="#56647D" stroke-width="3"/>
+  <path d="M248 190h16v24h-16z" fill="#4A576D"/>
+  <path d="M238 214h36v20h-36z" fill="#2A3447"/>
+  <path d="M256 234c5 0 10 4 10 10v12h-20v-12c0-6 5-10 10-10Z" fill="#F18A00"/>
+  <path d="M256 256l64 30v72l-64 30-64-30v-72l64-30Z" fill="url(#g3)" stroke="#FFB35A" stroke-width="3"/>
+  <path d="M256 256l64 30-64 30-64-30 64-30Z" fill="#FFE3B7"/>
+  <path d="M196 286v72l60 28v-72l-60-28ZM316 286v72l-60 28v-72l60-28Z" fill="#FF8A00"/>
+  <path d="M166 360h180l44 22-136 70-178-70 90-22Z" fill="#353F53"/>
+  <ellipse cx="256" cy="462" rx="150" ry="20" fill="#2B3A52" opacity=".55"/>
+</svg>
