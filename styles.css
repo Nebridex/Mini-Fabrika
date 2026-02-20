@@ -276,6 +276,41 @@ section { padding: 52px 0; }
   color: var(--muted);
 }
 
+.form-card {
+  max-width: 760px;
+}
+
+.quote-form {
+  display: grid;
+  gap: 10px;
+}
+
+.quote-form label {
+  font-weight: 600;
+  color: #d8e3fb;
+}
+
+.quote-form input,
+.quote-form textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px;
+  background: rgba(255,255,255,.03);
+  color: var(--text);
+  font: inherit;
+}
+
+.quote-form input::placeholder,
+.quote-form textarea::placeholder {
+  color: #93a7cd;
+}
+
+.quote-form button {
+  margin-top: 8px;
+  width: fit-content;
+}
+
 footer {
   margin-top: 30px;
   border-top: 1px solid rgba(255,255,255,.08);
