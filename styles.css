@@ -401,3 +401,7 @@ footer {
   .contact-grid,
   .product-grid { grid-template-columns: 1fr; }
 }
+
+.honeypot{display:none !important}
+.consent{display:flex;gap:10px;align-items:flex-start;color:var(--muted)}
+.consent input{width:auto;margin-top:4px}
