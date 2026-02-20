@@ -254,6 +254,28 @@ section { padding: 52px 0; }
   background: rgba(255,255,255,.02);
 }
 
+.faq-list {
+  display: grid;
+  gap: 12px;
+}
+
+.faq-list details {
+  border: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(23, 35, 58, 0.9), rgba(17, 26, 43, 0.9));
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.faq-list summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.faq-list p {
+  margin-top: 10px;
+  color: var(--muted);
+}
+
 footer {
   margin-top: 30px;
   border-top: 1px solid rgba(255,255,255,.08);
