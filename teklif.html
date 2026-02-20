@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MiniFabrika | 3D Baskı Teklif Formu</title>
-  <meta name="description" content="Model linkinizi gönderin, MiniFabrika'dan 3D baskı teklifi alın. Form güvenilirliği için doğrulama destekli hızlı akış." />
+  <meta name="description" content="Model linkinizi gönderin, MiniFabrika'dan 3D baskı teklifi alın. Ön-dolu model bilgisi ve güvenilir form akışı." />
   <link rel="canonical" href="https://minifabrika.net/teklif.html" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="MiniFabrika | Teklif Formu" />
@@ -20,8 +20,8 @@
 <body>
 <header class="topbar"><div class="container topbar-inner"><a class="logo" href="index.html">mini<span>fabrika</span>.net</a><button class="menu-toggle" aria-label="Menüyü aç" aria-expanded="false">Menü</button><nav><a href="index.html">Ana Sayfa</a><a href="malzeme-uretim.html">Malzeme & Üretim</a><a href="islerimiz.html">İşlerimiz</a><a href="blog/index.html">Blog</a><a class="active" href="teklif.html">Teklif Formu</a><a href="iletisim.html">İletişim</a></nav></div></header>
 <main>
-  <section class="page-head"><div class="container"><h1>Teklif Formu</h1><p class="lead">Model linkinizi paylaşın, ortalama 24 saat içinde dönüş yapalım.</p><div class="success-banner" data-prefill-banner hidden>Model bilgisi otomatik dolduruldu.</div></div></section>
-  <section><div class="container"><article class="card" style="max-width:760px"><h2>Sipariş Talebi Oluştur</h2>
+  <section class="page-head"><div class="container"><h1>Teklif Formu</h1><p class="lead">Tahmini dönüş süresi: 24 saat. Model linkinizi paylaşın, teknik uygunluğu kontrol edip teklifinizi iletelim.</p><div class="success-banner" data-prefill-banner hidden>Model bilgisi otomatik dolduruldu.</div></div></section>
+  <section><div class="container"><article class="card form-wrap"><h2>Sipariş Talebi Oluştur</h2>
     <form class="quote-form" data-formsubmit action="https://formsubmit.co/cihat.oz@minifabrika.com" method="POST" novalidate>
       <input type="hidden" name="_next" value="https://minifabrika.net/iletisim.html?sent=1" />
       <input type="hidden" name="_subject" value="MiniFabrika - Yeni sipariş talebi" />
@@ -29,29 +29,29 @@
       <input type="hidden" name="_captcha" value="false" />
       <input type="text" name="_honey" class="sr-only" tabindex="-1" autocomplete="off" />
 
-      <label for="adSoyad">Ad Soyad</label>
+      <label for="adSoyad">Ad Soyad *</label>
       <input id="adSoyad" name="Ad Soyad" type="text" required minlength="3" placeholder="Adınız Soyadınız" />
 
-      <label for="email">E-posta</label>
+      <label for="email">E-posta *</label>
       <input id="email" name="E-posta" type="email" required placeholder="ornek@mail.com" />
 
-      <label for="telefon">Telefon</label>
+      <label for="telefon">Telefon (Opsiyonel)</label>
       <input id="telefon" name="Telefon" type="tel" pattern="[0-9+ ]{10,15}" placeholder="05xx xxx xx xx" />
 
-      <label for="modelAdi">Model Adı</label>
-      <input id="modelAdi" name="Model Adı" type="text" required placeholder="Örn: Desk Organizer" />
+      <label for="modelAdi">Model Adı (Opsiyonel)</label>
+      <input id="modelAdi" name="Model Adı" type="text" placeholder="Örn: Desk Organizer" />
 
-      <label for="modelLink">Model Linki (MakerWorld)</label>
+      <label for="modelLink">Model Linki (MakerWorld) *</label>
       <input id="modelLink" name="Model Linki" type="url" required placeholder="https://makerworld.com/..." />
 
-      <label for="adet">Adet</label>
-      <input id="adet" name="Adet" type="number" min="1" required />
+      <label for="adet">Adet *</label>
+      <div class="qty-row"><button type="button" class="qty-btn" data-qty="minus" aria-label="Adedi azalt">−</button><input id="adet" name="Adet" type="number" min="1" required value="1" /><button type="button" class="qty-btn" data-qty="plus" aria-label="Adedi artır">+</button></div>
 
-      <label for="not">Notlar</label>
+      <label for="not">Notlar (Opsiyonel)</label>
       <textarea id="not" name="Notlar" rows="5" placeholder="Renk, malzeme, teslimat notu"></textarea>
 
       <button class="btn btn-primary" type="submit" aria-label="Teklif talebini gönder">Formu Gönder</button>
-      <p class="form-note">Form gönderimi FormSubmit ile güvenli olarak iletilir.</p>
+      <p class="form-note">Bu formdaki bilgiler yalnızca teklif hazırlama amacıyla kullanılır.</p>
     </form>
   </article></div></section>
 </main>
