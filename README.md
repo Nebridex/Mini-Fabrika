@@ -7,31 +7,26 @@
 - `index.html`: Ana satış sayfası (CTA, güven blokları, süreç akışı ve FAQ)
 - `teklif.html`: Detaylı teklif toplama formu
 - `iletisim.html`: İletişim ve sosyal medya sayfası
-- `assets/js/config.js`: Formspree endpoint ayarı (`FORM_ENDPOINT`)
-- `assets/js/form.js`: AJAX form gönderimi + doğrulama + durum mesajları
 
-## Formspree Kurulumu (GitHub Pages Uyumlu)
+## Formspree Kurulumu
 
 1. Formspree'de yeni bir form açın.
 2. **Send submissions to** alanına `info@minifabrika.com` yazın.
-3. Form endpoint'inizi alın (ör: `https://formspree.io/f/abcdwxyz`).
-4. `assets/js/config.js` içinde `REPLACE_WITH_YOUR_ID` kısmını kendi ID'nizle değiştirin.
+3. `teklif.html` içindeki form action değerinde `FORM_ID` kısmını kendi Formspree ID'nizle değiştirin:
 
-```js
-window.MINIFAB_CONFIG = {
-  FORM_ENDPOINT: 'https://formspree.io/f/REPLACE_WITH_YOUR_ID'
-};
+```html
+<form action="https://formspree.io/f/FORM_ID" method="POST">
 ```
 
-> Form gönderimleri Formspree üzerinden `info@minifabrika.com` adresine düşecek şekilde yapılandırılmalıdır.
+4. Form gönderimi sonrası yönlendirme için `_redirect` alanı `https://minifabrika.net/tesekkurler.html` olarak ayarlanmıştır.
 
 ## Test Adımları
 
 1. Yerelde bir statik sunucu ile çalıştırın (`python3 -m http.server 8080`).
 2. `http://localhost:8080/teklif.html` sayfasında formu doldurun.
 3. Boş zorunlu alan bırakarak client-side doğrulamayı test edin.
-4. Formu başarılı gönderince inline başarı mesajının göründüğünü doğrulayın.
-5. Hata simülasyonu için endpoint'i geçici olarak bozup inline hata mesajını kontrol edin.
+4. Formu gönderip `tesekkurler.html` sayfasına yönlendiğinizi doğrulayın.
+5. Formspree panelinden talebin `info@minifabrika.com` alıcısına düştüğünü kontrol edin.
 
 ## Yayına Alma (GitHub Pages)
 
