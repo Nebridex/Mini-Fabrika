@@ -4,7 +4,7 @@
 
 ## Sayfa Yapısı
 
-- `index.html`: Ana satış sayfası (CTA, güven blokları, FAQ ve hızlı teklif formu)
+- `index.html`: Ana satış sayfası (CTA, güven blokları, süreç akışı ve FAQ)
 - `teklif.html`: Detaylı teklif toplama formu
 - `iletisim.html`: İletişim ve sosyal medya sayfası
 - `assets/js/config.js`: Formspree endpoint ayarı (`FORM_ENDPOINT`)
@@ -28,7 +28,7 @@ window.MINIFAB_CONFIG = {
 ## Test Adımları
 
 1. Yerelde bir statik sunucu ile çalıştırın (`python3 -m http.server 8080`).
-2. `http://localhost:8080` adresinde ana sayfadan formu doldurun.
+2. `http://localhost:8080/teklif.html` sayfasında formu doldurun.
 3. Boş zorunlu alan bırakarak client-side doğrulamayı test edin.
 4. Formu başarılı gönderince inline başarı mesajının göründüğünü doğrulayın.
 5. Hata simülasyonu için endpoint'i geçici olarak bozup inline hata mesajını kontrol edin.
