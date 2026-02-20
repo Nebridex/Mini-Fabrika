@@ -21,7 +21,7 @@ body {
 }
 
 .container { width: min(1140px, 92%); margin-inline: auto; }
-p { max-width: 72ch; }
+p { max-width: 72ch; overflow-wrap: anywhere; }
 
 .topbar { position: sticky; top: 0; z-index: 10; backdrop-filter: blur(10px); background: rgba(7,10,18,.78); border-bottom: 1px solid rgba(255,255,255,.08); }
 .topbar-inner { min-height: 70px; display: flex; align-items: center; justify-content: space-between; gap: 14px; }
@@ -90,6 +90,7 @@ section { padding: 68px 0; }
 .content-prose { max-width: 76ch; }
 .content-prose p { max-width: 72ch; margin-bottom: 14px; }
 .content-prose h2, .content-prose h3 { margin-top: 18px; }
+.content-prose li { max-width: 70ch; }
 
 footer { margin-top: 30px; border-top: 1px solid rgba(255,255,255,.08); color: var(--muted); text-align: center; padding: 38px 0 44px; }
 .socials a, .legal-links a, .quick-links a { color: var(--text); text-decoration: none; display: inline-block; margin: 6px; }
