@@ -49,12 +49,17 @@
 <script>
   // Sadece güvenilen origin'den gelen teklif mesajını kabul et.
   window.addEventListener('message', function(event){
-    if(event.origin !== 'https://nebridex.github.io') return;
-    if(!event.data || event.data.type !== 'MINIFABRIKA_TEKLIF') return;
+    try{
+      if(event.origin !== 'https://nebridex.github.io') return;
+      if(!event.data || event.data.type !== 'MINIFABRIKA_TEKLIF') return;
 
-    var payload = event.data.payload || {};
-    localStorage.setItem('mf_teklif_payload', JSON.stringify(payload));
-    window.location.href = '/teklif.html';
+      var payload = event.data.payload || {};
+      localStorage.setItem('mf_teklif_payload', JSON.stringify(payload));
+      window.location.href = '/teklif.html';
+    }catch(_err){
+      // localStorage erişim hatası vb. durumlarda kullanıcıyı yine forma taşı.
+      window.location.href = '/teklif.html';
+    }
   });
 </script>
 <script src="script.min.js" defer></script>
