@@ -39,3 +39,67 @@
 - Tüm sayfalarda `referrer` politikası `strict-origin-when-cross-origin` olarak ayarlanmıştır.
 - Tarayıcı izinleri için `Permissions-Policy` ile kamera/mikrofon/konum kapatılmıştır.
 - Form endpoint'i `teklif.html` içinde FormSubmit olarak tanımlıdır; alıcı değişecekse action URL'sindeki e-posta güncellenmelidir.
+
+## 3D Tasarla → Teklif Aktarımı
+
+- `tasarla.html`, iframe içindeki uygulamadan gelen `postMessage` olayında sadece şu kontratı kabul eder:
+  - `origin`: `https://nebridex.github.io`
+  - `source`: `minifabrika-app`
+  - `version`: `v1`
+  - `type`: `MINIFABRIKA_TEKLIF`
+- Geçerli payload doğrudan `localStorage` (`mf_teklif_payload`) içine yazılır ve kullanıcı `teklif.html` sayfasına yönlendirilir.
+- Payload boyutu localStorage yazımı öncesi üst sınırla korunur (aşırı büyük veri reddedilir).
+- Payload yanında bir timestamp (`mf_teklif_payload_ts`) tutulur; teklif formu bu veriyi TTL (60 dk) ile okur.
+- **Öncelik her zaman `localStorage`'dır.** Query parametreleri sadece acil fallback olarak küçük alanlar (`x,y,z,g,tpl,txt`) için değerlendirilir.
+- Form submit akışında temel anti-bot kontrolü için minimum doldurma süresi uygulanır (3 sn altı submit engellenir).
+- STL gibi büyük veriler query string'e yazılmamalıdır.
+  - Küçük model: `payload.stl.base64` ile indirilebilir dosya üretilebilir.
+  - Büyük model: `payload.stl.tooLarge=true` + backend upload akışı kullanılmalı; mümkünse `model_url` gönderilmelidir.
+- İsteğe bağlı telemetry için `window.__MF_TRANSFER_LOG_ENDPOINT` tanımlanabilir; uygun endpoint varsa `sendBeacon` ile transfer olayları (accept/reject/TTL/STL) raporlanır, yoksa sadece `console.info` loglanır.
+- `model_url` ve telemetry endpoint değerleri sadece `http/https` URL ise kullanılır.
+- Runtime ayarları için `config.js` kullanılabilir (`transferLogEndpoint`, `minFormFillMs`, `requireUserInteraction`, `trustedAppOrigins`, `allowedSiteOrigins`).
+- Anti-bot tarafında minimum süreye ek olarak kullanıcı etkileşimi zorunludur (focus/input/change olmadan submit engellenir).
+
+Örnek `postMessage` kontratı:
+
+```js
+window.parent.postMessage({
+  source: 'minifabrika-app',
+  version: 'v1',
+  type: 'MINIFABRIKA_TEKLIF',
+  payload: {
+    x: 42,
+    y: 24,
+    z: 12,
+    gram: 18,
+    sure: '1s 45dk',
+    sablon: 'Kart Tutucu',
+    yazi: 'Mini Fabrika',
+    stl: {
+      tooLarge: false,
+      base64: '...'
+    }
+  }
+}, 'https://minifabrika.com');
+```
+
+## Transfer Debug / Runbook
+
+- `tasarla.html` üzerinde reject sebepleri loglanır: `reject-origin`, `reject-source`, `reject-version`, `reject-type`, `reject-payload-schema`.
+- `teklif.html?debug_transfer=1` ile aktarım meta bilgisi (source/version) debug amaçlı gösterilir.
+- Form temizleme butonu `mf_teklif_payload` ve `mf_teklif_payload_ts` anahtarlarını birlikte temizler.
+
+
+Örnek config:
+
+```html
+<script>
+  window.__MF_CONFIG = {
+    transferLogEndpoint: 'https://example.com/mf-events',
+    minFormFillMs: 4000,
+    requireUserInteraction: true,
+    trustedAppOrigins: ['https://nebridex.github.io'],
+    allowedSiteOrigins: ['https://minifabrika.com','https://www.minifabrika.com']
+  };
+</script>
+```

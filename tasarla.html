@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta http-equiv="Permissions-Policy" content="geolocation=(), camera=(), microphone=()" />
+  <title>MiniFabrika | 3D Tasarla</title>
+  <meta name="description" content="MiniFabrika 3D Tasarla uygulaması ile modelinizi hızlıca hazırlayın, üretimini bize bırakın." />
+  <link rel="canonical" href="https://minifabrika.com/tasarla.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.min.css" />
+  <style>
+    .embed-wrap{display:flex;flex-direction:column;gap:12px;min-height:calc(100vh - 230px)}
+    .embed-frame{width:100%;height:calc(100vh - 230px);height:calc(100dvh - 230px);min-height:560px;border:0;border-radius:16px;background:#090f1b}
+    @media (max-width: 768px){
+      .embed-wrap{min-height:calc(100vh - 190px)}
+      .embed-frame{height:calc(100vh - 190px);height:calc(100dvh - 190px);min-height:70vh;border-radius:12px}
+    }
+  </style>
+</head>
+<body>
+<header class="topbar"><div class="container topbar-inner"><a class="logo" href="index.html"><img src="assets/minifabrika-logo.svg" alt="Mini Fabrika logo" width="34" height="34" loading="eager" decoding="async" /><span class="logo-text">mini<span>fabrika</span>.com</span></a><button class="menu-toggle" aria-label="Menüyü aç" aria-expanded="false">Menü</button><nav><a href="index.html">Ana Sayfa</a><a href="malzeme-uretim.html">Malzeme & Üretim</a><a href="islerimiz.html">İşlerimiz</a><a href="blog/index.html">Blog</a><a class="active" href="tasarla.html">3D Tasarla</a><a href="teklif.html">Teklif Formu</a><a href="iletisim.html">İletişim</a></nav></div></header>
+
+<main>
+  <section>
+    <div class="container embed-wrap">
+      <h1>3D Tasarla</h1>
+      <p class="lead">1 dakikada tasarla, üretimini Mini Fabrika yapsın. Üretim için <a href="teklif.html">Teklif Al</a>.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <a class="btn btn-secondary" href="https://nebridex.github.io/minifabrika-oyun/" target="_blank" rel="noopener noreferrer">Tam Ekranda Aç</a>
+      </div>
+      <iframe
+        class="embed-frame"
+        src="https://nebridex.github.io/minifabrika-oyun/"
+        title="MiniFabrika 3D Tasarla"
+        loading="lazy"
+        allow="clipboard-read; clipboard-write"
+      ></iframe>
+      <p>Uygulama yüklenemediyse <a href="https://nebridex.github.io/minifabrika-oyun/" target="_blank" rel="noopener noreferrer">buraya tıklayın</a>.</p>
+    </div>
+  </section>
+</main>
+
+<footer><div class="container"><p><strong>MiniFabrika</strong> · İstanbul merkezli üretim · <a href="mailto:info@minifabrika.com">info@minifabrika.com</a> · <a href="tel:+905456900094">+90 545 690 00 94</a></p><div class="socials"><a href="https://www.youtube.com/@minifabrikam" target="_blank" rel="noopener noreferrer">YouTube</a><a href="https://www.instagram.com/minifabrikacom/" target="_blank" rel="noopener noreferrer">Instagram</a><a href="https://x.com/minifabrikacom" target="_blank" rel="noopener noreferrer">X</a></div></div></footer>
+<script>
+  // Sadece güvenilen uygulama origin + mesaj kontratı ile gelen mesajları kabul et.
+  (function(){
+    var cfg = window.__MF_CONFIG || {};
+    var TRUSTED_APP_ORIGINS = cfg.trustedAppOrigins || ['https://nebridex.github.io'];
+    var ALLOWED_SITE_ORIGINS = cfg.allowedSiteOrigins || ['https://minifabrika.com', 'https://www.minifabrika.com'];
+    var PAYLOAD_KEY = 'mf_teklif_payload';
+    var PAYLOAD_TS_KEY = 'mf_teklif_payload_ts';
+    var MAX_STORED_PAYLOAD_BYTES = 350000;
+    var transferLog=((cfg.transferLogEndpoint||window.__MF_TRANSFER_LOG_ENDPOINT||'')).trim();
+
+    function logTransfer(eventName,detail){
+      var payload={event:eventName,detail:detail||{},ts:Date.now(),path:window.location.pathname};
+      if(transferLog&&navigator.sendBeacon){
+        try{navigator.sendBeacon(transferLog,JSON.stringify(payload));return;}catch(_e){}
+      }
+      try{console.info('[mf-transfer]',payload);}catch(_e){}
+    }
+
+    function safeHttpUrl(raw){
+      if(!raw) return '';
+      try{
+        var u=new URL(String(raw),window.location.origin);
+        if(u.protocol!=='http:'&&u.protocol!=='https:') return '';
+        return u.href;
+      }catch(_e){
+        return '';
+      }
+    }
+    transferLog=safeHttpUrl(transferLog);
+
+    function teklifFormUrl(){
+      if(ALLOWED_SITE_ORIGINS.indexOf(window.location.origin) !== -1){
+        return window.location.origin + '/teklif.html';
+      }
+      return '/teklif.html';
+    }
+
+    function isObject(v){
+      return !!v && typeof v === 'object' && !Array.isArray(v);
+    }
+
+    function isScalar(v){
+      return v===undefined || v===null || typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean';
+    }
+
+    function isValidPayload(payload){
+      if(!isObject(payload)) return false;
+      var olculer = payload.olculer || payload.olcu || payload.dimensions;
+      if(olculer !== undefined && !isObject(olculer)) return false;
+      var stl = payload.stl;
+      if(stl !== undefined){
+        if(!isObject(stl)) return false;
+        if(stl.base64 !== undefined && typeof stl.base64 !== 'string') return false;
+        if(stl.mime !== undefined && typeof stl.mime !== 'string') return false;
+        if(stl.filename !== undefined && typeof stl.filename !== 'string') return false;
+        if(stl.sizeBytes !== undefined && typeof stl.sizeBytes !== 'number') return false;
+        if(stl.tooLarge !== undefined && typeof stl.tooLarge !== 'boolean') return false;
+      }
+      var keys=['x','y','z','gram','sure','sablon','template','text','yazi','adet','malzeme','renk','not'];
+      for(var i=0;i<keys.length;i++){
+        if(!isScalar(payload[keys[i]])) return false;
+      }
+      return true;
+    }
+
+    window.addEventListener('message', function(event){
+      try{
+        if(TRUSTED_APP_ORIGINS.indexOf(event.origin) === -1){logTransfer('reject-origin',{origin:event.origin||''});return;}
+        if(!event.data || typeof event.data !== 'object'){logTransfer('reject-data-shape',{});return;}
+        if(event.data.source !== 'minifabrika-app'){logTransfer('reject-source',{source:event.data.source||''});return;}
+        if(event.data.version !== 'v1'){logTransfer('reject-version',{version:event.data.version||''});return;}
+        if(event.data.type !== 'MINIFABRIKA_TEKLIF'){logTransfer('reject-type',{type:event.data.type||''});return;}
+
+        var payload = event.data.payload || {};
+        if(!isValidPayload(payload)){logTransfer('reject-payload-schema',{});return;}
+
+        localStorage.setItem(PAYLOAD_KEY, JSON.stringify({
+          payload: payload,
+          meta: { source: event.data.source, version: event.data.version }
+        }));
+        if((localStorage.getItem(PAYLOAD_KEY)||'').length > MAX_STORED_PAYLOAD_BYTES){
+          localStorage.removeItem(PAYLOAD_KEY);
+          localStorage.removeItem(PAYLOAD_TS_KEY);
+          logTransfer('reject-payload-too-large',{});
+          return;
+        }
+        localStorage.setItem(PAYLOAD_TS_KEY, String(Date.now()));
+        logTransfer('accepted',{});
+        window.location.href = teklifFormUrl();
+      }catch(_err){
+        // localStorage erişim hatası vb. durumlarda kullanıcıyı yine forma taşı.
+        window.location.href = teklifFormUrl();
+      }
+    });
+  })();
+</script>
+<script src="config.js" defer></script>
+<script src="script.min.js" defer></script>
+</body>
+</html>
