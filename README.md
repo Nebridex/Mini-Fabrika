@@ -48,7 +48,31 @@
   - `version`: `v1`
   - `type`: `MINIFABRIKA_TEKLIF`
 - Geçerli payload doğrudan `localStorage` (`mf_teklif_payload`) içine yazılır ve kullanıcı `teklif.html` sayfasına yönlendirilir.
+- Payload yanında bir timestamp (`mf_teklif_payload_ts`) tutulur; teklif formu bu veriyi TTL (60 dk) ile okur.
 - **Öncelik her zaman `localStorage`'dır.** Query parametreleri sadece acil fallback olarak küçük alanlar (`x,y,z,g,tpl,txt`) için değerlendirilir.
 - STL gibi büyük veriler query string'e yazılmamalıdır.
   - Küçük model: `payload.stl.base64` ile indirilebilir dosya üretilebilir.
   - Büyük model: `payload.stl.tooLarge=true` + backend upload akışı kullanılmalı; mümkünse `model_url` gönderilmelidir.
+
+Örnek `postMessage` kontratı:
+
+```js
+window.parent.postMessage({
+  source: 'minifabrika-app',
+  version: 'v1',
+  type: 'MINIFABRIKA_TEKLIF',
+  payload: {
+    x: 42,
+    y: 24,
+    z: 12,
+    gram: 18,
+    sure: '1s 45dk',
+    sablon: 'Kart Tutucu',
+    yazi: 'Mini Fabrika',
+    stl: {
+      tooLarge: false,
+      base64: '...'
+    }
+  }
+}, 'https://minifabrika.com');
+```

@@ -51,12 +51,42 @@
   (function(){
     var TRUSTED_APP_ORIGINS = ['https://nebridex.github.io'];
     var ALLOWED_SITE_ORIGINS = ['https://minifabrika.com', 'https://www.minifabrika.com'];
+    var PAYLOAD_KEY = 'mf_teklif_payload';
+    var PAYLOAD_TS_KEY = 'mf_teklif_payload_ts';
 
     function teklifFormUrl(){
       if(ALLOWED_SITE_ORIGINS.indexOf(window.location.origin) !== -1){
         return window.location.origin + '/teklif.html';
       }
       return '/teklif.html';
+    }
+
+    function isObject(v){
+      return !!v && typeof v === 'object' && !Array.isArray(v);
+    }
+
+    function isScalar(v){
+      return v===undefined || v===null || typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean';
+    }
+
+    function isValidPayload(payload){
+      if(!isObject(payload)) return false;
+      var olculer = payload.olculer || payload.olcu || payload.dimensions;
+      if(olculer !== undefined && !isObject(olculer)) return false;
+      var stl = payload.stl;
+      if(stl !== undefined){
+        if(!isObject(stl)) return false;
+        if(stl.base64 !== undefined && typeof stl.base64 !== 'string') return false;
+        if(stl.mime !== undefined && typeof stl.mime !== 'string') return false;
+        if(stl.filename !== undefined && typeof stl.filename !== 'string') return false;
+        if(stl.sizeBytes !== undefined && typeof stl.sizeBytes !== 'number') return false;
+        if(stl.tooLarge !== undefined && typeof stl.tooLarge !== 'boolean') return false;
+      }
+      var keys=['x','y','z','gram','sure','sablon','template','text','yazi','adet','malzeme','renk','not'];
+      for(var i=0;i<keys.length;i++){
+        if(!isScalar(payload[keys[i]])) return false;
+      }
+      return true;
     }
 
     window.addEventListener('message', function(event){
@@ -68,7 +98,13 @@
         if(event.data.type !== 'MINIFABRIKA_TEKLIF') return;
 
         var payload = event.data.payload || {};
-        localStorage.setItem('mf_teklif_payload', JSON.stringify(payload));
+        if(!isValidPayload(payload)) return;
+
+        localStorage.setItem(PAYLOAD_KEY, JSON.stringify({
+          payload: payload,
+          meta: { source: event.data.source, version: event.data.version }
+        }));
+        localStorage.setItem(PAYLOAD_TS_KEY, String(Date.now()));
         window.location.href = teklifFormUrl();
       }catch(_err){
         // localStorage erişim hatası vb. durumlarda kullanıcıyı yine forma taşı.
