@@ -47,20 +47,35 @@
 
 <footer><div class="container"><p><strong>MiniFabrika</strong> · İstanbul merkezli üretim · <a href="mailto:info@minifabrika.com">info@minifabrika.com</a> · <a href="tel:+905456900094">+90 545 690 00 94</a></p><div class="socials"><a href="https://www.youtube.com/@minifabrikam" target="_blank" rel="noopener noreferrer">YouTube</a><a href="https://www.instagram.com/minifabrikacom/" target="_blank" rel="noopener noreferrer">Instagram</a><a href="https://x.com/minifabrikacom" target="_blank" rel="noopener noreferrer">X</a></div></div></footer>
 <script>
-  // Sadece güvenilen origin'den gelen teklif mesajını kabul et.
-  window.addEventListener('message', function(event){
-    try{
-      if(event.origin !== 'https://nebridex.github.io') return;
-      if(!event.data || event.data.type !== 'MINIFABRIKA_TEKLIF') return;
+  // Sadece güvenilen uygulama origin + mesaj kontratı ile gelen mesajları kabul et.
+  (function(){
+    var TRUSTED_APP_ORIGINS = ['https://nebridex.github.io'];
+    var ALLOWED_SITE_ORIGINS = ['https://minifabrika.com', 'https://www.minifabrika.com'];
 
-      var payload = event.data.payload || {};
-      localStorage.setItem('mf_teklif_payload', JSON.stringify(payload));
-      window.location.href = '/teklif.html';
-    }catch(_err){
-      // localStorage erişim hatası vb. durumlarda kullanıcıyı yine forma taşı.
-      window.location.href = '/teklif.html';
+    function teklifFormUrl(){
+      if(ALLOWED_SITE_ORIGINS.indexOf(window.location.origin) !== -1){
+        return window.location.origin + '/teklif.html';
+      }
+      return '/teklif.html';
     }
-  });
+
+    window.addEventListener('message', function(event){
+      try{
+        if(TRUSTED_APP_ORIGINS.indexOf(event.origin) === -1) return;
+        if(!event.data || typeof event.data !== 'object') return;
+        if(event.data.source !== 'minifabrika-app') return;
+        if(event.data.version !== 'v1') return;
+        if(event.data.type !== 'MINIFABRIKA_TEKLIF') return;
+
+        var payload = event.data.payload || {};
+        localStorage.setItem('mf_teklif_payload', JSON.stringify(payload));
+        window.location.href = teklifFormUrl();
+      }catch(_err){
+        // localStorage erişim hatası vb. durumlarda kullanıcıyı yine forma taşı.
+        window.location.href = teklifFormUrl();
+      }
+    });
+  })();
 </script>
 <script src="script.min.js" defer></script>
 </body>

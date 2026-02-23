@@ -39,3 +39,16 @@
 - Tüm sayfalarda `referrer` politikası `strict-origin-when-cross-origin` olarak ayarlanmıştır.
 - Tarayıcı izinleri için `Permissions-Policy` ile kamera/mikrofon/konum kapatılmıştır.
 - Form endpoint'i `teklif.html` içinde FormSubmit olarak tanımlıdır; alıcı değişecekse action URL'sindeki e-posta güncellenmelidir.
+
+## 3D Tasarla → Teklif Aktarımı
+
+- `tasarla.html`, iframe içindeki uygulamadan gelen `postMessage` olayında sadece şu kontratı kabul eder:
+  - `origin`: `https://nebridex.github.io`
+  - `source`: `minifabrika-app`
+  - `version`: `v1`
+  - `type`: `MINIFABRIKA_TEKLIF`
+- Geçerli payload doğrudan `localStorage` (`mf_teklif_payload`) içine yazılır ve kullanıcı `teklif.html` sayfasına yönlendirilir.
+- **Öncelik her zaman `localStorage`'dır.** Query parametreleri sadece acil fallback olarak küçük alanlar (`x,y,z,g,tpl,txt`) için değerlendirilir.
+- STL gibi büyük veriler query string'e yazılmamalıdır.
+  - Küçük model: `payload.stl.base64` ile indirilebilir dosya üretilebilir.
+  - Büyük model: `payload.stl.tooLarge=true` + backend upload akışı kullanılmalı; mümkünse `model_url` gönderilmelidir.
