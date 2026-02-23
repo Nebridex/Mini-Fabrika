@@ -50,9 +50,11 @@
 - Geçerli payload doğrudan `localStorage` (`mf_teklif_payload`) içine yazılır ve kullanıcı `teklif.html` sayfasına yönlendirilir.
 - Payload yanında bir timestamp (`mf_teklif_payload_ts`) tutulur; teklif formu bu veriyi TTL (60 dk) ile okur.
 - **Öncelik her zaman `localStorage`'dır.** Query parametreleri sadece acil fallback olarak küçük alanlar (`x,y,z,g,tpl,txt`) için değerlendirilir.
+- Form submit akışında temel anti-bot kontrolü için minimum doldurma süresi uygulanır (3 sn altı submit engellenir).
 - STL gibi büyük veriler query string'e yazılmamalıdır.
   - Küçük model: `payload.stl.base64` ile indirilebilir dosya üretilebilir.
   - Büyük model: `payload.stl.tooLarge=true` + backend upload akışı kullanılmalı; mümkünse `model_url` gönderilmelidir.
+- İsteğe bağlı telemetry için `window.__MF_TRANSFER_LOG_ENDPOINT` tanımlanabilir; uygun endpoint varsa `sendBeacon` ile transfer olayları (accept/reject/TTL/STL) raporlanır, yoksa sadece `console.info` loglanır.
 
 Örnek `postMessage` kontratı:
 
@@ -76,3 +78,9 @@ window.parent.postMessage({
   }
 }, 'https://minifabrika.com');
 ```
+
+## Transfer Debug / Runbook
+
+- `tasarla.html` üzerinde reject sebepleri loglanır: `reject-origin`, `reject-source`, `reject-version`, `reject-type`, `reject-payload-schema`.
+- `teklif.html?debug_transfer=1` ile aktarım meta bilgisi (source/version) debug amaçlı gösterilir.
+- Form temizleme butonu `mf_teklif_payload` ve `mf_teklif_payload_ts` anahtarlarını birlikte temizler.

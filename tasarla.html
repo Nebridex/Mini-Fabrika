@@ -15,10 +15,10 @@
   <link rel="stylesheet" href="styles.min.css" />
   <style>
     .embed-wrap{display:flex;flex-direction:column;gap:12px;min-height:calc(100vh - 230px)}
-    .embed-frame{width:100%;height:calc(100vh - 230px);min-height:560px;border:0;border-radius:16px;background:#090f1b}
+    .embed-frame{width:100%;height:calc(100vh - 230px);height:calc(100dvh - 230px);min-height:560px;border:0;border-radius:16px;background:#090f1b}
     @media (max-width: 768px){
       .embed-wrap{min-height:calc(100vh - 190px)}
-      .embed-frame{height:calc(100vh - 190px);min-height:70vh;border-radius:12px}
+      .embed-frame{height:calc(100vh - 190px);height:calc(100dvh - 190px);min-height:70vh;border-radius:12px}
     }
   </style>
 </head>
@@ -53,6 +53,15 @@
     var ALLOWED_SITE_ORIGINS = ['https://minifabrika.com', 'https://www.minifabrika.com'];
     var PAYLOAD_KEY = 'mf_teklif_payload';
     var PAYLOAD_TS_KEY = 'mf_teklif_payload_ts';
+    var transferLog=(window.__MF_TRANSFER_LOG_ENDPOINT||'').trim();
+
+    function logTransfer(eventName,detail){
+      var payload={event:eventName,detail:detail||{},ts:Date.now(),path:window.location.pathname};
+      if(transferLog&&navigator.sendBeacon){
+        try{navigator.sendBeacon(transferLog,JSON.stringify(payload));return;}catch(_e){}
+      }
+      try{console.info('[mf-transfer]',payload);}catch(_e){}
+    }
 
     function teklifFormUrl(){
       if(ALLOWED_SITE_ORIGINS.indexOf(window.location.origin) !== -1){
@@ -91,20 +100,21 @@
 
     window.addEventListener('message', function(event){
       try{
-        if(TRUSTED_APP_ORIGINS.indexOf(event.origin) === -1) return;
-        if(!event.data || typeof event.data !== 'object') return;
-        if(event.data.source !== 'minifabrika-app') return;
-        if(event.data.version !== 'v1') return;
-        if(event.data.type !== 'MINIFABRIKA_TEKLIF') return;
+        if(TRUSTED_APP_ORIGINS.indexOf(event.origin) === -1){logTransfer('reject-origin',{origin:event.origin||''});return;}
+        if(!event.data || typeof event.data !== 'object'){logTransfer('reject-data-shape',{});return;}
+        if(event.data.source !== 'minifabrika-app'){logTransfer('reject-source',{source:event.data.source||''});return;}
+        if(event.data.version !== 'v1'){logTransfer('reject-version',{version:event.data.version||''});return;}
+        if(event.data.type !== 'MINIFABRIKA_TEKLIF'){logTransfer('reject-type',{type:event.data.type||''});return;}
 
         var payload = event.data.payload || {};
-        if(!isValidPayload(payload)) return;
+        if(!isValidPayload(payload)){logTransfer('reject-payload-schema',{});return;}
 
         localStorage.setItem(PAYLOAD_KEY, JSON.stringify({
           payload: payload,
           meta: { source: event.data.source, version: event.data.version }
         }));
         localStorage.setItem(PAYLOAD_TS_KEY, String(Date.now()));
+        logTransfer('accepted',{});
         window.location.href = teklifFormUrl();
       }catch(_err){
         // localStorage erişim hatası vb. durumlarda kullanıcıyı yine forma taşı.
