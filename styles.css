@@ -420,3 +420,19 @@ footer {
 .honeypot{display:none !important}
 .consent{display:flex;gap:10px;align-items:flex-start;color:var(--muted)}
 .consent input{width:auto;margin-top:4px}
+
+.quote-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.inline-note {
+  margin-top: -2px;
+  margin-bottom: 4px;
+}
+
+input[type="file"] {
+  padding: 10px;
+}

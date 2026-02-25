@@ -18,6 +18,7 @@
 
 - Form gönderimi sonrası yönlendirme `_next` ile `https://minifabrika.com/tesekkurler.html` sayfasına yapılır.
 - İlk canlı gönderimde FormSubmit doğrulama e-postası gönderebilir; doğrulama sonrası form aktif olur.
+- Formda model linki yanında `STL/3MF/OBJ` dosya yükleme alanı vardır; yüklenen dosya form gönderimiyle birlikte aynı alıcıya (`cihat.oz@minifabrika.com`) iletilir.
 
 ## Test Adımları
 
