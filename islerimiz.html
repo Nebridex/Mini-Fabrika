@@ -7,7 +7,13 @@
   <meta name="referrer" content="strict-origin-when-cross-origin" />
   <meta http-equiv="Permissions-Policy" content="geolocation=(), camera=(), microphone=()" />
   <title>İşlerimiz | İstanbul 3D Baskı Örnekleri | MiniFabrika</title>
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+  <link rel="shortcut icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/assets/favicon.svg" />
+  <meta name="theme-color" content="#070b14" />
   <meta name="description" content="MiniFabrika'nın ofis, atölye, kurumsal ve kişisel üretim kategorilerindeki 3D baskı örneklerini inceleyin ve İstanbul için hızlı teklif alın." />
+
+  <meta name="keywords" content="mini fabrika, minifabrika, mini fabrika 3d, istanbul 3d, 3d baskı, 3d model, istanbul 3d baskı hizmeti, 3d baskı istanbul, 3d yazıcı hizmeti, hızlı prototipleme, kişiye özel 3d baskı, kurumsal 3d baskı, mimari maket 3d baskı, endüstriyel prototip üretimi, stl baskı hizmeti, 3mf baskı hizmeti, abs baskı, petg baskı, pla baskı, tpu baskı, 3d tasarım hizmeti, makerworld model baskı, türkiye geneli 3d baskı, acil 3d baskı, uygun fiyat 3d baskı, anadolu yakası 3d baskı, avrupa yakası 3d baskı" />
   <link rel="canonical" href="https://minifabrika.com/islerimiz.html" />
   <meta property="og:site_name" content="MiniFabrika" />
   <meta property="og:type" content="website" />
@@ -15,7 +21,7 @@
   <meta property="og:description" content="MiniFabrika'nın ofis, atölye, kurumsal ve kişisel üretim kategorilerindeki 3D baskı örneklerini inceleyin ve İstanbul için hızlı teklif alın." />
   <meta property="og:url" content="https://minifabrika.com/islerimiz.html" />
   <meta property="og:image" content="https://minifabrika.com/assets/minifabrika-logo.svg" />
-  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="İşlerimiz | İstanbul 3D Baskı Örnekleri | MiniFabrika" />
   <meta name="twitter:description" content="MiniFabrika'nın ofis, atölye, kurumsal ve kişisel üretim kategorilerindeki 3D baskı örneklerini inceleyin ve İstanbul için hızlı teklif alın." />
   <meta name="twitter:image" content="https://minifabrika.com/assets/minifabrika-logo.svg" />
@@ -43,7 +49,17 @@
   <button class="filter-btn" type="button" data-filter="Corporate">Kurumsal (6)</button>
   <button class="filter-btn" type="button" data-filter="Accessories">Aksesuar (6)</button>
 </div>
+<div class="search-row">
+  <label for="productSearch" class="sr-only">Ürünlerde ara</label>
+  <input id="productSearch" type="search" placeholder="Ürün adı, malzeme veya kategori ara..." data-live-search="#products-grid .product-card" />
+  <p class="form-note" data-results-count="#products-grid .product-card">30 sonuç listeleniyor.</p>
+</div>
 <div id="products-grid" class="product-grid"></div>
+<div class="recently-viewed" id="recentlyViewed" hidden>
+  <h2>Son Görüntülediğiniz Ürünler</h2>
+  <p class="form-note">Global e-ticaret sitelerindeki "Recently Viewed" deneyimiyle kaldığınız yerden devam edin.</p>
+  <div class="product-grid" data-recent-grid></div>
+</div>
     </div>
   </section>
 </main>
@@ -86,5 +102,6 @@ window.MINIFAB_PRODUCTS=[
 </script>
 <script src="assets/js/whatsapp-cta.js" defer></script>
 <script src="script.min.js" defer></script>
+<script defer src="assets/js/tracking.js"></script>
 </body>
 </html>

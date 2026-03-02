@@ -7,7 +7,13 @@
   <meta name="referrer" content="strict-origin-when-cross-origin" />
   <meta http-equiv="Permissions-Policy" content="geolocation=(), camera=(), microphone=()" />
   <title>İstanbul 3D Baskı Hizmeti | MiniFabrika</title>
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+  <link rel="shortcut icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/assets/favicon.svg" />
+  <meta name="theme-color" content="#070b14" />
   <meta name="description" content="MiniFabrika, İstanbul merkezli 3D baskı hizmetiyle modeliniz için hızlı teklif, doğru malzeme seçimi ve Türkiye geneli güvenli teslimat sunar." />
+
+  <meta name="keywords" content="mini fabrika, minifabrika, mini fabrika 3d, istanbul 3d, 3d baskı, 3d model, istanbul 3d baskı hizmeti, 3d baskı istanbul, 3d yazıcı hizmeti, hızlı prototipleme, kişiye özel 3d baskı, kurumsal 3d baskı, mimari maket 3d baskı, endüstriyel prototip üretimi, stl baskı hizmeti, 3mf baskı hizmeti, abs baskı, petg baskı, pla baskı, tpu baskı, 3d tasarım hizmeti, makerworld model baskı, türkiye geneli 3d baskı, acil 3d baskı, uygun fiyat 3d baskı, anadolu yakası 3d baskı, avrupa yakası 3d baskı" />
   <link rel="canonical" href="https://minifabrika.com/" />
   <meta property="og:site_name" content="MiniFabrika" />
   <meta property="og:type" content="website" />
@@ -15,7 +21,7 @@
   <meta property="og:description" content="MiniFabrika, İstanbul merkezli 3D baskı hizmetiyle modeliniz için hızlı teklif, doğru malzeme seçimi ve Türkiye geneli güvenli teslimat sunar." />
   <meta property="og:url" content="https://minifabrika.com/" />
   <meta property="og:image" content="https://minifabrika.com/assets/minifabrika-logo.svg" />
-  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="İstanbul 3D Baskı Hizmeti | MiniFabrika" />
   <meta name="twitter:description" content="MiniFabrika, İstanbul merkezli 3D baskı hizmetiyle modeliniz için hızlı teklif, doğru malzeme seçimi ve Türkiye geneli güvenli teslimat sunar." />
   <meta name="twitter:image" content="https://minifabrika.com/assets/minifabrika-logo.svg" />
@@ -45,10 +51,45 @@
         </div>
         <div style="display:flex;gap:10px;flex-wrap:wrap;">
           <a class="btn btn-primary" href="teklif.html">Teklif Al</a>
-          <a class="btn btn-secondary" href="#ornek-baskilar">Örnek Baskılar</a>
+          <a class="btn btn-secondary" href="islerimiz.html">Örnek Baskılar</a>
         </div>
       </div>
       <div class="image-card"><img src="https://images.unsplash.com/photo-1581092162384-8987c1d64718?auto=format&fit=crop&w=1200&q=70" width="1200" height="900" alt="MiniFabrika üretim alanı" fetchpriority="high" decoding="async" /></div>
+    </div>
+  </section>
+
+
+
+  <section>
+    <div class="container quick-tools-grid">
+      <article class="card quick-calc" aria-labelledby="quick-calc-title">
+        <h2 id="quick-calc-title">Hızlı Teklif Ön Hesaplama</h2>
+        <p class="lead">Malzeme, adet ve termin seçerek yaklaşık aralığı anında görün.</p>
+        <div class="quick-calc-fields">
+          <label for="quickMaterial">Malzeme</label>
+          <select id="quickMaterial">
+            <option value="1">PLA</option>
+            <option value="1.2">PETG</option>
+            <option value="1.35">ABS</option>
+            <option value="1.5">TPU</option>
+          </select>
+          <label for="quickQty">Adet</label>
+          <input id="quickQty" type="number" min="1" value="1" />
+          <label for="quickUrgency">Termin</label>
+          <select id="quickUrgency">
+            <option value="1">Standart</option>
+            <option value="1.25">Hızlı Üretim</option>
+          </select>
+        </div>
+        <p class="calc-output" data-quick-output>Yaklaşık: ₺350 - ₺500</p>
+        <a class="btn btn-primary" href="teklif.html">Detaylı Teklif Formuna Geç</a>
+      </article>
+
+      <article class="card testimonial-rotator" aria-live="polite">
+        <h2>Müşteri Geri Bildirimleri</h2>
+        <p class="lead" data-testimonial-text>“Parçalarımız ölçü toleransına tam uydu, ekip çok hızlı dönüş yaptı.”</p>
+        <small data-testimonial-author>— Atölye Kullanıcısı, İstanbul</small>
+      </article>
     </div>
   </section>
 
@@ -60,7 +101,7 @@
 
   
 
-  <section><div class="container"><h2>Sık Sorulan Sorular</h2><div class="faq-list"><details><summary>Fiyat nasıl belirlenir?</summary><p>Modelin boyutu, malzemesi, baskı süresi ve adet bilgisine göre hesaplanır.</p></details><details><summary>Minimum sipariş neden var?</summary><p>Makine hazırlığı, kalite kontrol ve paketleme maliyetlerini sürdürülebilir tutmak için minimum 350 TL uygulanır.</p></details><details><summary>Teslim süresi nedir?</summary><p>Teklif dönüşü 24 saatte yapılır. Üretim süresi iş yoğunluğu ve adede göre ayrıca paylaşılır.</p></details><details><summary>Hangi malzemeleri basıyorsunuz?</summary><p>PLA, PETG, ABS ve TPU ile üretim yapıyoruz. Kararsızsan uygun malzemeyi öneriyoruz.</p></details><details><summary>Modelim yoksa yardımcı oluyor musunuz?</summary><p>Evet. Tasarım + Baskı hizmetiyle ihtiyacınıza uygun modelleme desteği sağlayabiliyoruz.</p></details></div></div></section>
+  <section><div class="container"><h2>Sık Sorulan Sorular</h2><label for="faqSearch" class="sr-only">SSS içinde ara</label><input id="faqSearch" class="faq-search" type="search" placeholder="SSS içinde ara (ör: teslim, fiyat, malzeme)" /><div class="faq-list" data-faq-list><details><summary>Fiyat nasıl belirlenir?</summary><p>Modelin boyutu, malzemesi, baskı süresi ve adet bilgisine göre hesaplanır.</p></details><details><summary>Minimum sipariş neden var?</summary><p>Makine hazırlığı, kalite kontrol ve paketleme maliyetlerini sürdürülebilir tutmak için minimum 350 TL uygulanır.</p></details><details><summary>Teslim süresi nedir?</summary><p>Teklif dönüşü 24 saatte yapılır. Üretim süresi iş yoğunluğu ve adede göre ayrıca paylaşılır.</p></details><details><summary>Hangi malzemeleri basıyorsunuz?</summary><p>PLA, PETG, ABS ve TPU ile üretim yapıyoruz. Kararsızsan uygun malzemeyi öneriyoruz.</p></details><details><summary>Modelim yoksa yardımcı oluyor musunuz?</summary><p>Evet. Tasarım + Baskı hizmetiyle ihtiyacınıza uygun modelleme desteği sağlayabiliyoruz.</p></details></div></div></section>
 </main>
 
 <div class="floating" aria-label="Hızlı iletişim butonları"><a class="btn btn-primary" href="teklif.html">Hızlı Teklif Al</a><a class="btn btn-wa" target="_blank" rel="noopener noreferrer" href="#" data-whatsapp-cta>WhatsApp’tan Yaz</a></div>
@@ -68,5 +109,7 @@
 <footer><div class="container"><p>MiniFabrika · İstanbul merkezli üretim · <a href="mailto:info@minifabrika.com">info@minifabrika.com</a> · <a href="blog/istanbul-3d-baski-hizmeti.html">İstanbul 3D baskı hizmeti</a></p><div class="socials"><a href="https://www.youtube.com/@minifabrikam" target="_blank" rel="noopener noreferrer">YouTube</a><a href="https://www.instagram.com/minifabrikacom/" target="_blank" rel="noopener noreferrer">Instagram</a><a href="https://x.com/minifabrikacom" target="_blank" rel="noopener noreferrer">X</a></div></div></footer>
 <script src="assets/js/whatsapp-cta.js" defer></script>
 <script src="script.min.js" defer></script>
+<script src="assets/js/index-enhancements.js" defer></script>
+<script defer src="assets/js/tracking.js"></script>
 </body>
 </html>

@@ -7,7 +7,12 @@
   <meta name="referrer" content="strict-origin-when-cross-origin" />
   <meta http-equiv="Permissions-Policy" content="geolocation=(), camera=(), microphone=()" />
   <title>3D Baskı Teklif Formu | İstanbul | MiniFabrika</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+  <link rel="shortcut icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/assets/favicon.svg" />
+  <meta name="theme-color" content="#070b14" />
   <meta name="description" content="STL, STEP veya model linkinizi gönderin; MiniFabrika'nın İstanbul merkezli 3D baskı hizmeti için 24 saat içinde net fiyat ve üretim planı alın." />
+  <meta name="keywords" content="mini fabrika, minifabrika, mini fabrika 3d, istanbul 3d, 3d baskı, 3d model" />
   <link rel="canonical" href="https://minifabrika.com/teklif.html" />
   <meta property="og:site_name" content="MiniFabrika" />
   <meta property="og:type" content="website" />
@@ -15,7 +20,7 @@
   <meta property="og:description" content="STL, STEP veya model linkinizi gönderin; MiniFabrika'nın İstanbul merkezli 3D baskı hizmeti için 24 saat içinde net fiyat ve üretim planı alın." />
   <meta property="og:url" content="https://minifabrika.com/teklif.html" />
   <meta property="og:image" content="https://minifabrika.com/assets/minifabrika-logo.svg" />
-  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="3D Baskı Teklif Formu | İstanbul | MiniFabrika" />
   <meta name="twitter:description" content="STL, STEP veya model linkinizi gönderin; MiniFabrika'nın İstanbul merkezli 3D baskı hizmeti için 24 saat içinde net fiyat ve üretim planı alın." />
   <meta name="twitter:image" content="https://minifabrika.com/assets/minifabrika-logo.svg" />
@@ -24,68 +29,104 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./styles.min.css" />
   <link rel="stylesheet" href="./assets/css/a11y.css" />
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"MiniFabrika","url":"https://minifabrika.com","inLanguage":"tr-TR"}</script>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"MiniFabrika","url":"https://minifabrika.com","logo":"https://minifabrika.com/assets/minifabrika-logo.svg","sameAs":["https://www.youtube.com/@minifabrikam","https://www.instagram.com/minifabrikacom/","https://x.com/minifabrikacom"],"contactPoint":[{"@type":"ContactPoint","contactType":"customer support","email":"info@minifabrika.com","availableLanguage":["tr","en"]}]}</script>
 </head>
 <body>
 <header class="topbar"><div class="container topbar-inner"><a class="logo" href="index.html"><img src="assets/minifabrika-logo.svg" alt="Mini Fabrika logo" width="34" height="34" loading="eager" decoding="async" /><span class="logo-text">mini<span>fabrika</span>.com</span></a><button class="menu-toggle" aria-label="Menüyü aç" aria-expanded="false"><span class="sr-only">Menüyü aç</span><span aria-hidden="true">☰</span></button><nav><a href="index.html">Ana Sayfa</a><a href="malzeme-uretim.html">Malzeme & Üretim</a><a href="islerimiz.html">İşlerimiz</a><a href="blog/index.html">Blog</a><a href="tasarla.html">3D Tasarla</a><a class="active" href="teklif.html">Teklif Formu</a><a href="iletisim.html">İletişim</a></nav></div></header>
 <main>
-  <section class="page-head"><div class="container"><h1>Teklif Al</h1><p class="lead">Talebini detaylı paylaş, 24 saat içinde teknik teklifini iletelim.</p><div class="quote-actions"><a class="btn btn-primary" href="#modelFile">STL Yükle</a><a class="btn btn-secondary" href="#modelLink">Model Linki Ekle</a></div><p class="form-note">STL/3MF/OBJ dosyan form ile birlikte <strong>info@minifabrika.com</strong> adresine iletilir.</p><div class="success-banner" data-prefill-banner hidden>Model bilgisi otomatik dolduruldu.</div></div></section>
+  <section class="page-head"><div class="container"><h1>Teklif Al</h1><p class="lead">Talebini detaylı paylaş, 24 saat içinde teknik teklifini iletelim.</p><div class="success-banner" data-prefill-banner hidden>Model bilgisi otomatik dolduruldu.</div></div></section>
   <section id="teklif-formu"><div class="container"><article class="card form-wrap"><h2>3D Baskı Talep Formu</h2>
-    <form class="quote-form" action="https://formsubmit.co/info@minifabrika.com" method="POST" enctype="multipart/form-data">
+
+    <ol class="wizard-stage" aria-label="Teklif adımları">
+      <li class="wizard-stage-item is-active">Model</li>
+      <li class="wizard-stage-item">Detaylar</li>
+      <li class="wizard-stage-item">Gönder</li>
+    </ol>
+
+    <form class="quote-form" action="https://formsubmit.co/info@minifabrika.com" method="POST" enctype="multipart/form-data" data-autosave="teklif-formu">
+      <div class="selected-model" data-selected-model hidden>
+        <p class="form-note">Seçilen Model</p>
+        <p data-selected-model-text></p>
+        <button type="button" class="btn btn-secondary" data-selected-model-clear>Temizle</button>
+      </div>
+
       <input type="hidden" name="_subject" value="MiniFabrika Teklif Talebi" />
       <input type="hidden" name="_next" value="https://minifabrika.com/tesekkurler.html" />
       <input type="hidden" name="_template" value="table" />
       <input type="hidden" name="_captcha" value="false" />
       <input type="text" name="_gotcha" class="honeypot" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
-      <label for="fullName">Ad Soyad *</label>
-      <input id="fullName" name="full_name" type="text" required minlength="3" autocomplete="name" placeholder="Adınız Soyadınız" />
+      <div data-step="1">
+        <label for="serviceType">Hizmet *</label>
+        <select id="serviceType" name="service_type" required>
+          <option value="" selected disabled>Seçiniz</option>
+          <option>3D Baskı</option>
+          <option>Tasarım + Baskı</option>
+          <option>Kurumsal Prototipleme</option>
+          <option>Diğer</option>
+        </select>
 
-      <label for="email">E-posta *</label>
-      <input id="email" name="email" type="email" required autocomplete="email" placeholder="ornek@mail.com" />
+        <label for="modelLink">Model Linki (varsa)</label>
+        <input id="modelLink" name="model_link" type="url" placeholder="https://..." />
 
-      <label for="phone">Telefon</label>
-      <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="05xx xxx xx xx" />
+        <label for="modelFile">STL / 3MF / OBJ Dosyası (varsa)</label>
+        <input id="modelFile" name="model_file" type="file" accept=".stl,.3mf,.obj,model/stl,application/sla,application/vnd.ms-pki.stl,application/octet-stream" />
+        <small class="field-error" data-model-error hidden>Lütfen dosya yükleyin veya model linki girin.</small>
+        <p class="form-note inline-note">Model linki veya dosya yüklemesinden en az birini ekleyin.</p>
 
-      <label for="address">Adres *</label>
-      <input id="address" name="address" type="text" required autocomplete="street-address" placeholder="Adres (il/ilçe/mahalle, gerekirse detay)" />
+        <button class="btn btn-primary" type="button" data-step-next>Devam</button>
+      </div>
 
-      <label for="serviceType">Hizmet *</label>
-      <select id="serviceType" name="service_type" required>
-        <option value="" selected disabled>Seçiniz</option>
-        <option>3D Baskı</option>
-        <option>Tasarım + Baskı</option>
-        <option>Kurumsal Prototipleme</option>
-        <option>Diğer</option>
-      </select>
+      <div data-step="2" hidden>
+        <label for="fullName">Ad Soyad *</label>
+        <input id="fullName" name="full_name" type="text" required minlength="3" autocomplete="name" placeholder="Adınız Soyadınız" />
 
-      <label for="material">Malzeme *</label>
-      <select id="material" name="material" required>
-        <option value="" selected disabled>Seçiniz</option>
-        <option>PLA</option>
-        <option>PETG</option>
-        <option>ABS</option>
-        <option>TPU</option>
-        <option>Bilmiyorum</option>
-      </select>
+        <label for="email">E-posta *</label>
+        <input id="email" name="email" type="email" required autocomplete="email" placeholder="ornek@mail.com" />
 
-      <label for="quantity">Adet *</label>
-      <input id="quantity" name="quantity" type="number" min="1" step="1" required value="1" />
+        <label for="phone">Telefon</label>
+        <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="05xx xxx xx xx" />
 
-      <label for="modelLink">Model Linki (varsa)</label>
-      <input id="modelLink" name="model_link" type="url" placeholder="https://..." />
+        <label for="address">Adres *</label>
+        <input id="address" name="address" type="text" required autocomplete="street-address" placeholder="Adres (il/ilçe/mahalle, gerekirse detay)" />
 
-      <label for="modelFile">STL / 3MF / OBJ Dosyası (varsa)</label>
-      <input id="modelFile" name="model_file" type="file" accept=".stl,.3mf,.obj,model/stl,application/sla,application/vnd.ms-pki.stl,application/octet-stream" />
-      <p class="form-note inline-note">Model linki veya dosya yüklemesinden en az birini ekleyin.</p>
+        <label for="deliveryCity">Teslimat Şehri *</label>
+        <select id="deliveryCity" name="delivery_city" required>
+          <option value="" selected disabled>Seçiniz</option>
+          <option value="istanbul">İstanbul</option>
+          <option value="ankara">Ankara</option>
+          <option value="izmir">İzmir</option>
+          <option value="other">Diğer Şehirler</option>
+        </select>
 
-      <label for="notes">Notlar / Ölçü / Kullanım amacı *</label>
-      <textarea id="notes" name="notes" rows="5" required placeholder="Parça ölçüleri, kullanım amacı ve renk tercihlerinizi paylaşın"></textarea>
+        <div class="delivery-estimator" aria-live="polite"><strong>Tahmini Üretim + Teslimat Aralığı</strong><p data-delivery-output>Şehir seçtiğinizde tahmini aralık gösterilir.</p></div>
 
-      <label class="consent"><input type="checkbox" name="kvkk" required /> KVKK kapsamında iletişim kurulmasını onaylıyorum. *</label>
+        <label for="material">Malzeme *</label>
+        <select id="material" name="material" required>
+          <option value="" selected disabled>Seçiniz</option><option>PLA</option><option>PETG</option><option>ABS</option><option>TPU</option><option>Bilmiyorum</option>
+        </select>
 
-      <button class="btn btn-primary" type="submit">Teklif Talebini Gönder</button>
+        <label for="quantity">Adet *</label>
+        <input id="quantity" name="quantity" type="number" min="1" step="1" required value="1" />
+
+        <label for="urgency">Termin *</label>
+        <select id="urgency" name="urgency" required>
+          <option value="normal" selected>Standart (4-7 iş günü)</option>
+          <option value="rush">Hızlı Üretim (1-3 iş günü)</option>
+        </select>
+
+        <div class="quote-estimator" aria-live="polite"><strong>Tahmini bütçe aralığı</strong><p data-estimator-output>₺350 - ₺500</p></div>
+
+        <label for="notes">Notlar / Ölçü / Kullanım amacı *</label>
+        <textarea id="notes" name="notes" rows="5" required placeholder="Parça ölçüleri, kullanım amacı ve renk tercihlerinizi paylaşın"></textarea>
+
+        <label class="consent"><input type="checkbox" name="kvkk" required /> KVKK kapsamında iletişim kurulmasını onaylıyorum. *</label>
+
+        <div class="wizard-actions">
+          <button class="btn btn-secondary" type="button" data-step-back>Geri</button>
+          <button class="btn btn-primary" type="submit">Teklif Talebini Gönder</button>
+        </div>
+      </div>
+
       <p class="form-note">Minimum sipariş tutarı 350 TL'dir.</p>
     </form>
   </article></div></section>
@@ -93,5 +134,8 @@
 <footer><div class="container"><p>MiniFabrika · İstanbul merkezli üretim · <a href="mailto:info@minifabrika.com">info@minifabrika.com</a> · <a href="blog/istanbul-3d-baski-hizmeti.html">İstanbul 3D baskı hizmeti</a></p><div class="socials"><a href="https://www.youtube.com/@minifabrikam" target="_blank" rel="noopener noreferrer">YouTube</a><a href="https://www.instagram.com/minifabrikacom/" target="_blank" rel="noopener noreferrer">Instagram</a><a href="https://x.com/minifabrikacom" target="_blank" rel="noopener noreferrer">X</a></div></div></footer>
 <script src="assets/js/whatsapp-cta.js" defer></script>
 <script src="script.min.js" defer></script>
+<script src="assets/js/teklif-prefill.js" defer></script>
+<script src="assets/js/teklif-wizard.js" defer></script>
+<script defer src="assets/js/tracking.js"></script>
 </body>
 </html>
