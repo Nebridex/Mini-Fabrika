@@ -51,6 +51,21 @@
       <label for="address">Adres *</label>
       <input id="address" name="address" type="text" required autocomplete="street-address" placeholder="Adres (il/ilçe/mahalle, gerekirse detay)" />
 
+      <label for="deliveryCity">Teslimat Şehri *</label>
+      <select id="deliveryCity" name="delivery_city" required>
+        <option value="" selected disabled>Seçiniz</option>
+        <option value="istanbul">İstanbul</option>
+        <option value="ankara">Ankara</option>
+        <option value="izmir">İzmir</option>
+        <option value="other">Diğer Şehirler</option>
+      </select>
+
+      <div class="delivery-estimator" aria-live="polite">
+        <strong>Tahmini Üretim + Teslimat Aralığı</strong>
+        <p data-delivery-output>Şehir seçtiğinizde tahmini aralık gösterilir.</p>
+        <small>Amazon benzeri teslimat beklentisi için ön bilgilendirme sunar; resmi tarih onay sonrası netleşir.</small>
+      </div>
+
       <label for="serviceType">Hizmet *</label>
       <select id="serviceType" name="service_type" required>
         <option value="" selected disabled>Seçiniz</option>
