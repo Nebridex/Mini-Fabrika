@@ -53,6 +53,11 @@
         <button class="filter-btn" data-filter="siparis" type="button">Sipariş</button>
         <button class="filter-btn" data-filter="ipuclari" type="button">İpuçları</button>
       </div>
+      <div class="search-row">
+        <label for="blogSearch" class="sr-only">Blog yazılarında ara</label>
+        <input id="blogSearch" type="search" placeholder="Başlık veya içerikte ara..." data-live-search=".blog-grid .blog-card" />
+        <p class="form-note" data-results-count=".blog-grid .blog-card">4 sonuç listeleniyor.</p>
+      </div>
 
       <div class="blog-grid">
         <article class="card blog-card" data-category="siparis">

@@ -32,7 +32,7 @@
 <main>
   <section class="page-head"><div class="container"><h1>Teklif Al</h1><p class="lead">Talebini detaylı paylaş, 24 saat içinde teknik teklifini iletelim.</p><div class="quote-actions"><a class="btn btn-primary" href="#modelFile">STL Yükle</a><a class="btn btn-secondary" href="#modelLink">Model Linki Ekle</a></div><p class="form-note">STL/3MF/OBJ dosyan form ile birlikte <strong>info@minifabrika.com</strong> adresine iletilir.</p><div class="success-banner" data-prefill-banner hidden>Model bilgisi otomatik dolduruldu.</div></div></section>
   <section id="teklif-formu"><div class="container"><article class="card form-wrap"><h2>3D Baskı Talep Formu</h2>
-    <form class="quote-form" action="https://formsubmit.co/info@minifabrika.com" method="POST" enctype="multipart/form-data">
+    <form class="quote-form" action="https://formsubmit.co/info@minifabrika.com" method="POST" enctype="multipart/form-data" data-autosave="teklif-formu">
       <input type="hidden" name="_subject" value="MiniFabrika Teklif Talebi" />
       <input type="hidden" name="_next" value="https://minifabrika.com/tesekkurler.html" />
       <input type="hidden" name="_template" value="table" />
@@ -73,12 +73,24 @@
       <label for="quantity">Adet *</label>
       <input id="quantity" name="quantity" type="number" min="1" step="1" required value="1" />
 
+      <label for="urgency">Termin *</label>
+      <select id="urgency" name="urgency" required>
+        <option value="normal" selected>Standart (4-7 iş günü)</option>
+        <option value="rush">Hızlı Üretim (1-3 iş günü)</option>
+      </select>
+
       <label for="modelLink">Model Linki (varsa)</label>
       <input id="modelLink" name="model_link" type="url" placeholder="https://..." />
 
       <label for="modelFile">STL / 3MF / OBJ Dosyası (varsa)</label>
       <input id="modelFile" name="model_file" type="file" accept=".stl,.3mf,.obj,model/stl,application/sla,application/vnd.ms-pki.stl,application/octet-stream" />
       <p class="form-note inline-note">Model linki veya dosya yüklemesinden en az birini ekleyin.</p>
+
+      <div class="quote-estimator" aria-live="polite">
+        <strong>Tahmini bütçe aralığı</strong>
+        <p data-estimator-output>₺350 - ₺500</p>
+        <small>Bu hesaplama ön bilgilendirme amaçlıdır, net fiyat teknik inceleme sonrası paylaşılır.</small>
+      </div>
 
       <label for="notes">Notlar / Ölçü / Kullanım amacı *</label>
       <textarea id="notes" name="notes" rows="5" required placeholder="Parça ölçüleri, kullanım amacı ve renk tercihlerinizi paylaşın"></textarea>
