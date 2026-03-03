@@ -3,165 +3,66 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MiniFabrika | Kişiye Özel 3D Baskı</title>
-  <meta name="description" content="MakerWorld'den modelini seç, adetini yaz, MiniFabrika teklif formundan gönder. Kişiye özel 3D baskı üretimi." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <title>MiniFabrika | Deneyim Seçimi</title>
+  <meta name="description" content="MiniFabrika deneyiminizi seçin: Kurumsal üretim çözümleri veya bireysel 3D baskı hizmeti." />
+  <link rel="canonical" href="https://minifabrika.com/" />
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+  <link rel="stylesheet" href="/assets/css/experience.css" />
 </head>
-<body>
-  <header class="topbar">
-    <div class="container topbar-inner">
-      <a href="index.html" class="logo">mini<span>fabrika</span>.net</a>
-      <nav>
-        <a class="active" href="index.html">Ana Sayfa</a>
-        <a href="malzeme-uretim.html">Malzeme & Üretim</a>
-        <a href="islerimiz.html">İşlerimiz</a>
-        <a href="teklif.html">Teklif Formu</a>
-        <a href="iletisim.html">İletişim</a>
-      </nav>
-    </div>
-  </header>
+<body class="fade-page">
+  <main class="gateway-wrap" id="gateway" aria-live="polite">
+    <img src="/assets/minifabrika-logo.svg" alt="MiniFabrika" class="gateway-logo" width="74" height="74" />
+    <h1>MiniFabrika Deneyimini Seçin</h1>
+    <p class="gateway-intro">İhtiyacınıza uygun deneyime tek tıkla geçin. Seçiminiz hatırlanır ve sonraki ziyaretlerinizde sizi doğrudan ilgili bölüme yönlendiririz.</p>
 
-  <main>
-    <section class="hero">
-      <div class="container hero-grid">
-        <div>
-          <span class="badge">Kişiye özel üretim · Türkiye geneli gönderim</span>
-          <h1>MakerWorld'den modelini seç,<br />biz senin için üretelim.</h1>
-          <p class="lead">
-            Bizim odak noktamız cihaz satmak değil, müşterinin beğendiği modeli kaliteli şekilde üretip teslim etmek.
-            İstediğin ürünü <strong>makerworld.com</strong> üzerinden bul, linki ve adet bilgisini teklif formuna gir.
-          </p>
-          <ul class="list">
-            <li>Hazır modelden hızlı sipariş</li>
-            <li>İstediğin adet kadar üretim</li>
-            <li>Malzeme, renk ve teslimat seçeneği</li>
-          </ul>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;">
-            <a class="btn btn-primary" href="teklif.html">Form ile sipariş talebi gönder</a>
-            <a class="btn btn-secondary" target="_blank" rel="noopener noreferrer" href="https://makerworld.com">MakerWorld'e git</a>
-            <a class="btn btn-secondary" target="_blank" rel="noopener noreferrer" href="https://wa.me/905456900094?text=Merhaba%2C%20MiniFabrika%20i%C3%A7in%20sipari%C5%9F%20talebi%20olu%C5%9Fturmak%20istiyorum.">WhatsApp'tan yaz</a>
-          </div>
-        </div>
-        <div class="image-card">
-          <img src="https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=1200&q=80" alt="Kişiye özel 3D baskı ürünleri" />
-        </div>
-      </div>
+    <section class="gateway-grid" aria-label="Deneyim kartları">
+      <article class="gateway-card">
+        <h2>Kurumsal Üretim</h2>
+        <p>Butik masaüstü hediye setleri, logolu üretim ve onboarding kitleri.</p>
+        <button class="gateway-btn" data-experience="kurumsal" data-target="/kurumsal/">Kurumsal Bölüme Geç</button>
+      </article>
+
+      <article class="gateway-card">
+        <h2>Bireysel Baskı</h2>
+        <p>STL dosyanızı gönderin, profesyonel 3D baskı alın.</p>
+        <button class="gateway-btn" data-experience="bireysel" data-target="/bireysel/">Bireysel Bölüme Geç</button>
+      </article>
     </section>
 
-    <section>
-      <div class="container">
-        <h2>Nasıl sipariş verebilirsin?</h2>
-        <p class="lead">Satın alma akışını çok basit tuttuk: model linki + adet + iletişim bilgisi yeterli.</p>
-        <div class="steps">
-          <article class="step">
-            <div class="num">1</div>
-            <h3>Modeli Bul</h3>
-            <p>MakerWorld'de beğendiğin modeli aç ve sayfa linkini kopyala.</p>
-          </article>
-          <article class="step">
-            <div class="num">2</div>
-            <h3>Adet ve Notları Yaz</h3>
-            <p>Kaç adet istediğini, renk/malzeme tercihini ve varsa ölçü notunu ekle.</p>
-          </article>
-          <article class="step">
-            <div class="num">3</div>
-            <h3>Formu Doldur</h3>
-            <p>Link + adet bilgisiyle teklif formunu gönder. Kısa sürede dönüş yapıp fiyatlandırma paylaşalım.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <div class="container">
-        <h2>Neler üretebiliriz?</h2>
-        <div class="cards">
-          <article class="card">
-            <h3>Dekoratif Ürünler</h3>
-            <p>Ev/ofis dekoru, figür, stand ve kişiselleştirilmiş hediyelikler.</p>
-          </article>
-          <article class="card">
-            <h3>Fonksiyonel Parçalar</h3>
-            <p>Düzenleyici aksesuarlar, aparat ve günlük kullanım ürünleri.</p>
-          </article>
-          <article class="card">
-            <h3>Küçük Adet Üretim</h3>
-            <p>Aynı modelin birden fazla adette üretimi ve kargoya hazır paketleme.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <div class="container">
-        <div class="cta-box">
-          <div>
-            <h2>Hemen sipariş talebi oluştur.</h2>
-            <p class="lead" style="margin-bottom:0;">Teklif formuna model linki, adet ve tercih ettiğin rengi eklemen yeterli.</p>
-          </div>
-          <a class="btn btn-primary" href="teklif.html">Talep Gönder</a>
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <div class="container">
-        <h2>Hızlı fiyat teklifi için kontrol listesi</h2>
-        <p class="lead">Aşağıdaki bilgileri formda tek seferde paylaşırsan daha hızlı ve net teklif hazırlayabiliriz.</p>
-        <div class="cards">
-          <article class="card">
-            <h3>Model Linki</h3>
-            <p>MakerWorld sayfasının tam bağlantısını ekle. Varsa alternatif model linklerini de yaz.</p>
-          </article>
-          <article class="card">
-            <h3>Adet ve Renk</h3>
-            <p>İstediğin adet, renk ve malzeme tercihlerini maddeler halinde belirt.</p>
-          </article>
-          <article class="card">
-            <h3>Teslimat Notu</h3>
-            <p>İl/ilçe bilgisi, son teslim beklentisi ve özel paketleme notunu paylaş.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <div class="container">
-        <h2>İşlerimizi incele</h2>
-        <p class="lead">Öne çıkan üretimlerimizi ve MakerWorld'den en sevilen ürün önerilerini görmek için yeni sayfamıza göz at.</p>
-        <a class="btn btn-secondary" href="islerimiz.html">İşlerimiz sayfasına git</a>
-      </div>
-    </section>
-
-    <section>
-      <div class="container">
-        <h2>Sıkça Sorulan Sorular</h2>
-        <div class="faq-list">
-          <details>
-            <summary>Ortalama üretim süresi ne kadar?</summary>
-            <p>Modelin boyutuna ve adede göre değişmekle birlikte küçük siparişlerde çoğunlukla 2-4 iş günü içinde kargolama planlıyoruz.</p>
-          </details>
-          <details>
-            <summary>Her modeli basabiliyor musunuz?</summary>
-            <p>MakerWorld'deki birçok modeli basabiliyoruz. Baskıya uygunluk için linki paylaştığında kısa bir teknik kontrol yapıp dönüş sağlıyoruz.</p>
-          </details>
-          <details>
-            <summary>Toplu siparişlerde fiyat avantajı var mı?</summary>
-            <p>Evet. Aynı modelin adetli üretimlerinde baskı planı optimize edildiği için birim maliyet daha avantajlı hale gelebiliyor.</p>
-          </details>
-        </div>
-      </div>
-    </section>
+    <noscript>
+      <p>JavaScript kapalıysa lütfen bir deneyim seçin: <a href="/kurumsal/">Kurumsal</a> · <a href="/bireysel/">Bireysel</a></p>
+    </noscript>
   </main>
 
-  <footer>
-    <div class="container">
-      <p><strong>MiniFabrika</strong> · Kişiye özel 3D baskı üretimi</p>
-      <p>İstanbul, Türkiye · cihat.oz@minifabrika.com</p>
-    </div>
-  </footer>
+  <script>
+    (function () {
+      var STORAGE_KEY = 'minifabrikaExperience';
+      var FADE_MS = 260;
+
+      document.addEventListener('DOMContentLoaded', function () {
+        var saved = localStorage.getItem(STORAGE_KEY);
+        if (saved === 'kurumsal') {
+          window.location.replace('/kurumsal/');
+          return;
+        }
+        if (saved === 'bireysel') {
+          window.location.replace('/bireysel/');
+          return;
+        }
+
+        document.querySelectorAll('[data-experience]').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var experience = btn.getAttribute('data-experience');
+            var target = btn.getAttribute('data-target');
+            localStorage.setItem(STORAGE_KEY, experience);
+            document.body.classList.add('is-fading-out');
+            window.setTimeout(function () {
+              window.location.href = target;
+            }, FADE_MS);
+          });
+        });
+      });
+    })();
+  </script>
 </body>
 </html>
