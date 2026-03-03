@@ -24,6 +24,12 @@
     errorBox.hidden = true;
     successBox.hidden = true;
 
+    var params = new URLSearchParams(window.location.search);
+    if (params.get('sent') === '1') {
+      successBox.hidden = false;
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+
     document.querySelectorAll('[data-scroll-target]').forEach(function (trigger) {
       trigger.addEventListener('click', function (event) {
         event.preventDefault();
@@ -39,40 +45,18 @@
     });
 
     form.addEventListener('submit', function (event) {
-      event.preventDefault();
       errorBox.hidden = true;
       successBox.hidden = true;
       errorBox.textContent = 'Lütfen zorunlu alanları kontrol edin.';
 
       var isValid = requiredFields.map(validateField).every(Boolean);
       if (!isValid) {
+        event.preventDefault();
         errorBox.hidden = false;
         return;
       }
 
       setLoading(submitBtn, true);
-
-      fetch(form.action, {
-        method: 'POST',
-        body: new FormData(form),
-        headers: { Accept: 'application/json' }
-      })
-        .then(function (response) {
-          if (!response.ok) throw new Error('Formspree request failed');
-          return response.json();
-        })
-        .then(function () {
-          successBox.hidden = false;
-          form.reset();
-          requiredFields.forEach(function (field) { field.classList.remove('input-error'); });
-        })
-        .catch(function () {
-          errorBox.textContent = 'Mesaj gönderilemedi. Lütfen tekrar deneyin veya info@minifabrika.com adresine yazın.';
-          errorBox.hidden = false;
-        })
-        .finally(function () {
-          setLoading(submitBtn, false);
-        });
     });
   });
 })();
