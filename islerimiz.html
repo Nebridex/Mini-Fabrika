@@ -34,7 +34,7 @@
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"MiniFabrika","url":"https://minifabrika.com","logo":"https://minifabrika.com/assets/minifabrika-logo.svg","sameAs":["https://www.youtube.com/@minifabrikam","https://www.instagram.com/minifabrikacom/","https://x.com/minifabrikacom"],"contactPoint":[{"@type":"ContactPoint","contactType":"customer support","email":"info@minifabrika.com","availableLanguage":["tr","en"]}]}</script>
 </head>
 <body>
-<header class="topbar"><div class="container topbar-inner"><a class="logo" href="index.html"><img src="assets/minifabrika-logo.svg" alt="Mini Fabrika logo" width="34" height="34" loading="eager" decoding="async" /><span class="logo-text">mini<span>fabrika</span>.com</span></a><button class="menu-toggle" aria-label="Menüyü aç" aria-expanded="false"><span class="sr-only">Menüyü aç</span><span aria-hidden="true">☰</span></button><nav><a href="index.html">Ana Sayfa</a><a href="malzeme-uretim.html">Malzeme & Üretim</a><a class="active" href="islerimiz.html">İşlerimiz</a><a href="blog/index.html">Blog</a><a href="tasarla.html">3D Tasarla</a><a href="teklif.html">Teklif Formu</a><a href="iletisim.html">İletişim</a></nav></div></header>
+<header class="topbar"><div class="container topbar-inner"><a class="logo" href="index.html"><img src="assets/minifabrika-logo.svg" alt="MiniFabrika logo" width="34" height="34" loading="eager" decoding="async" /><span class="logo-text">MiniFabrika</span></a><button class="menu-toggle" aria-label="Menüyü aç" aria-expanded="false"><span class="sr-only">Menüyü aç</span><span aria-hidden="true">☰</span></button><nav><a href="index.html">Ana Sayfa</a><a href="malzeme-uretim.html">Malzeme & Üretim</a><a class="active" href="islerimiz.html">İşlerimiz</a><a href="blog/index.html">Blog</a><a href="tasarla.html">3D Tasarla</a><a href="teklif.html">Teklif Formu</a><a href="iletisim.html">İletişim</a></nav></div></header>
 
 <main>
   <section class="page-head"><div class="container"><h1>İşlerimiz</h1><p class="lead">Kategorilere göre filtreleyin, MakerWorld’de açın veya doğrudan “Bunu Bastır” ile ön-dolu teklif formuna geçin.</p></div></section>
@@ -42,17 +42,17 @@
     <div class="container">
       
 <div class="filter-row" role="group" aria-label="Ürün kategori filtreleri">
-  <button class="filter-btn active" type="button" data-filter="all">Tümü (30)</button>
-  <button class="filter-btn" type="button" data-filter="Office">Ofis (6)</button>
-  <button class="filter-btn" type="button" data-filter="Workshop">Atölye (6)</button>
-  <button class="filter-btn" type="button" data-filter="Gift">Hediye (6)</button>
-  <button class="filter-btn" type="button" data-filter="Corporate">Kurumsal (6)</button>
-  <button class="filter-btn" type="button" data-filter="Accessories">Aksesuar (6)</button>
+  <button class="work-filter-btn active" type="button" data-filter="tumu">Tümü</button>
+  <button class="work-filter-btn" type="button" data-filter="ofis">Ofis</button>
+  <button class="work-filter-btn" type="button" data-filter="atolye">Atölye</button>
+  <button class="work-filter-btn" type="button" data-filter="hediye">Hediye</button>
+  <button class="work-filter-btn" type="button" data-filter="kurumsal">Kurumsal</button>
+  <button class="work-filter-btn" type="button" data-filter="aksesuar">Aksesuar</button>
 </div>
 <div class="search-row">
   <label for="productSearch" class="sr-only">Ürünlerde ara</label>
-  <input id="productSearch" type="search" placeholder="Ürün adı, malzeme veya kategori ara..." data-live-search="#products-grid .product-card" />
-  <p class="form-note" data-results-count="#products-grid .product-card">30 sonuç listeleniyor.</p>
+  <input id="productSearch" type="search" placeholder="Ürün adı, malzeme veya kategori ara..." />
+  <p class="form-note" data-results-count>0 sonuç listeleniyor.</p>
 </div>
 <div id="products-grid" class="product-grid"></div>
 <div class="recently-viewed" id="recentlyViewed" hidden>
@@ -70,6 +70,7 @@
 <script src="assets/js/whatsapp-cta.js" defer></script>
 <script src="script.min.js" defer></script>
 <script defer src="assets/js/tracking.js"></script>
+<script src="assets/js/works.js" defer></script>
 <script src="assets/js/i18n-toggle.js" defer></script>
 </body>
 </html>
