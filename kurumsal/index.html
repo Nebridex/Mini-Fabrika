@@ -30,15 +30,6 @@
         <a class="cta" href="#kurumsal-form" data-scroll-target="kurumsal-form">Proje İçin İletişime Geçin</a>
       </section>
 
-      <section class="trust-layer" aria-label="Güven katmanı">
-        <p>Mini üretim atölyemizde, her sipariş özel üretilir.</p>
-        <ul class="trust-badges">
-          <li>✔ Butik Üretim</li>
-          <li>✔ Minimum 10 Adet</li>
-          <li>✔ 7–10 İş Günü Teslim</li>
-        </ul>
-      </section>
-
       <section class="product-sets" aria-label="Örnek ürün setleri">
         <article class="product-set">
           <div class="product-media" aria-hidden="true"></div>
@@ -50,7 +41,6 @@
               <li>Kişiselleştirilebilir logo alanı</li>
               <li>Adet bazlı fiyatlandırma</li>
             </ul>
-            <a class="cta ghost" href="#kurumsal-form" data-scroll-target="kurumsal-form">Projeyi Konuşalım</a>
           </div>
         </article>
 
@@ -64,7 +54,6 @@
               <li>Kişiselleştirilebilir logo alanı</li>
               <li>Adet bazlı fiyatlandırma</li>
             </ul>
-            <a class="cta ghost" href="#kurumsal-form" data-scroll-target="kurumsal-form">Projeyi Konuşalım</a>
           </div>
         </article>
 
@@ -78,7 +67,6 @@
               <li>Kişiselleştirilebilir logo alanı</li>
               <li>Adet bazlı fiyatlandırma</li>
             </ul>
-            <a class="cta ghost" href="#kurumsal-form" data-scroll-target="kurumsal-form">Projeyi Konuşalım</a>
           </div>
         </article>
       </section>
@@ -92,32 +80,15 @@
         </ul>
       </section>
 
-      <section class="process" aria-label="Çalışma süreci">
-        <h2>Süreç</h2>
-        <div class="process-grid">
-          <article>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v12H4z"/><path d="M4 7l8 5 8-5"/></svg>
-            <h3>1) Logonuzu Gönderin</h3>
-          </article>
-          <article>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19h16"/><path d="M7 14l4 4L20 9"/></svg>
-            <h3>2) Tasarımı Onaylayın</h3>
-          </article>
-          <article>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h13v10H3z"/><path d="M16 10h3l2 2v5h-5"/><circle cx="7" cy="18" r="1.5"/><circle cx="18" cy="18" r="1.5"/></svg>
-            <h3>3) Üretim ve Teslimat</h3>
-          </article>
-        </div>
-      </section>
-
       <section id="kurumsal-form" class="form-section" aria-label="Kurumsal iletişim formu">
         <h2>Projenizi Konuşalım</h2>
-        <form class="corporate-form" action="https://formsubmit.co/ajax/info@minifabrika.com" method="POST" novalidate>
-          <input type="hidden" name="_subject" value="MiniFabrika Kurumsal Proje Talebi" />
-          <input type="hidden" name="_template" value="table" />
-          <input type="hidden" name="_captcha" value="false" />
+        <form class="corporate-form" action="https://formspree.io/f/mzzvjlrg" method="POST" novalidate>
+          <input type="hidden" name="source" value="kurumsal" />
+          <input type="hidden" name="page" value="/kurumsal/" />
+          <input type="hidden" name="subject" value="Kurumsal Talep - MiniFabrika" />
+
           <div class="form-alert form-alert-error" hidden data-form-error>Lütfen zorunlu alanları kontrol edin.</div>
-          <div class="form-alert form-alert-success" hidden data-form-success>Talebiniz alındı. 24 saat içinde dönüş yapacağız.</div>
+          <div class="form-alert form-alert-success" hidden data-form-success>Teşekkürler! Mesajınızı aldık. En kısa sürede dönüş yapacağız.</div>
 
           <div class="field-split">
             <div>
@@ -141,21 +112,41 @@
             </div>
           </div>
 
-          <label for="summary">Kısa Açıklama *</label>
-          <textarea id="summary" name="summary" rows="4" required placeholder="Kısaca proje kapsamını ve hedef adedi paylaşabilirsiniz."></textarea>
+          <label for="message">Mesaj *</label>
+          <textarea id="message" name="message" rows="4" required placeholder="Kurumsal ihtiyacınızı, hedef adedi ve teslim beklentinizi yazabilirsiniz."></textarea>
 
-          <button type="submit" class="cta" data-submit-btn>Gönder</button>
-          <p class="form-note">Doğrudan bize yazmak isterseniz: <a href="mailto:info@minifabrika.com">info@minifabrika.com</a></p>
+          <p class="form-helper">Minimum sipariş 10 adettir. Detayları mesajınızda belirtin; size geri dönelim.</p>
+          <button type="submit" class="cta" data-submit-btn>Mesaj Gönder</button>
         </form>
       </section>
 
       <section class="contact-direct" aria-label="Doğrudan iletişim">
         <h2>Doğrudan İletişim</h2>
-        <p>Email: <a href="mailto:info@minifabrika.com">info@minifabrika.com</a></p>
+        <div class="contact-links">
+          <a href="mailto:info@minifabrika.com">✉️ info@minifabrika.com</a>
+          <a href="#" data-whatsapp-cta>💬 WhatsApp</a>
+        </div>
+        <div class="social-links" aria-label="Sosyal medya bağlantıları">
+          <a href="https://www.linkedin.com/company/minifabrika" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://www.instagram.com/minifabrikacom/" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href="https://x.com/minifabrikacom" target="_blank" rel="noopener noreferrer">X</a>
+          <a href="https://www.youtube.com/@minifabrikam" target="_blank" rel="noopener noreferrer">YouTube</a>
+        </div>
       </section>
     </main>
+
+    <footer class="corp-footer">
+      <p><a href="mailto:info@minifabrika.com">info@minifabrika.com</a> · <a href="#" data-whatsapp-cta>WhatsApp</a></p>
+      <p class="footer-socials">
+        <a href="https://www.linkedin.com/company/minifabrika" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="https://www.instagram.com/minifabrikacom/" target="_blank" rel="noopener noreferrer">Instagram</a>
+        <a href="https://x.com/minifabrikacom" target="_blank" rel="noopener noreferrer">X</a>
+        <a href="https://www.youtube.com/@minifabrikam" target="_blank" rel="noopener noreferrer">YouTube</a>
+      </p>
+    </footer>
   </div>
 
+  <script src="/assets/js/whatsapp-cta.js" defer></script>
   <script src="/assets/js/experience-switcher.js" defer></script>
   <script src="/assets/js/kurumsal-form.js" defer></script>
 </body>

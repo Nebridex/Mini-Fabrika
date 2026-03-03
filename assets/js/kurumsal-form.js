@@ -9,7 +9,7 @@
     if (!button) return;
     button.classList.toggle('is-loading', loading);
     button.disabled = loading;
-    button.textContent = loading ? 'Gönderiliyor...' : 'Gönder';
+    button.textContent = loading ? 'Gönderiliyor...' : 'Mesaj Gönder';
   }
 
   document.addEventListener('DOMContentLoaded', function () {
@@ -20,6 +20,9 @@
     var successBox = form.querySelector('[data-form-success]');
     var submitBtn = form.querySelector('[data-submit-btn]');
     var requiredFields = Array.from(form.querySelectorAll('[required]'));
+
+    errorBox.hidden = true;
+    successBox.hidden = true;
 
     document.querySelectorAll('[data-scroll-target]').forEach(function (trigger) {
       trigger.addEventListener('click', function (event) {
@@ -55,7 +58,7 @@
         headers: { Accept: 'application/json' }
       })
         .then(function (response) {
-          if (!response.ok) throw new Error('Form request failed');
+          if (!response.ok) throw new Error('Formspree request failed');
           return response.json();
         })
         .then(function () {
@@ -64,7 +67,7 @@
           requiredFields.forEach(function (field) { field.classList.remove('input-error'); });
         })
         .catch(function () {
-          errorBox.textContent = 'Gönderim sırasında bir hata oluştu. Lütfen tekrar deneyin veya info@minifabrika.com adresine yazın.';
+          errorBox.textContent = 'Mesaj gönderilemedi. Lütfen tekrar deneyin veya info@minifabrika.com adresine yazın.';
           errorBox.hidden = false;
         })
         .finally(function () {
