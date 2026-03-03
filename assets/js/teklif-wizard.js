@@ -37,6 +37,8 @@
     var modelFile = q('#modelFile', form);
     var modelError = q('[data-model-error]', form);
     var phone = q('#phone', form);
+    var errorBanner = q('[data-form-error]', form);
+    var successBanner = q('[data-form-success]', form);
 
     if (!step1 || !step2 || !next || !back || !submitBtn) return;
 
@@ -83,6 +85,7 @@
 
     next.addEventListener('click', function () {
       if (!validModel()) return;
+      if (errorBanner) errorBanner.hidden = true;
       setStep(2);
     });
 
@@ -95,9 +98,13 @@
       var ok2 = validRequired(step2);
       if (!ok1 || !ok2) {
         event.preventDefault();
+        if (successBanner) successBanner.hidden = true;
+        if (errorBanner) errorBanner.hidden = false;
         setStep(ok1 ? 2 : 1);
         return;
       }
+      if (errorBanner) errorBanner.hidden = true;
+      if (successBanner) successBanner.hidden = false;
       submitBtn.disabled = true;
       submitBtn.textContent = 'Gönderiliyor...';
     });
