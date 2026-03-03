@@ -9,7 +9,7 @@
     if (!button) return;
     button.classList.toggle('is-loading', loading);
     button.disabled = loading;
-    button.textContent = loading ? 'Gönderiliyor...' : 'Talep Gönder';
+    button.textContent = loading ? 'Gönderiliyor...' : 'Gönder';
   }
 
   document.addEventListener('DOMContentLoaded', function () {
@@ -31,18 +31,15 @@
     });
 
     requiredFields.forEach(function (field) {
-      field.addEventListener('input', function () {
-        validateField(field);
-      });
-      field.addEventListener('blur', function () {
-        validateField(field);
-      });
+      field.addEventListener('input', function () { validateField(field); });
+      field.addEventListener('blur', function () { validateField(field); });
     });
 
     form.addEventListener('submit', function (event) {
       event.preventDefault();
       errorBox.hidden = true;
       successBox.hidden = true;
+      errorBox.textContent = 'Lütfen zorunlu alanları kontrol edin.';
 
       var isValid = requiredFields.map(validateField).every(Boolean);
       if (!isValid) {
