@@ -17,11 +17,11 @@
   document.addEventListener('DOMContentLoaded', function () {
     document.body.classList.add('fade-page');
 
-    document.querySelectorAll('[data-experience-link]').forEach(function (link) {
-      link.addEventListener('click', function (event) {
-        event.preventDefault();
-        navigateWithExperience(link.dataset.experienceLink, link.getAttribute('href'));
-      });
+    document.addEventListener('click', function (event) {
+      var link = event.target.closest('[data-experience-link]');
+      if (!link) return;
+      event.preventDefault();
+      navigateWithExperience(link.dataset.experienceLink, link.getAttribute('href'));
     });
   });
 })();
