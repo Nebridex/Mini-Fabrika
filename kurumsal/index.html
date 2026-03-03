@@ -26,8 +26,17 @@
         <p class="eyebrow">Kurumsal Butik Üretim</p>
         <h1>Butik Üretim. Markanıza Özel.</h1>
         <p>Logolu masaüstü setleri, onboarding kitleri ve sınırlı üretim kurumsal hediyeler.</p>
-        <a class="cta" href="#kurumsal-form">Kurumsal Teklif Al</a>
+        <a class="cta" href="#kurumsal-form" data-scroll-target="kurumsal-form">Kurumsal Teklif Al</a>
         <small>Minimum sipariş: 10 adet</small>
+      </section>
+
+      <section class="trust-layer" aria-label="Güven katmanı">
+        <p>Mini üretim atölyemizde, her sipariş özel üretilir.</p>
+        <ul class="trust-badges">
+          <li>✔ Butik Üretim</li>
+          <li>✔ Minimum 10 Adet</li>
+          <li>✔ 7–10 İş Günü Teslim</li>
+        </ul>
       </section>
 
       <section class="product-sets" aria-label="Örnek ürün setleri">
@@ -37,7 +46,7 @@
             <h2>Desk Basic Kit</h2>
             <p>Logo’lu kalemlik, telefon standı ve bardak altlığı ile sade ama etkili bir masaüstü seti.</p>
             <p class="delivery">Teslim: 7–10 iş günü</p>
-            <a class="cta ghost" href="#kurumsal-form">Kurumsal Teklif Al</a>
+            <a class="cta ghost" href="#kurumsal-form" data-scroll-target="kurumsal-form">Kurumsal Teklif Al</a>
           </div>
         </article>
 
@@ -47,7 +56,7 @@
             <h2>Onboarding Mini Kit</h2>
             <p>İsimli masa isimliği, telefon standı ve kablo düzenleyici ile ekip başlangıcına hazır kit.</p>
             <p class="delivery">Teslim: 7–10 iş günü</p>
-            <a class="cta ghost" href="#kurumsal-form">Kurumsal Teklif Al</a>
+            <a class="cta ghost" href="#kurumsal-form" data-scroll-target="kurumsal-form">Kurumsal Teklif Al</a>
           </div>
         </article>
 
@@ -57,9 +66,14 @@
             <h2>Event Limited Kit</h2>
             <p>Özel tasarım obje, logo baskı ve seri numara opsiyonu ile sınırlı üretim etkinlik seti.</p>
             <p class="delivery">Teslim: 10–14 iş günü</p>
-            <a class="cta ghost" href="#kurumsal-form">Kurumsal Teklif Al</a>
+            <a class="cta ghost" href="#kurumsal-form" data-scroll-target="kurumsal-form">Kurumsal Teklif Al</a>
           </div>
         </article>
+      </section>
+
+      <section class="pricing-clarity" aria-label="Fiyatlandırma bilgisi">
+        <h2>Adet Bazlı Fiyatlandırma</h2>
+        <p>Minimum sipariş 10 adettir. Adet arttıkça birim maliyet düşer. 25+ adet siparişlerde özel fiyatlandırma uygulanır.</p>
       </section>
 
       <section class="process" aria-label="Çalışma süreci">
@@ -82,46 +96,60 @@
 
       <section id="kurumsal-form" class="form-section" aria-label="Kurumsal talep formu">
         <h2>Kurumsal Üretim Talebi</h2>
-        <form class="corporate-form" novalidate>
+        <form class="corporate-form" action="https://formsubmit.co/ajax/info@minifabrika.com" method="POST" enctype="multipart/form-data" novalidate>
+          <input type="hidden" name="_subject" value="MiniFabrika Kurumsal Üretim Talebi" />
+          <input type="hidden" name="_template" value="table" />
+          <input type="hidden" name="_captcha" value="false" />
           <div class="form-alert form-alert-error" hidden data-form-error>Lütfen zorunlu alanları kontrol edin.</div>
-          <div class="form-alert form-alert-success" hidden data-form-success>Talebiniz alındı. En kısa sürede dönüş yapacağız.</div>
+          <div class="form-alert form-alert-success" hidden data-form-success>Talebiniz alındı. 24 saat içinde dönüş yapacağız.</div>
 
-          <div class="field-grid">
-            <label>Firma Adı *
-              <input type="text" name="company" required />
-            </label>
-            <label>Yetkili Kişi *
-              <input type="text" name="contact" required />
-            </label>
-          </div>
+          <fieldset class="input-group">
+            <legend>Firma Bilgileri</legend>
+            <div class="field-grid">
+              <label for="company">Firma Adı *</label>
+              <input id="company" type="text" name="company" required />
+            </div>
+            <div class="field-grid">
+              <label for="contact">Yetkili Kişi *</label>
+              <input id="contact" type="text" name="contact" required />
+            </div>
+          </fieldset>
 
-          <div class="field-grid">
-            <label>Email *
-              <input type="email" name="email" required />
-            </label>
-            <label>Telefon
-              <input type="tel" name="phone" inputmode="tel" />
-            </label>
-          </div>
+          <fieldset class="input-group">
+            <legend>İletişim</legend>
+            <div class="field-split">
+              <div>
+                <label for="email">Email *</label>
+                <input id="email" type="email" name="email" required />
+              </div>
+              <div>
+                <label for="phone">Telefon</label>
+                <input id="phone" type="tel" name="phone" inputmode="tel" />
+              </div>
+            </div>
+          </fieldset>
 
-          <div class="field-grid">
-            <label>Tahmini Adet
-              <select name="quantity">
-                <option value="10-25">10–25</option>
-                <option value="25-50">25–50</option>
-                <option value="50+">50+</option>
-              </select>
-            </label>
-            <label>Logo Yükleme
-              <input type="file" name="logo" accept=".svg,.png,.jpg,.jpeg,.pdf" />
-            </label>
-          </div>
+          <fieldset class="input-group">
+            <legend>Talep Detayı</legend>
+            <div class="field-split">
+              <div>
+                <label for="quantity">Tahmini Adet</label>
+                <select id="quantity" name="quantity">
+                  <option value="10-25">10–25</option>
+                  <option value="25-50">25–50</option>
+                  <option value="50+">50+</option>
+                </select>
+              </div>
+              <div>
+                <label for="logo">Logo Yükleme</label>
+                <input id="logo" type="file" name="logo" accept=".svg,.png,.jpg,.jpeg,.pdf" />
+              </div>
+            </div>
+            <label for="notes">Not Alanı</label>
+            <textarea id="notes" name="notes" rows="4" placeholder="Ürün tipi, adet, teslim süresi gibi detayları paylaşabilirsiniz."></textarea>
+          </fieldset>
 
-          <label>Not Alanı
-            <textarea name="notes" rows="4" placeholder="Ürün tipi, adet, teslim süresi gibi detayları paylaşabilirsiniz."></textarea>
-          </label>
-
-          <button type="submit" class="cta">Talep Gönder</button>
+          <button type="submit" class="cta" data-submit-btn>Talep Gönder</button>
           <p class="form-note">Minimum sipariş 10 adettir.</p>
         </form>
       </section>
