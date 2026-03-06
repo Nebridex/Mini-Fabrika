@@ -49,10 +49,12 @@
       successBox.hidden = true;
       errorBox.textContent = 'Lütfen zorunlu alanları kontrol edin.';
 
-      var isValid = requiredFields.map(validateField).every(Boolean);
-      if (!isValid) {
+      var firstInvalid = requiredFields.find(function (field) { return !validateField(field); });
+      if (firstInvalid) {
         event.preventDefault();
+        errorBox.textContent = 'Lütfen zorunlu alanları tamamlayın ve izin kutusunu onaylayın.';
         errorBox.hidden = false;
+        firstInvalid.focus();
         return;
       }
 
