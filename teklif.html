@@ -37,14 +37,13 @@
   <section id="teklif-formu"><div class="container"><article class="card form-wrap"><h2>3D Baskı Talep Formu</h2>
 
     <ol class="wizard-stage" aria-label="Teklif adımları">
-      <li class="wizard-stage-item is-active">Model</li>
-      <li class="wizard-stage-item">Detaylar</li>
-      <li class="wizard-stage-item">Gönder</li>
+      <li class="wizard-stage-item is-active">1. Model Bilgisi</li>
+      <li class="wizard-stage-item">2. İletişim & Teslimat</li>
     </ol>
 
     <form class="quote-form" action="https://formsubmit.co/info@minifabrika.com" method="POST" enctype="multipart/form-data" data-autosave="teklif-formu" novalidate>
       <div class="form-status form-status-error" data-form-error hidden>Lütfen zorunlu alanları kontrol edin.</div>
-      <div class="form-status form-status-success" data-form-success hidden>Form doğrulandı, teklif talebiniz gönderiliyor.</div>
+      <div class="form-status form-status-success" data-form-success hidden>Bilgileriniz alındı. Teklif talebiniz güvenle gönderiliyor, kısa süre içinde e-posta ile dönüş yapacağız.</div>
       <div class="selected-model" data-selected-model hidden>
         <p class="form-note">Seçilen Model</p>
         <p data-selected-model-text></p>
@@ -73,7 +72,7 @@
         <label for="modelFile">STL / 3MF / OBJ Dosyası (varsa)</label>
         <input id="modelFile" name="model_file" type="file" accept=".stl,.3mf,.obj,model/stl,application/sla,application/vnd.ms-pki.stl,application/octet-stream" />
         <small class="field-error" data-model-error hidden>Lütfen dosya yükleyin veya model linki girin.</small>
-        <p class="form-note inline-note">Model linki veya dosya yüklemesinden en az birini ekleyin.</p>
+        <p class="form-note inline-note">Model linki veya dosya yüklemesinden en az birini ekleyin. Desteklenen formatlar: STL, 3MF, OBJ. Maksimum dosya boyutu platform limitlerine bağlıdır.</p>
 
         <button class="btn btn-primary" type="button" data-step-next>Devam</button>
       </div>
@@ -118,10 +117,12 @@
 
         <div class="quote-estimator" aria-live="polite"><strong>Tahmini bütçe aralığı</strong><p data-estimator-output>₺350 - ₺500</p></div>
 
+        <div class="card" data-dynamic-hint><p class="form-note" style="margin:0;">Seçimlerinize göre üretim notu burada güncellenecek.</p></div>
+
         <label for="notes">Notlar / Ölçü / Kullanım amacı *</label>
         <textarea id="notes" name="notes" rows="5" required placeholder="Parça ölçüleri, kullanım amacı ve renk tercihlerinizi paylaşın"></textarea>
 
-        <label class="consent"><input type="checkbox" name="kvkk" required /> KVKK kapsamında iletişim kurulmasını onaylıyorum. *</label>
+        <label class="consent"><input type="checkbox" name="kvkk" required /> KVKK kapsamında yalnızca teklif süreci için iletişim kurulmasını onaylıyorum. *</label>
 
         <div class="wizard-actions">
           <button class="btn btn-secondary" type="button" data-step-back>Geri</button>
@@ -129,7 +130,7 @@
         </div>
       </div>
 
-      <p class="form-note">Minimum sipariş tutarı 350 TL'dir.</p>
+      <p class="form-note">Minimum sipariş tutarı 350 TL'dir. Kişisel verileriniz yalnızca teklif iletişimi için kullanılır ve üçüncü taraflarla pazarlama amacıyla paylaşılmaz.</p>
     </form>
   </article></div></section>
 </main>
