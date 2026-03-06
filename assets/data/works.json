@@ -1,12 +1,102 @@
 [
-  {"title":"Masa Düzenleyici","description":"Kalem ve küçük ekipmanları düzenli tutan pratik masa çözümü.","category":"Ofis","material":"PLA","time":"3-5 saat","image":"assets/products/masa-duzenleyici.svg","makerworld":"https://makerworld.com/en/search/models?keyword=desk%20organizer"},
-  {"title":"Telefon Standı","description":"Telefonu dik ve rahat açıyla konumlandıran masaüstü stand.","category":"Ofis","material":"PLA","time":"2-4 saat","image":"assets/products/telefon-standi.svg","makerworld":"https://makerworld.com/en/search/models?keyword=phone%20stand"},
-  {"title":"Alet Duvar Kancası","description":"Atölye aletlerini duvarda düzenli asmaya yardımcı olur.","category":"Atölye","material":"PETG","time":"2-3 saat","image":"assets/products/alet-duvar-kancasi.svg","makerworld":"https://makerworld.com/en/search/models?keyword=tool%20hook"},
-  {"title":"Filament Makara Tutucu","description":"Filament makaralarını dengeli ve güvenli şekilde taşır.","category":"Atölye","material":"PETG","time":"3-5 saat","image":"assets/products/filament-makara-tutucu.svg","makerworld":"https://makerworld.com/en/search/models?keyword=spool%20holder"},
-  {"title":"Eklemli Ejderha","description":"Hareketli yapısıyla öne çıkan dekoratif hediye modeli.","category":"Hediye","material":"PLA","time":"6-8 saat","image":"assets/products/eklemli-ejderha.svg","makerworld":"https://makerworld.com/en/search/models?keyword=articulated%20dragon"},
-  {"title":"İsimlik","description":"Masa üstü için kişiselleştirilebilir isim plakası.","category":"Hediye","material":"PLA","time":"1-2 saat","image":"assets/products/isimlik.svg","makerworld":"https://makerworld.com/en/search/models?keyword=name%20plate"},
-  {"title":"Logo Masa Standı","description":"Kurumsal logolar için dikkat çeken masaüstü sergileme.","category":"Kurumsal","material":"PLA","time":"4-6 saat","image":"assets/products/logo-masa-standi.svg","makerworld":"https://makerworld.com/en/search/models?keyword=logo%20stand"},
-  {"title":"QR Menü Standı","description":"Kafe/restoran masaları için stabil QR standı.","category":"Kurumsal","material":"PLA","time":"2-3 saat","image":"assets/products/qr-menu-standi.svg","makerworld":"https://makerworld.com/en/search/models?keyword=qr%20stand"},
-  {"title":"Oyun Kumandası Standı","description":"Kumandayı düzenli ve erişilebilir tutan masaüstü stand.","category":"Aksesuar","material":"PLA","time":"3-4 saat","image":"assets/products/oyun-kumandasi-standi.svg","makerworld":"https://makerworld.com/en/search/models?keyword=controller%20stand"},
-  {"title":"Kamera Aparatı","description":"Tripod uyumlu, sağlam bağlantı sağlayan montaj aparatı.","category":"Aksesuar","material":"PETG","time":"3-5 saat","image":"assets/products/kamera-aparati.svg","makerworld":"https://makerworld.com/en/search/models?keyword=camera%20mount"}
+  {
+    "title": "Masa Düzenleyici Modüler Set",
+    "category": "Ofis",
+    "description": "Kalem, not kartı ve küçük ekipmanları tek modül setinde düzenleyen masaüstü parça.",
+    "material": "PLA",
+    "difficulty": "Düşük risk · hızlı üretim",
+    "time": "3-5 saat",
+    "image": "assets/products/masa-duzenleyici.svg",
+    "makerworld": "https://makerworld.com/en/search/models?keyword=desk%20organizer"
+  },
+  {
+    "title": "Telefon Standı (Dikey/Yatay)",
+    "category": "Ofis",
+    "description": "Toplantı ve masa kullanımı için stabil açılı ergonomik telefon standı.",
+    "material": "PLA",
+    "difficulty": "Düşük tolerans hassasiyeti",
+    "time": "2-4 saat",
+    "image": "assets/products/telefon-standi.svg",
+    "makerworld": "https://makerworld.com/en/search/models?keyword=phone%20stand"
+  },
+  {
+    "title": "Alet Duvar Kancası",
+    "category": "Atölye",
+    "description": "Atölye ekipmanlarının duvar üstünde düzenli tutulması için dayanıklı askı.",
+    "material": "PETG",
+    "difficulty": "Orta · yük taşıma kontrolü gerekli",
+    "time": "2-3 saat",
+    "image": "assets/products/alet-duvar-kancasi.svg",
+    "makerworld": "https://makerworld.com/en/search/models?keyword=tool%20hook"
+  },
+  {
+    "title": "Filament Makara Tutucu",
+    "category": "Atölye",
+    "description": "Makara beslemesini düzenleyerek baskı sırasında sürtünme ve takılma riskini azaltır.",
+    "material": "PETG",
+    "difficulty": "Orta · eksen hizalaması önemli",
+    "time": "3-5 saat",
+    "image": "assets/products/filament-makara-tutucu.svg",
+    "makerworld": "https://makerworld.com/en/search/models?keyword=spool%20holder"
+  },
+  {
+    "title": "Kişiselleştirilebilir İsimlik",
+    "category": "Hediye",
+    "description": "Masa üstü kullanım için isim veya kısa mesajla kişiselleştirilen dekoratif parça.",
+    "material": "PLA",
+    "difficulty": "Düşük · yazı okunabilirliği kontrolü",
+    "time": "1-2 saat",
+    "image": "assets/products/isimlik.svg",
+    "makerworld": "https://makerworld.com/en/search/models?keyword=name%20plate"
+  },
+  {
+    "title": "Eklemli Ejderha Figür",
+    "category": "Hediye",
+    "description": "Hareketli eklem yapısıyla dekoratif ve koleksiyon amaçlı baskı örneği.",
+    "material": "PLA",
+    "difficulty": "Orta · destek ayarı kritik",
+    "time": "6-8 saat",
+    "image": "assets/products/eklemli-ejderha.svg",
+    "makerworld": "https://makerworld.com/en/search/models?keyword=articulated%20dragon"
+  },
+  {
+    "title": "QR Menü Standı",
+    "category": "Kurumsal",
+    "description": "Kafe/restoran masalarında markalı QR gösterimi için optimize edilmiş stand.",
+    "material": "PLA",
+    "difficulty": "Düşük · adetli üretime uygun",
+    "time": "2-3 saat",
+    "image": "assets/products/qr-menu-standi.svg",
+    "makerworld": "https://makerworld.com/en/search/models?keyword=qr%20stand"
+  },
+  {
+    "title": "Logo Masa Standı",
+    "category": "Kurumsal",
+    "description": "Etkinlik masaları ve ofis karşılama alanları için logolu sergileme objesi.",
+    "material": "PLA",
+    "difficulty": "Orta · marka geometrisi optimizasyonu",
+    "time": "4-6 saat",
+    "image": "assets/products/logo-masa-standi.svg",
+    "makerworld": "https://makerworld.com/en/search/models?keyword=logo%20stand"
+  },
+  {
+    "title": "Oyun Kumandası Standı",
+    "category": "Aksesuar",
+    "description": "Kumanda depolama ve sergileme için stabil oturum sunan günlük kullanım aparatı.",
+    "material": "PLA",
+    "difficulty": "Düşük-Orta",
+    "time": "3-4 saat",
+    "image": "assets/products/oyun-kumandasi-standi.svg",
+    "makerworld": "https://makerworld.com/en/search/models?keyword=controller%20stand"
+  },
+  {
+    "title": "Kamera Montaj Aparatı",
+    "category": "Aksesuar",
+    "description": "Tripod uyumlu, darbe dayanımı odaklı bağlantı aparatı örneği.",
+    "material": "PETG",
+    "difficulty": "Orta-Yüksek · tolerans kontrolü",
+    "time": "3-5 saat",
+    "image": "assets/products/kamera-aparati.svg",
+    "makerworld": "https://makerworld.com/en/search/models?keyword=camera%20mount"
+  }
 ]
