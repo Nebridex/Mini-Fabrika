@@ -39,6 +39,11 @@
     var phone = q('#phone', form);
     var errorBanner = q('[data-form-error]', form);
     var successBanner = q('[data-form-success]', form);
+    var material = q('#material', form);
+    var city = q('#deliveryCity', form);
+    var service = q('#serviceType', form);
+    var urgency = q('#urgency', form);
+    var hintBox = q('[data-dynamic-hint]', form);
 
     if (!step1 || !step2 || !next || !back || !submitBtn) return;
 
@@ -65,10 +70,28 @@
       var ok = true;
       qa('[required]', container).forEach(function (input) {
         var valid = input.type === 'checkbox' ? input.checked : input.value.trim() !== '';
-        setInvalid(input, valid ? '' : 'Bu alan zorunludur.');
+        setInvalid(input, valid ? '' : 'Bu alan teklif hazırlığı için zorunludur.');
         if (!valid) ok = false;
       });
       return ok;
+    }
+
+    function updateHint() {
+      if (!hintBox) return;
+      var serviceVal = service && service.value ? service.value : 'Hizmet seçilmedi';
+      var materialVal = material && material.value ? material.value : 'Malzeme seçilmedi';
+      var cityVal = city && city.value ? city.options[city.selectedIndex].text : 'Şehir seçilmedi';
+      var urgencyVal = urgency && urgency.value === 'rush' ? 'Hızlı üretim' : 'Standart termin';
+
+      var notes = [];
+      if (materialVal === 'ABS') notes.push('ABS için geometri ve warping riski ayrıca değerlendirilecektir.');
+      if (materialVal === 'TPU') notes.push('TPU üretiminde teslim süresi uzayabilir; tolerans beklentisini notlara yazın.');
+      if (city && city.value === 'istanbul') notes.push('İstanbul teslimatlarında hızlandırılmış planlama mümkündür.');
+      if (urgency && urgency.value === 'rush') notes.push('Hızlı üretim kapasite uygunluğuna bağlıdır; kesin tarih teklifte netleşir.');
+      if (!notes.length) notes.push('Model amacını detaylandırırsanız daha net malzeme ve süre önerisi sunabiliriz.');
+
+      hintBox.innerHTML = '<p class="form-note" style="margin:0;"><strong>Dinamik üretim notu:</strong> ' +
+        serviceVal + ' · ' + materialVal + ' · ' + cityVal + ' · ' + urgencyVal + '<br>' + notes.join(' ') + '</p>';
     }
 
     if (phone) {
@@ -80,13 +103,27 @@
       });
     }
 
-    if (modelLink) modelLink.addEventListener('input', validModel);
-    if (modelFile) modelFile.addEventListener('change', validModel);
+    [modelLink, modelFile].forEach(function (el) {
+      if (!el) return;
+      el.addEventListener(el === modelFile ? 'change' : 'input', validModel);
+    });
+
+    [material, city, service, urgency].forEach(function (el) {
+      if (!el) return;
+      el.addEventListener('change', updateHint);
+    });
 
     next.addEventListener('click', function () {
-      if (!validModel()) return;
+      if (!validModel()) {
+        if (errorBanner) {
+          errorBanner.hidden = false;
+          errorBanner.textContent = 'Devam etmek için model linki veya dosyası ekleyin.';
+        }
+        return;
+      }
       if (errorBanner) errorBanner.hidden = true;
       setStep(2);
+      updateHint();
     });
 
     back.addEventListener('click', function () {
@@ -99,7 +136,10 @@
       if (!ok1 || !ok2) {
         event.preventDefault();
         if (successBanner) successBanner.hidden = true;
-        if (errorBanner) errorBanner.hidden = false;
+        if (errorBanner) {
+          errorBanner.hidden = false;
+          errorBanner.textContent = !ok1 ? 'Model linki veya dosyası eklemeden teklif gönderilemez.' : 'Lütfen eksik zorunlu alanları doldurun.';
+        }
         setStep(ok1 ? 2 : 1);
         return;
       }
@@ -110,6 +150,7 @@
     });
 
     setStep(1);
+    updateHint();
   }
 
   document.addEventListener('DOMContentLoaded', init);
