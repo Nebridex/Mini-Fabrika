@@ -57,3 +57,16 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 .summary-box{background:#f4f8ff;border-color:#d6e2f7}
 .article-end-cta{margin-top:1.2rem;background:#f7faff;border-color:#d8e4f6}
 .article-end-cta .lead{margin:0;color:#415a80}
+
+
+/* Blog pages visibility hardening */
+.blog-list-page,.blog-detail-page{color:#1c2740 !important;background:#f6f8fc !important}
+.blog-list-page .topbar,.blog-detail-page .topbar{background:rgba(246,248,252,.96) !important;border-bottom:1px solid #dbe4f2 !important}
+.blog-list-page nav a,.blog-detail-page nav a{color:#405477 !important}
+.blog-list-page nav a.active,.blog-detail-page nav a.active,.blog-list-page nav a:hover,.blog-detail-page nav a:hover{color:#0d3eaa !important}
+.blog-list-page .card,.blog-detail-page .card{background:#fff !important;border-color:#dbe4f2 !important}
+.blog-detail-page .blog-article,.blog-detail-page .blog-article *{opacity:1 !important;visibility:visible !important}
+.blog-detail-page .blog-article p,.blog-detail-page .blog-article li,.blog-detail-page .blog-article ul,.blog-detail-page .blog-article ol{color:#2a405f !important}
+.blog-detail-page .blog-article h2,.blog-detail-page .blog-article h3{color:#13294a !important}
+.blog-detail-page .blog-article a{color:#155eef !important}
+.blog-detail-page .summary-box,.blog-detail-page .article-end-cta{background:#f4f8ff !important;border-color:#d6e2f7 !important}
