@@ -13,12 +13,12 @@
 `teklif.html` formu doğrudan aşağıdaki endpoint'e gönderim yapar:
 
 ```html
-<form action="https://formsubmit.co/cihat.oz@minifabrika.com" method="POST">
+<form action="https://formsubmit.co/info@minifabrika.com" method="POST">
 ```
 
 - Form gönderimi sonrası yönlendirme `_next` ile `https://minifabrika.com/tesekkurler.html` sayfasına yapılır.
 - İlk canlı gönderimde FormSubmit doğrulama e-postası gönderebilir; doğrulama sonrası form aktif olur.
-- Formda model linki yanında `STL/3MF/OBJ` dosya yükleme alanı vardır; yüklenen dosya form gönderimiyle birlikte aynı alıcıya (`cihat.oz@minifabrika.com`) iletilir.
+- Formda model linki yanında `STL/3MF/OBJ` dosya yükleme alanı vardır; yüklenen dosya form gönderimiyle birlikte aynı alıcıya (`info@minifabrika.com`) iletilir.
 
 ## Test Adımları
 
@@ -26,7 +26,7 @@
 2. `http://localhost:8080/teklif.html` sayfasında formu doldurun.
 3. Boş zorunlu alan bırakarak client-side doğrulamayı test edin.
 4. Formu gönderip `tesekkurler.html` sayfasına yönlendiğinizi doğrulayın.
-5. Gelen talebin `cihat.oz@minifabrika.com` alıcısına düştüğünü kontrol edin.
+5. Gelen talebin `info@minifabrika.com` alıcısına düştüğünü kontrol edin.
 
 ## Yayına Alma (GitHub Pages)
 
