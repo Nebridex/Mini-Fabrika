@@ -415,6 +415,10 @@ footer {
   .steps,
   .contact-grid,
   .product-grid { grid-template-columns: 1fr; }
+
+  .topbar-inner { flex-wrap: wrap; }
+  .topbar-inner nav.open { flex: 1 0 100%; }
+  .topbar-inner nav.open a { width: 100%; }
 }
 
 .honeypot{display:none !important}

@@ -24,9 +24,12 @@
     var category = (params.get('category') || '').trim();
     var linkParam = (params.get('modelLink') || params.get('link') || '').trim();
     var link = isValidHttpUrl(linkParam) ? linkParam : '';
+    var serviceParam = (params.get('service') || '').trim();
 
     var modelLink = q('#modelLink', form);
     if (link && modelLink && !modelLink.value) modelLink.value = link;
+    var service = q('#serviceType', form);
+    if (service && serviceParam === 'tasarim-baski') service.value = 'Tasarım + Baskı';
 
     var box = q('[data-selected-model]');
     var text = q('[data-selected-model-text]');

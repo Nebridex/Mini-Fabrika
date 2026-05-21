@@ -56,10 +56,14 @@
       });
     }
 
+    function modelOptional() {
+      return service && service.value === 'Tasarım + Baskı';
+    }
+
     function validModel() {
       var hasLink = modelLink && modelLink.value.trim().length > 0;
       var hasFile = modelFile && modelFile.files && modelFile.files.length > 0;
-      var ok = hasLink || hasFile;
+      var ok = modelOptional() || hasLink || hasFile;
       if (modelError) modelError.hidden = ok;
       if (modelLink) modelLink.classList.toggle('has-error', !ok);
       if (modelFile) modelFile.classList.toggle('has-error', !ok);
@@ -88,6 +92,7 @@
       if (materialVal === 'TPU') notes.push('TPU üretiminde teslim süresi uzayabilir; tolerans beklentisini notlara yazın.');
       if (city && city.value === 'istanbul') notes.push('İstanbul teslimatlarında hızlandırılmış planlama mümkündür.');
       if (urgency && urgency.value === 'rush') notes.push('Hızlı üretim kapasite uygunluğuna bağlıdır; kesin tarih teklifte netleşir.');
+      if (modelOptional()) notes.push('Modeliniz hazır değilse ölçüleri ve kullanım amacını notlarda anlatın.');
       if (!notes.length) notes.push('Model amacını detaylandırırsanız daha net malzeme ve süre önerisi sunabiliriz.');
 
       hintBox.innerHTML = '<p class="form-note" style="margin:0;"><strong>Dinamik üretim notu:</strong> ' +
@@ -110,14 +115,21 @@
 
     [material, city, service, urgency].forEach(function (el) {
       if (!el) return;
-      el.addEventListener('change', updateHint);
+      el.addEventListener('change', function () {
+        updateHint();
+        if (el === service) validModel();
+      });
     });
 
     next.addEventListener('click', function () {
-      if (!validModel()) {
+      var validStep1 = validRequired(step1);
+      var validStep1Model = validModel();
+      if (!validStep1 || !validStep1Model) {
         if (errorBanner) {
           errorBanner.hidden = false;
-          errorBanner.textContent = 'Devam etmek için model linki veya dosyası ekleyin.';
+          errorBanner.textContent = !validStep1
+            ? 'Devam etmek için hizmet türünü seçin.'
+            : 'Devam etmek için model linki veya dosyası ekleyin.';
         }
         return;
       }
@@ -131,16 +143,21 @@
     });
 
     form.addEventListener('submit', function (event) {
-      var ok1 = validModel();
+      var ok1Fields = validRequired(step1);
+      var ok1Model = validModel();
       var ok2 = validRequired(step2);
-      if (!ok1 || !ok2) {
+      if (!ok1Fields || !ok1Model || !ok2) {
         event.preventDefault();
         if (successBanner) successBanner.hidden = true;
         if (errorBanner) {
           errorBanner.hidden = false;
-          errorBanner.textContent = !ok1 ? 'Model linki veya dosyası eklemeden teklif gönderilemez.' : 'Lütfen eksik zorunlu alanları doldurun.';
+          errorBanner.textContent = !ok1Fields
+            ? 'Lütfen hizmet türünü seçin.'
+            : !ok1Model
+              ? 'Model linki veya dosyası eklemeden teklif gönderilemez.'
+              : 'Lütfen eksik zorunlu alanları doldurun.';
         }
-        setStep(ok1 ? 2 : 1);
+        setStep(ok1Fields && ok1Model ? 2 : 1);
         return;
       }
       if (errorBanner) errorBanner.hidden = true;
