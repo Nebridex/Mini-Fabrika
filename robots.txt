@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-Disallow: /tesekkurler.html
 Sitemap: https://minifabrika.com/sitemap.xml
