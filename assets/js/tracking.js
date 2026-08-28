@@ -1,6 +1,26 @@
 (function () {
+  var GA_MEASUREMENT_ID = 'G-SGLPG3FT3V';
   var ATTR_KEY = 'minifabrika_attribution_v1';
   var CONVERSION_KEY = 'minifabrika_conversion_v1:';
+
+  function initGA4() {
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
+    window.gtag('js', new Date());
+    window.gtag('config', GA_MEASUREMENT_ID, {
+      send_page_view: true,
+      transport_type: 'beacon'
+    });
+
+    if (!document.querySelector('script[src*="googletagmanager.com/gtag/js"]')) {
+      var script = document.createElement('script');
+      script.async = true;
+      script.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(GA_MEASUREMENT_ID);
+      document.head.appendChild(script);
+    }
+  }
+
+  initGA4();
 
   function findClickable(target) {
     return target && target.closest ? target.closest('a, button') : null;
