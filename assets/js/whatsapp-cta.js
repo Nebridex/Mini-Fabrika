@@ -1,6 +1,6 @@
 (() => {
   const PHONE_PARTS = ["90", "545", "690", "0094"];
-  const MESSAGE = "Merhaba, MiniFabrika’dan 3D baskı teklifi almak istiyorum. Model linkim/dosyalarım hazır.";
+  const MESSAGE = "Merhaba MiniFabrika, hazır STL/3MF/OBJ dosyamla adetli 3D baskı üretimi hakkında bilgi almak istiyorum.";
 
   document.addEventListener("click", (event) => {
     const trigger = event.target.closest("[data-whatsapp-cta]");
