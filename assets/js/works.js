@@ -30,17 +30,14 @@
 
     function render(items) {
       grid.innerHTML = items.map(function (item) {
-        var quoteUrl = 'teklif.html?title=' + encodeURIComponent(item.title) + '&modelLink=' + encodeURIComponent(item.makerworld || '');
-        var makerBtn = item.makerworld
-          ? '<a class="btn btn-secondary" href="' + esc(item.makerworld) + '" target="_blank" rel="noopener noreferrer">Kaynağı Aç</a>'
-          : '<button class="btn btn-secondary" type="button" disabled>Kaynak linki yok</button>';
-
+        var quoteUrl = '/teklif.html?title=' + encodeURIComponent(item.title);
         return '<article class="card product-card" data-category="' + esc(slugifyCategory(item.category)) + '">' +
-          '<img class="topic-thumb" src="' + esc(item.image) + '" loading="lazy" width="700" height="420" alt="' + esc(item.title) + ' örnek baskı" />' +
+          '<img class="topic-thumb" src="' + esc(item.image) + '" loading="lazy" width="700" height="420" alt="' + esc(item.title) + ' üretim örneği" />' +
           '<h2>' + esc(item.title) + '</h2>' +
           '<p>' + esc(item.description) + '</p>' +
-          '<div class="meta-row"><span class="tag">Kategori: ' + esc(item.category) + '</span><span class="tag">Önerilen malzeme: ' + esc(item.material) + '</span><span class="tag">Üretim notu: ' + esc(item.difficulty || item.time || '-') + '</span></div>' +
-          '<div class="quote-actions">' + makerBtn + '<a class="btn btn-primary" href="' + quoteUrl + '">Bu modele teklif al</a></div>' +
+          '<div class="meta-row"><span class="tag">' + esc(item.category) + '</span><span class="tag">Malzeme: ' + esc(item.material) + '</span><span class="tag">' + esc(item.fit || '-') + '</span></div>' +
+          '<p class="form-note"><strong>Üretim notu:</strong> ' + esc(item.note || '-') + '</p>' +
+          '<div class="quote-actions"><a class="btn btn-primary" href="' + quoteUrl + '">Benzer Adetli İş İçin Teklif Al</a></div>' +
           '</article>';
       }).join('');
     }
@@ -49,12 +46,12 @@
       var term = (searchInput && searchInput.value || '').trim().toLowerCase();
       var filtered = works.filter(function (item) {
         var inCategory = activeFilter === 'tumu' || slugifyCategory(item.category) === activeFilter;
-        var haystack = [item.title, item.description, item.category, item.material, item.difficulty, item.time].join(' ').toLowerCase();
+        var haystack = [item.title, item.description, item.category, item.material, item.fit, item.note].join(' ').toLowerCase();
         return inCategory && (!term || haystack.indexOf(term) > -1);
       });
 
       render(filtered);
-      if (countNode) countNode.textContent = filtered.length + ' sonuç listeleniyor.';
+      if (countNode) countNode.textContent = filtered.length + ' örnek listeleniyor.';
       if (emptyState) emptyState.hidden = filtered.length > 0;
     }
 
@@ -67,41 +64,16 @@
       });
     });
 
-    if (searchInput) {
-      searchInput.addEventListener('input', applyFilters);
-    }
+    if (searchInput) searchInput.addEventListener('input', applyFilters);
 
     fetch('/assets/data/works.json')
       .then(function (res) { return res.ok ? res.json() : Promise.reject(new Error('works.json yüklenemedi')); })
       .then(function (data) {
         works = Array.isArray(data) ? data : [];
-        if (!works.length && Array.isArray(window.MINIFAB_PRODUCTS)) {
-          works = window.MINIFAB_PRODUCTS.map(function (item) {
-            return {
-              title: item.title,
-              description: item.description,
-              category: item.category,
-              material: item.material,
-              difficulty: item.time,
-              image: item.img,
-              makerworld: item.link
-            };
-          });
-        }
         applyFilters();
       })
       .catch(function () {
-        works = Array.isArray(window.MINIFAB_PRODUCTS) ? window.MINIFAB_PRODUCTS.map(function (item) {
-          return {
-            title: item.title,
-            description: item.description,
-            category: item.category,
-            material: item.material,
-            difficulty: item.time,
-            image: item.img,
-            makerworld: item.link
-          };
-        }) : [];
+        works = [];
         applyFilters();
       });
   });
