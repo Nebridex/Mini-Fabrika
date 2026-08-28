@@ -1,6 +1,7 @@
 (function () {
-  var ATTR_KEY = 'minifabrika_attribution_v1';
-  var CONVERSION_KEY = 'minifabrika_conversion_v1:';
+  var ATTR_KEY = 'minifabrika_attribution_v2';
+  var QUOTE_CONTEXT_KEY = 'minifabrika_quote_context_v1';
+  var CONVERSION_KEY = 'minifabrika_conversion_v2:';
 
   function findClickable(target) {
     return target && target.closest ? target.closest('a, button') : null;
@@ -20,19 +21,11 @@
   }
 
   function safeGet(key) {
-    try {
-      return window.sessionStorage.getItem(key);
-    } catch (error) {
-      return null;
-    }
+    try { return window.sessionStorage.getItem(key); } catch (error) { return null; }
   }
 
   function safeSet(key, value) {
-    try {
-      window.sessionStorage.setItem(key, value);
-    } catch (error) {
-      // Attribution is optional; never block the customer journey.
-    }
+    try { window.sessionStorage.setItem(key, value); } catch (error) {}
   }
 
   function referrerAttribution(referrer) {
@@ -58,11 +51,7 @@
     var params = new URLSearchParams(window.location.search || '');
     var existing = safeGet(ATTR_KEY);
     if (existing) {
-      try {
-        return JSON.parse(existing);
-      } catch (error) {
-        // Rebuild malformed session data.
-      }
+      try { return JSON.parse(existing); } catch (error) {}
     }
 
     var source = '';
@@ -93,13 +82,40 @@
       source: source,
       medium: medium,
       campaign: campaign,
-      landing_page: window.location.pathname + window.location.search,
-      referrer: document.referrer || '',
+      landing_page: window.location.pathname,
+      referrer_host: document.referrer ? (function () { try { return new URL(document.referrer).hostname; } catch (e) { return ''; } })() : '',
       gclid: gclid
     };
 
     safeSet(ATTR_KEY, JSON.stringify(attribution));
     return attribution;
+  }
+
+  function quantityBucket(value) {
+    var qty = parseInt(value || '0', 10);
+    if (!qty || qty < 2) return 'unknown';
+    if (qty <= 9) return '2-9';
+    if (qty <= 24) return '10-24';
+    if (qty <= 49) return '25-49';
+    if (qty <= 99) return '50-99';
+    if (qty <= 249) return '100-249';
+    return '250+';
+  }
+
+  function quoteContext(form) {
+    var quantity = form.querySelector('#quantity');
+    var sample = form.querySelector('#sampleQuantity');
+    var service = form.querySelector('#serviceType');
+    var material = form.querySelector('#material');
+    var urgency = form.querySelector('#urgency');
+    return {
+      quantity_bucket: quantityBucket(quantity && quantity.value),
+      sample_requested: Boolean(sample && parseInt(sample.value || '0', 10) > 0),
+      sample_count: sample ? String(sample.value || '0') : '0',
+      production_type: service ? String(service.value || 'unknown') : 'unknown',
+      material: material ? String(material.value || 'unknown') : 'unknown',
+      planning_priority: urgency ? String(urgency.value || 'unknown') : 'unknown'
+    };
   }
 
   var attribution = buildAttribution();
@@ -123,39 +139,64 @@
       ensureHiddenInput(form, 'lead_medium', attribution.medium);
       ensureHiddenInput(form, 'lead_campaign', attribution.campaign);
       ensureHiddenInput(form, 'lead_landing_page', attribution.landing_page);
-      ensureHiddenInput(form, 'lead_referrer', attribution.referrer);
+      ensureHiddenInput(form, 'lead_referrer_host', attribution.referrer_host);
       ensureHiddenInput(form, 'lead_gclid', attribution.gclid);
 
+      var nextButton = form.querySelector('[data-step-next]');
+      if (nextButton) {
+        nextButton.addEventListener('click', function () {
+          window.setTimeout(function () {
+            var secondStep = form.querySelector('[data-step="2"]');
+            if (secondStep && !secondStep.hidden) {
+              emit('quote_requirements_complete', {
+                page_path: window.location.pathname,
+                traffic_source: attribution.source,
+                traffic_medium: attribution.medium
+              });
+            }
+          }, 0);
+        });
+      }
+
       form.addEventListener('submit', function () {
-        emit('form_submit_attempt', {
+        var context = quoteContext(form);
+        safeSet(QUOTE_CONTEXT_KEY, JSON.stringify(context));
+        emit('quote_submit_attempt', Object.assign({
           page_path: window.location.pathname,
-          lead_type: form.classList.contains('corporate-form') ? 'corporate' : 'quote',
           traffic_source: attribution.source,
           traffic_medium: attribution.medium
-        });
+        }, context));
       });
     });
   }
 
-  function emitConversionOnce() {
-    var params = new URLSearchParams(window.location.search || '');
-    var leadType = '';
-    if (window.location.pathname === '/tesekkurler.html') {
-      leadType = 'quote';
-    } else if (/^\/kurumsal\/?$/.test(window.location.pathname) && params.get('sent') === '1') {
-      leadType = 'corporate';
-    }
-    if (!leadType) return;
-
-    var key = CONVERSION_KEY + leadType + ':' + window.location.pathname + window.location.search;
-    if (safeGet(key)) return;
-    safeSet(key, '1');
-    emit('generate_lead', {
-      lead_type: leadType,
+  function emitQuoteView() {
+    if (window.location.pathname !== '/teklif.html') return;
+    emit('quote_view', {
       traffic_source: attribution.source,
       traffic_medium: attribution.medium,
       traffic_campaign: attribution.campaign
     });
+  }
+
+  function emitConversionOnce() {
+    if (window.location.pathname !== '/tesekkurler.html') return;
+    var key = CONVERSION_KEY + window.location.pathname;
+    if (safeGet(key)) return;
+    safeSet(key, '1');
+
+    var context = {};
+    var raw = safeGet(QUOTE_CONTEXT_KEY);
+    if (raw) {
+      try { context = JSON.parse(raw); } catch (error) {}
+    }
+
+    emit('generate_lead', Object.assign({
+      lead_type: 'batch_production_quote',
+      traffic_source: attribution.source,
+      traffic_medium: attribution.medium,
+      traffic_campaign: attribution.campaign
+    }, context));
   }
 
   function onClick(event) {
@@ -167,7 +208,7 @@
     var className = (el.className || '').toString();
     var payload = {
       page_path: window.location.pathname,
-      link_url: href || window.location.href,
+      link_path: href && href.charAt(0) === '/' ? href.split('?')[0] : '',
       cta_text: text || 'unknown',
       traffic_source: attribution.source,
       traffic_medium: attribution.medium
@@ -177,29 +218,23 @@
       emit('click_whatsapp', payload);
       return;
     }
-    if (href.indexOf('tel:') === 0) {
-      emit('click_call', payload);
-      return;
-    }
     if (href.indexOf('mailto:') === 0) {
       emit('click_email', payload);
       return;
     }
-
-    if (/(teklif al|hızlı teklif al|teklif talebini gönder|teklif gönder|3d baskı teklifi)/i.test(text) || /btn-primary/.test(className)) {
-      emit('click_cta', payload);
+    if (/(teklif|üretim talebi|dosyanı gönder|stl dosyanı gönder)/i.test(text) || /btn-primary/.test(className)) {
+      emit('click_quote_cta', payload);
     }
   }
 
   document.addEventListener('click', onClick, { passive: true });
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () {
-      attachAttributionToForms();
-      emitConversionOnce();
-    });
-  } else {
+  function init() {
     attachAttributionToForms();
+    emitQuoteView();
     emitConversionOnce();
   }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
 })();
