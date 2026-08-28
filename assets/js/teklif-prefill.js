@@ -24,12 +24,9 @@
     var category = (params.get('category') || '').trim();
     var linkParam = (params.get('modelLink') || params.get('link') || '').trim();
     var link = isValidHttpUrl(linkParam) ? linkParam : '';
-    var serviceParam = (params.get('service') || '').trim();
 
     var modelLink = q('#modelLink', form);
     if (link && modelLink && !modelLink.value) modelLink.value = link;
-    var service = q('#serviceType', form);
-    if (service && serviceParam === 'tasarim-baski') service.value = 'Tasarım + Baskı';
 
     var box = q('[data-selected-model]');
     var text = q('[data-selected-model-text]');
@@ -42,7 +39,7 @@
         box.hidden = false;
         text.innerHTML = '<strong>' + escapeHtml(title || 'Seçili model') + '</strong>' +
           (category ? ' · ' + escapeHtml(category) : '') +
-          (link ? ' · <a href="' + escapeHtml(link) + '" target="_blank" rel="noopener noreferrer">Model linki</a>' : '');
+          (link ? ' · <a href="' + escapeHtml(link) + '" target="_blank" rel="noopener noreferrer">Model bağlantısı</a>' : '');
       }
       if (banner) banner.hidden = false;
     } else if (banner) {
@@ -55,7 +52,7 @@
         if (box) box.hidden = true;
         if (banner) banner.hidden = true;
         var url = new URL(window.location.href);
-        ['title', 'category', 'link', 'modelLink', 'model'].forEach(function (k) { url.searchParams.delete(k); });
+        ['title', 'category', 'link', 'modelLink', 'model', 'service'].forEach(function (k) { url.searchParams.delete(k); });
         window.history.replaceState({}, '', url.pathname + (url.search ? url.search : ''));
       });
     }
