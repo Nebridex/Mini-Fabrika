@@ -1,0 +1,37 @@
+/* MiniFabrika final UI consistency fixes */
+.menu-toggle{display:none!important}
+
+/* Keep navigation visible without a hamburger menu. */
+@media(max-width:980px){
+  .topbar-inner{flex-wrap:wrap!important;gap:8px!important;padding:8px 0!important}
+  nav{display:flex!important;flex:1 0 100%!important;gap:6px!important;overflow-x:auto!important;flex-wrap:nowrap!important;padding:4px 0 8px!important;scrollbar-width:thin}
+  nav a{flex:0 0 auto!important;white-space:nowrap!important;background:#fff!important;border:1px solid var(--line)!important}
+}
+
+/* Force all core cards to the same light visual system. */
+.card,.stat,.step,.faq-list details,.cta-box,.summary-box,.table-wrap,.visual-metrics{
+  background:#fff!important;
+  color:var(--text)!important;
+  border:1px solid var(--line)!important;
+  box-shadow:var(--shadow-sm)!important;
+}
+.step h3,.step p,.faq-list summary,.faq-list p,.stat strong,.stat p{color:var(--text)!important}
+.step p,.faq-list p,.stat p{color:var(--muted)!important}
+
+.stats{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:18px!important}
+.steps{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:18px!important}
+.grid-3{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:18px!important}
+
+/* Compact desktop rhythm. */
+.hero{padding:48px 0 52px!important}
+section{padding:48px 0!important}
+main section+section{border-top:1px solid #e7ecef!important}
+
+@media(max-width:980px){
+  .stats,.steps{grid-template-columns:1fr 1fr!important}
+  .grid-3{grid-template-columns:1fr 1fr!important}
+}
+@media(max-width:640px){
+  .stats,.steps,.grid-3{grid-template-columns:1fr!important}
+  section{padding:38px 0!important}
+}
