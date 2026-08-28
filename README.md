@@ -1,42 +1,82 @@
-# Mini Fabrika
+# MiniFabrika
 
-`minifabrika.com` için hazırlanmış statik, çok sayfalı 3D baskı satış sitesi.
+`minifabrika.com` için hazırlanmış statik, çok sayfalı adetli 3D baskı üretim sitesi.
+
+## İş Modeli
+
+MiniFabrika'nın güncel odağı **hazır STL / 3MF / OBJ dosyalarından adetli ve tekrarlı üretim**dir.
+
+Temel kurallar:
+
+- Tek parça bireysel / hobi baskısı ana hizmet kapsamına dahil değildir.
+- Sıfırdan 3D modelleme hizmeti sunulmaz.
+- 1–3 adet üretim, devamında planlanan adetli üretimin numune / doğrulama aşaması olarak değerlendirilebilir.
+- Müşterinin şirket veya birey olması belirleyici değildir; kriter işin tekrarlı/adetli üretime uygun olmasıdır.
+- Evrensel sabit minimum adet veya minimum TL eşiği kullanılmaz; proje ekonomisi baskı süresi, malzeme, tabla verimliliği ve toplam hacme göre değerlendirilir.
+- Tüm talepler tek merkezden `teklif.html` üzerinden toplanır.
 
 ## Sayfa Yapısı
 
-- `index.html`: Ana satış sayfası (CTA, güven blokları, süreç akışı ve FAQ)
-- `teklif.html`: Detaylı teklif toplama formu
-- `iletisim.html`: İletişim ve sosyal medya sayfası
+- `index.html`: Ana satış ve konumlandırma sayfası.
+- `teklif.html`: Hazır dosya + hedef adet odaklı üretim teklif formu.
+- `kurumsal/index.html`: Yüksek adetli, çok parçalı ve proje yönetimi gerektiren işler için derinleşme sayfası.
+- `islerimiz.html`: Müşteri referansı iddiası taşımayan üretim tipi örnekleri.
+- `malzeme-uretim.html`: PLA, PETG, ABS ve TPU için üretim karar rehberi.
+- `iletisim.html`: Genel iletişim ve merkezi teklif yönlendirmesi.
+- `blog/`: Adetli üretim, malzeme ve teknik kalite SEO içerikleri.
+- `bireysel/index.html`: Eski bireysel URL trafiğini yeni teklif akışına taşıyan noindex yönlendirme sayfası.
+- `tasarla.html`: Emekliye ayrılmış tasarım hizmeti için noindex yönlendirme sayfası.
 
-## Form Kurulumu (FormSubmit)
+## Teklif Formu
 
-`teklif.html` formu doğrudan aşağıdaki endpoint'e gönderim yapar:
+`teklif.html` formu FormSubmit üzerinden `info@minifabrika.com` adresine gönderilir.
 
 ```html
-<form action="https://formsubmit.co/info@minifabrika.com" method="POST">
+<form action="https://formsubmit.co/info@minifabrika.com" method="POST" enctype="multipart/form-data">
 ```
 
-- Form gönderimi sonrası yönlendirme `_next` ile `https://minifabrika.com/tesekkurler.html` sayfasına yapılır.
-- İlk canlı gönderimde FormSubmit doğrulama e-postası gönderebilir; doğrulama sonrası form aktif olur.
-- Formda model linki yanında `STL/3MF/OBJ` dosya yükleme alanı vardır; yüklenen dosya form gönderimiyle birlikte aynı alıcıya (`info@minifabrika.com`) iletilir.
+Formun temel girdileri:
 
-## Test Adımları
+- Üretime hazır STL / 3MF / OBJ dosyası veya erişilebilir bağlantı.
+- Planlanan toplam adet (en az 2).
+- İsteniyorsa 1–3 adet numune.
+- Kullanım amacı ve kritik ölçüler.
+- Malzeme / renk tercihi.
+- Hedef teslim tarihi ve teslimat şehri.
+- İletişim bilgileri.
 
-1. Yerelde bir statik sunucu ile çalıştırın (`python3 -m http.server 8080`).
-2. `http://localhost:8080/teklif.html` sayfasında formu doldurun.
-3. Boş zorunlu alan bırakarak client-side doğrulamayı test edin.
-4. Formu gönderip `tesekkurler.html` sayfasına yönlendiğinizi doğrulayın.
-5. Gelen talebin `info@minifabrika.com` alıcısına düştüğünü kontrol edin.
+Dosya görülmeden otomatik fiyat veya sabit teslim süresi gösterilmez. Gerçek teklif teknik inceleme sonrası hazırlanır.
 
-## Yayına Alma (GitHub Pages)
+## Form Test Adımları
 
-1. Bu repoyu GitHub'a gönderin.
-2. **Settings → Pages** bölümünden doğru branch'i seçin.
-3. `CNAME` dosyası sayesinde `minifabrika.com` alan adı korunur.
+1. Yerelde statik sunucu ile siteyi açın.
+2. `teklif.html` sayfasında dosyasız ilerlemenin engellendiğini doğrulayın.
+3. Planlanan toplam adet `1` iken formun ilerlemediğini doğrulayın.
+4. Adet `2+` ve geçerli dosya/link ile zorunlu alan doğrulamasını test edin.
+5. Numune alanının ana toplam adetten ayrı çalıştığını kontrol edin.
+6. Form gönderimi sonrası `tesekkurler.html` sayfasına yönlendirmeyi doğrulayın.
+7. Talebin `info@minifabrika.com` adresine ulaştığını ve dosya ekinin geldiğini kontrol edin.
 
+## Yayına Alma
 
-## Güvenlik ve Kalite Kontrol Notları
+Repo GitHub Pages üzerinden `minifabrika.com` alan adına yayınlanır. `CNAME` dosyası alan adını korur.
 
-- Tüm sayfalarda `referrer` politikası `strict-origin-when-cross-origin` olarak ayarlanmıştır.
-- Tarayıcı izinleri için `Permissions-Policy` ile kamera/mikrofon/konum kapatılmıştır.
-- Form endpoint'i `teklif.html` içinde FormSubmit olarak tanımlıdır; alıcı değişecekse action URL'sindeki e-posta güncellenmelidir.
+Deploy sonrası kontrol edilmesi gereken temel URL'ler:
+
+- `/`
+- `/teklif.html`
+- `/kurumsal/`
+- `/islerimiz.html`
+- `/malzeme-uretim.html`
+- `/iletisim.html`
+- `/blog/index.html`
+- `/bireysel/` → `/teklif.html` yönlendirmesi
+- `/tasarla.html` → `/` yönlendirmesi
+
+## İçerik İlkeleri
+
+- Gerçek olmayan müşteri yorumu, referans, adet, kapasite veya kalite garantisi yazılmaz.
+- Dosya görülmeden fiyat veya termin tahmini yayınlanmaz.
+- Her parçaya uygulanabilecek sabit tolerans garantisi verilmez.
+- Gerçek müşteri işleri yalnızca yayın izni varsa vaka çalışması / referans olarak gösterilir.
+- SEO içeriği tekil/hobi baskı ve modelleme talebi toplamaya değil, hazır dosyalı adetli üretim niyetine odaklanır.
