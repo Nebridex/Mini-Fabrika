@@ -14,9 +14,10 @@
   <link rel="stylesheet" href="./styles.min.css?v=20260829-3" />
   <link rel="stylesheet" href="./assets/css/a11y.css" />
   <link rel="stylesheet" href="./assets/css/simple-site.css?v=20260829-1" />
+  <link rel="stylesheet" href="./assets/css/ui-fixes.css?v=20260829-4" />
   <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
 </head>
-<body>
+<body class="quote-page">
 <header class="topbar">
   <div class="container topbar-inner">
     <a class="logo" href="/"><img src="assets/minifabrika-logo.svg" alt="MiniFabrika logo" width="34" height="34" /><span class="logo-text">MiniFabrika</span></a>
@@ -29,46 +30,46 @@
     <div class="container">
       <span class="badge">Hazır dosya + adet + kullanım amacı</span>
       <h1>Adetli 3D baskı üretim teklifi</h1>
-      <p class="lead">STL, 3MF veya OBJ dosyanızı ve hedef adedinizi gönderin. Dosyayı teknik olarak inceleyip birim fiyat, toplam fiyat ve gerçekçi üretim terminini paylaşalım.</p>
+      <p class="lead">STL, 3MF veya OBJ dosyanızı ve hedef adedinizi gönderin. Teknik inceleme sonrası birim fiyat, toplam fiyat ve gerçekçi üretim terminini paylaşalım.</p>
     </div>
   </section>
 
-  <section id="teklif-form" style="padding-top:34px;">
-    <div class="container" style="max-width:900px;">
+  <section id="teklif-form">
+    <div class="container">
       <div class="card">
         <h2>Üretim talebi</h2>
-        <p class="lead" style="margin-bottom:22px;">Tek parça hobi baskısı yerine hazır modeli bulunan, tekrarlı veya adetli üretim ihtiyacı olan projeleri değerlendiriyoruz.</p>
+        <p class="lead">Hazır modeli bulunan, tekrarlı veya adetli üretim ihtiyacı olan projeleri değerlendiriyoruz.</p>
         <form class="quote-form" action="https://formsubmit.co/info@minifabrika.com" method="POST" enctype="multipart/form-data" data-autosave="minifabrika-quote-v2">
           <input type="hidden" name="_subject" value="Yeni MiniFabrika adetli üretim talebi" />
           <input type="hidden" name="_next" value="https://minifabrika.com/tesekkurler.html" />
           <input type="hidden" name="_captcha" value="false" />
 
-          <div class="grid-3" style="grid-template-columns:repeat(2,minmax(0,1fr));">
+          <div class="grid-3">
             <div><label for="productionType">Üretim türü *</label><select id="productionType" name="production_type" required><option value="">Seçiniz</option><option>Adetli parça üretimi</option><option>Fonksiyonel parça / aparat</option><option>Markalı / promosyon ürün</option><option>Çok parçalı set / proje</option><option>Diğer</option></select></div>
             <div><label for="quantity">Planlanan toplam adet *</label><input id="quantity" name="quantity" type="number" min="2" step="1" required placeholder="Örn. 50" /></div>
           </div>
 
           <div><label for="modelFile">STL / 3MF / OBJ dosyası *</label><input id="modelFile" name="attachment" type="file" accept=".stl,.3mf,.obj" required /><p class="form-note">Üretime hazır dosyanızı yükleyin. Birden fazla parçalı projelerde açıklamaya parça sayısını yazabilirsiniz.</p></div>
 
-          <div class="grid-3" style="grid-template-columns:repeat(2,minmax(0,1fr));">
+          <div class="grid-3">
             <div><label for="material">Malzeme *</label><select id="material" name="material" required><option value="">Seçiniz</option><option>PLA</option><option>PETG</option><option>ABS</option><option>TPU</option><option>Bilmiyorum / öneri istiyorum</option></select></div>
             <div><label for="sample">Önce numune ister misiniz?</label><select id="sample" name="sample"><option value="no">Hayır</option><option value="1">Evet, 1 adet</option><option value="2">Evet, 2 adet</option><option value="3">Evet, 3 adet</option></select></div>
           </div>
 
-          <div><label for="useCase">Kullanım amacı / teknik not *</label><textarea id="useCase" name="use_case" rows="4" required placeholder="Parça nerede kullanılacak? Kritik ölçü, uyum, yüzey veya dayanım beklentisi varsa belirtin."></textarea></div>
+          <div><label for="useCase">Kullanım amacı / teknik not *</label><textarea id="useCase" name="use_case" rows="3" required placeholder="Parça nerede kullanılacak? Kritik ölçü, uyum, yüzey veya dayanım beklentisi varsa belirtin."></textarea></div>
           <div><label for="targetDate">Hedef teslim tarihi</label><input id="targetDate" name="target_date" type="date" /></div>
 
-          <div class="grid-3" style="grid-template-columns:repeat(2,minmax(0,1fr));">
+          <div class="grid-3">
             <div><label for="name">Ad Soyad *</label><input id="name" name="name" autocomplete="name" required /></div>
             <div><label for="company">Firma <span class="form-note">(opsiyonel)</span></label><input id="company" name="company" autocomplete="organization" /></div>
           </div>
-          <div class="grid-3" style="grid-template-columns:repeat(2,minmax(0,1fr));">
+          <div class="grid-3">
             <div><label for="email">E-posta *</label><input id="email" name="email" type="email" autocomplete="email" required /></div>
             <div><label for="phone">Telefon</label><input id="phone" name="phone" type="tel" autocomplete="tel" /></div>
           </div>
 
           <label class="consent"><input type="checkbox" name="consent" required /> <span>Teklif süreci için verdiğim iletişim bilgileri üzerinden benimle iletişim kurulmasını kabul ediyorum.</span></label>
-          <button class="btn btn-primary" type="submit" style="width:100%;margin-top:4px;">Üretim Talebini Gönder</button>
+          <button class="btn btn-primary" type="submit" style="width:100%;">Üretim Talebini Gönder</button>
         </form>
       </div>
     </div>
@@ -85,7 +86,7 @@
   <section><div class="container cta-box"><div><h2>Tekliften önce bir konuya bakmak ister misiniz?</h2><p class="lead">Fiyat, malzeme, tolerans ve numune kararlarını üretim rehberlerinde kısa şekilde açıklıyoruz.</p></div><a class="btn btn-secondary" href="/blog/index.html">Rehberler</a></div></section>
 </main>
 <footer><div class="container"><p>MiniFabrika · İstanbul merkezli adetli 3D baskı üretimi · <a href="mailto:info@minifabrika.com">info@minifabrika.com</a></p><div class="footer-actions"><a class="btn btn-secondary" href="/blog/index.html">Rehberler</a><a class="btn btn-secondary" href="/sorular.html">Soru Sor</a></div></div></footer>
-<script src="script.min.js?v=20260829-2" defer></script>
+<script src="script.min.js?v=20260829-3" defer></script>
 <script defer src="assets/js/tracking.js"></script>
 </body>
 </html>
