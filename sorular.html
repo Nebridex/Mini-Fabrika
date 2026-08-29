@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3D Baskı Soruları | MiniFabrika</title>
+  <meta name="description" content="Malzeme, STL, tolerans, fiyat ve adetli 3D baskı üretimi hakkında sorunuzu MiniFabrika'ya iletin; cevaplanmış soruları inceleyin." />
+  <link rel="canonical" href="https://minifabrika.com/sorular.html" />
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+  <link rel="stylesheet" href="/styles.min.css?v=20260829-3" />
+  <link rel="stylesheet" href="/assets/css/a11y.css" />
+  <link rel="stylesheet" href="/assets/css/simple-site.css?v=20260829-1" />
+</head>
+<body>
+<header class="topbar">
+  <div class="container topbar-inner">
+    <a class="logo" href="/"><img src="/assets/minifabrika-logo.svg" alt="MiniFabrika logo" width="34" height="34" /><span class="logo-text">MiniFabrika</span></a>
+    <button class="menu-toggle" aria-label="Menüyü aç" aria-expanded="false"><span class="sr-only">Menüyü aç</span><span aria-hidden="true">☰</span></button>
+    <nav class="simple-nav"><a href="/#uretim">Üretim</a><a href="/blog/index.html">Rehberler</a><a class="active" href="/sorular.html">Soru Sor</a><a class="nav-cta" href="/teklif.html#teklif-form">Teklif Al</a></nav>
+  </div>
+</header>
+
+<main>
+  <section class="page-head">
+    <div class="container"><span class="badge">Soru & Cevap</span><h1>3D baskı üretimiyle ilgili sorunuzu sorun.</h1><p class="lead">Malzeme, fiyat, STL, tolerans, numune veya adetli üretim hakkında sorunuzu bırakın. Yayına uygun soruları cevaplarıyla birlikte burada paylaşacağız.</p></div>
+  </section>
+
+  <section style="padding-top:32px;">
+    <div class="container question-shell">
+      <div>
+        <h2>Cevaplanmış sorular</h2>
+        <p class="lead">Başlangıç için en sık gelen konular. Yeni sorular geldikçe bu alan büyüyecek.</p>
+        <div class="question-list" style="margin-top:20px;">
+          <article class="question-card"><span class="guide-meta">Adetli üretim</span><h3>Tek adet baskı yapıyor musunuz?</h3><p>Tek parça hobi baskısı ana hizmetimiz değil. Devamında adetli üretim planlanan projelerde 1–3 adet numune değerlendirebiliriz.</p></article>
+          <article class="question-card"><span class="guide-meta">Dosya</span><h3>STL dosyam yoksa teklif alabilir miyim?</h3><p>Üretim teklifi için hazır STL, 3MF veya OBJ dosyası gerekiyor. Şu anda sıfırdan 3D modelleme hizmeti sunmuyoruz.</p></article>
+          <article class="question-card"><span class="guide-meta">Malzeme</span><h3>PLA mı PETG mi seçmeliyim?</h3><p>Parçanın sıcaklık, darbe, esneklik ve yüzey beklentisine göre değişir. Detaylı karşılaştırmayı <a href="/blog/malzeme-secimi-rehberi.html">malzeme rehberinde</a> bulabilirsiniz.</p></article>
+          <article class="question-card"><span class="guide-meta">Fiyat</span><h3>Adet arttıkça birim fiyat düşer mi?</h3><p>Tabla verimliliği, hazırlık süresi ve tekrarlı üretim avantajı uygunsa düşebilir. Gerçek sonuç dosyanın slicer'da incelenmesinden sonra belli olur.</p></article>
+        </div>
+      </div>
+
+      <aside class="ask-box" id="soru-sor">
+        <div id="questionSuccess" class="submission-success" hidden>Teşekkürler. Sorunuz bize ulaştı; uygun olduğunda cevaplayıp yayınlayacağız.</div>
+        <h2>Soru sor</h2>
+        <p class="muted">Bu form teklif formu değildir. Hazır dosyanız ve adetiniz varsa doğrudan <a href="/teklif.html#teklif-form">teklif alın</a>.</p>
+        <form action="https://formsubmit.co/info@minifabrika.com" method="POST">
+          <input type="hidden" name="_subject" value="MiniFabrika yeni üretim sorusu" />
+          <input type="hidden" name="_next" value="https://minifabrika.com/sorular.html?gonderildi=1#soru-sor" />
+          <input type="hidden" name="_template" value="table" />
+          <input type="hidden" name="_captcha" value="false" />
+          <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="display:none" />
+          <label for="qTitle">Başlık<input id="qTitle" name="title" type="text" maxlength="120" required placeholder="Örn. PETG dış ortamda kullanılır mı?" /></label>
+          <label for="qCategory">Kategori<select id="qCategory" name="category" required><option value="">Seçiniz</option><option>Malzeme</option><option>STL / Model</option><option>Teknik Kalite</option><option>Adetli Üretim</option><option>Fiyat</option><option>Diğer</option></select></label>
+          <label for="qText">Sorunuz<textarea id="qText" name="question" rows="6" maxlength="1600" required placeholder="Sorunuzu mümkün olduğunca net yazın."></textarea></label>
+          <label for="qName">İsim<input id="qName" name="name" type="text" maxlength="80" required autocomplete="name" /></label>
+          <label for="qEmail">E-posta <span class="muted">(yayınlanmaz, opsiyonel)</span><input id="qEmail" name="email" type="email" autocomplete="email" /></label>
+          <button class="btn btn-primary" type="submit">Soruyu Gönder</button>
+        </form>
+        <p class="muted" style="margin-top:12px;">Sorular otomatik yayınlanmaz. Spam ve teklif taleplerini ayıklayıp uygun soruları cevaplarıyla yayınlarız.</p>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<footer><div class="container"><p>MiniFabrika · <a href="mailto:info@minifabrika.com">info@minifabrika.com</a></p><div class="socials"><a href="/blog/index.html">Rehberler</a><a href="/teklif.html#teklif-form">Teklif Al</a></div></div></footer>
+<script src="/script.min.js?v=20260829-2" defer></script>
+<script defer src="/assets/js/tracking.js"></script>
+<script>if(new URLSearchParams(location.search).get('gonderildi')==='1'){document.getElementById('questionSuccess').hidden=false;}</script>
+</body>
+</html>

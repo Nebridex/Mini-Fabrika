@@ -104,13 +104,13 @@
 
   function quoteContext(form) {
     var quantity = form.querySelector('#quantity');
-    var sample = form.querySelector('#sampleQuantity');
-    var service = form.querySelector('#serviceType');
+    var sample = form.querySelector('#sampleQuantity, #sample');
+    var service = form.querySelector('#serviceType, #productionType');
     var material = form.querySelector('#material');
     var urgency = form.querySelector('#urgency');
     return {
       quantity_bucket: quantityBucket(quantity && quantity.value),
-      sample_requested: Boolean(sample && parseInt(sample.value || '0', 10) > 0),
+      sample_requested: Boolean(sample && String(sample.value || '0') !== '0' && String(sample.value || '') !== 'no'),
       sample_count: sample ? String(sample.value || '0') : '0',
       production_type: service ? String(service.value || 'unknown') : 'unknown',
       material: material ? String(material.value || 'unknown') : 'unknown',
@@ -130,6 +130,48 @@
       form.appendChild(input);
     }
     input.value = value || '';
+  }
+
+  function ensureSimpleStyles() {
+    if (document.querySelector('link[href*="simple-site.css"]')) return;
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = '/assets/css/simple-site.css?v=20260829-1';
+    document.head.appendChild(link);
+  }
+
+  function simplifyArticleNavigation() {
+    if (!/^\/blog\/.+\.html$/.test(window.location.pathname) || window.location.pathname === '/blog/index.html') return;
+    var nav = document.querySelector('.topbar nav');
+    if (!nav) return;
+    nav.classList.add('simple-nav');
+    nav.innerHTML = '<a href="/#uretim">Üretim</a><a class="active" href="/blog/index.html">Rehberler</a><a href="/sorular.html">Soru Sor</a><a class="nav-cta" href="/teklif.html#teklif-form">Teklif Al</a>';
+  }
+
+  function injectArticleCommentForm() {
+    if (!/^\/blog\/.+\.html$/.test(window.location.pathname) || window.location.pathname === '/blog/index.html' || window.location.pathname === '/blog/soru-alindi.html') return;
+    var article = document.querySelector('.blog-article');
+    if (!article || article.querySelector('.article-comments')) return;
+
+    var section = document.createElement('section');
+    section.className = 'article-comments';
+    section.id = 'yorumlar';
+    var nextUrl = window.location.origin + window.location.pathname + '?yorum=alindi#yorumlar';
+    var success = new URLSearchParams(window.location.search).get('yorum') === 'alindi';
+    section.innerHTML =
+      (success ? '<div class="submission-success">Teşekkürler. Yorumunuz bize ulaştı; kontrol sonrası yayına uygun yorumları makaleye ekliyoruz.</div>' : '') +
+      '<h2>Yorum veya soru bırakın</h2>' +
+      '<p class="comment-note">Makaleyle ilgili sorunuzu ya da deneyiminizi yazabilirsiniz. E-posta adresiniz yayınlanmaz. Yorumlar otomatik yayınlanmaz.</p>' +
+      '<form class="article-comment-form" action="https://formsubmit.co/info@minifabrika.com" method="POST">' +
+      '<input type="hidden" name="_subject" value="MiniFabrika makale yorumu: ' + document.title.replace(/"/g, '&quot;') + '">' +
+      '<input type="hidden" name="_next" value="' + nextUrl + '">' +
+      '<input type="hidden" name="_template" value="table"><input type="hidden" name="_captcha" value="false">' +
+      '<input type="hidden" name="article_url" value="' + window.location.href.split('?')[0] + '">' +
+      '<label>İsim<input name="name" type="text" maxlength="80" required autocomplete="name"></label>' +
+      '<label>E-posta <span class="muted">(opsiyonel, yayınlanmaz)</span><input name="email" type="email" autocomplete="email"></label>' +
+      '<label>Yorumunuz / Sorunuz<textarea name="comment" rows="5" maxlength="1600" required></textarea></label>' +
+      '<button class="btn btn-primary" type="submit">Gönder</button></form>';
+    article.appendChild(section);
   }
 
   function attachAttributionToForms() {
@@ -159,13 +201,22 @@
       }
 
       form.addEventListener('submit', function () {
-        var context = quoteContext(form);
-        safeSet(QUOTE_CONTEXT_KEY, JSON.stringify(context));
-        emit('quote_submit_attempt', Object.assign({
-          page_path: window.location.pathname,
-          traffic_source: attribution.source,
-          traffic_medium: attribution.medium
-        }, context));
+        if (window.location.pathname === '/teklif.html') {
+          var context = quoteContext(form);
+          safeSet(QUOTE_CONTEXT_KEY, JSON.stringify(context));
+          emit('quote_submit_attempt', Object.assign({
+            page_path: window.location.pathname,
+            traffic_source: attribution.source,
+            traffic_medium: attribution.medium
+          }, context));
+        } else {
+          emit('content_form_submit', {
+            page_path: window.location.pathname,
+            form_type: form.classList.contains('article-comment-form') ? 'article_comment' : 'question',
+            traffic_source: attribution.source,
+            traffic_medium: attribution.medium
+          });
+        }
       });
     });
   }
@@ -230,6 +281,9 @@
   document.addEventListener('click', onClick, { passive: true });
 
   function init() {
+    ensureSimpleStyles();
+    simplifyArticleNavigation();
+    injectArticleCommentForm();
     attachAttributionToForms();
     emitQuoteView();
     emitConversionOnce();
