@@ -1,7 +1,23 @@
 (function () {
+  var GA_MEASUREMENT_ID = 'G-SGLPG3FT3V';
   var ATTR_KEY = 'minifabrika_attribution_v2';
   var QUOTE_CONTEXT_KEY = 'minifabrika_quote_context_v1';
   var CONVERSION_KEY = 'minifabrika_conversion_v2:';
+
+  function initGA4() {
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
+    window.gtag('js', new Date());
+    window.gtag('config', GA_MEASUREMENT_ID, { send_page_view: true, transport_type: 'beacon' });
+    if (!document.querySelector('script[src*="googletagmanager.com/gtag/js"]')) {
+      var script = document.createElement('script');
+      script.async = true;
+      script.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(GA_MEASUREMENT_ID);
+      document.head.appendChild(script);
+    }
+  }
+
+  initGA4();
 
   function findClickable(target) {
     return target && target.closest ? target.closest('a, button') : null;
@@ -9,15 +25,12 @@
 
   function emit(eventName, payload) {
     payload = payload || {};
-    if (typeof window.gtag === 'function') {
-      window.gtag('event', eventName, payload);
-    } else {
+    if (typeof window.gtag === 'function') window.gtag('event', eventName, payload);
+    else {
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push(Object.assign({ event: eventName }, payload));
     }
-    if (window.console && typeof window.console.debug === 'function') {
-      window.console.debug('[tracking]', eventName, payload);
-    }
+    if (window.console && typeof window.console.debug === 'function') window.console.debug('[tracking]', eventName, payload);
   }
 
   function safeGet(key) {
@@ -42,9 +55,7 @@
       if (/facebook\.com$|fb\.com$/.test(host)) return { source: 'facebook', medium: 'referral' };
       if (/linkedin\.com$/.test(host)) return { source: 'linkedin', medium: 'referral' };
       return { source: host, medium: 'referral' };
-    } catch (error) {
-      return null;
-    }
+    } catch (error) { return null; }
   }
 
   function buildAttribution() {
@@ -53,14 +64,12 @@
     if (existing) {
       try { return JSON.parse(existing); } catch (error) {}
     }
-
     var source = '';
     var medium = '';
     var campaign = params.get('utm_campaign') || '';
     var gclid = params.get('gclid') || '';
     var utmSource = params.get('utm_source') || '';
     var utmMedium = params.get('utm_medium') || '';
-
     if (utmSource) {
       source = utmSource;
       medium = utmMedium || 'campaign';
@@ -77,7 +86,6 @@
         medium = '(none)';
       }
     }
-
     var attribution = {
       source: source,
       medium: medium,
@@ -86,7 +94,6 @@
       referrer_host: document.referrer ? (function () { try { return new URL(document.referrer).hostname; } catch (e) { return ''; } })() : '',
       gclid: gclid
     };
-
     safeSet(ATTR_KEY, JSON.stringify(attribution));
     return attribution;
   }
@@ -132,12 +139,17 @@
     input.value = value || '';
   }
 
-  function ensureSimpleStyles() {
-    if (document.querySelector('link[href*="simple-site.css"]')) return;
+  function ensureStylesheet(fragment, href) {
+    if (document.querySelector('link[href*="' + fragment + '"]')) return;
     var link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = '/assets/css/simple-site.css?v=20260829-1';
+    link.href = href;
     document.head.appendChild(link);
+  }
+
+  function ensureSimpleStyles() {
+    ensureStylesheet('simple-site.css', '/assets/css/simple-site.css?v=20260901-1');
+    ensureStylesheet('ui-fixes.css', '/assets/css/ui-fixes.css?v=20260829-4');
   }
 
   function simplifyArticleNavigation() {
@@ -148,11 +160,18 @@
     nav.innerHTML = '<a href="/#uretim">Üretim</a><a class="active" href="/blog/index.html">Rehberler</a><a href="/sorular.html">Soru Sor</a><a class="nav-cta" href="/teklif.html#teklif-form">Teklif Al</a>';
   }
 
+  function simplifyLandingNavigation() {
+    if (!/^\/(3d-baski-hizmeti-istanbul|stl-dosyasindan-3d-baski|prototip-kucuk-seri-uretim)\/?$/.test(window.location.pathname) && !/^\/kurumsal\/?$/.test(window.location.pathname)) return;
+    var nav = document.querySelector('.topbar nav');
+    if (!nav) return;
+    nav.classList.add('simple-nav');
+    nav.innerHTML = '<a href="/#uretim">Üretim</a><a href="/blog/index.html">Rehberler</a><a href="/sorular.html">Soru Sor</a><a class="nav-cta" href="/teklif.html#teklif-form">Teklif Al</a>';
+  }
+
   function injectArticleCommentForm() {
     if (!/^\/blog\/.+\.html$/.test(window.location.pathname) || window.location.pathname === '/blog/index.html' || window.location.pathname === '/blog/soru-alindi.html') return;
     var article = document.querySelector('.blog-article');
     if (!article || article.querySelector('.article-comments')) return;
-
     var section = document.createElement('section');
     section.className = 'article-comments';
     section.id = 'yorumlar';
@@ -189,13 +208,7 @@
         nextButton.addEventListener('click', function () {
           window.setTimeout(function () {
             var secondStep = form.querySelector('[data-step="2"]');
-            if (secondStep && !secondStep.hidden) {
-              emit('quote_requirements_complete', {
-                page_path: window.location.pathname,
-                traffic_source: attribution.source,
-                traffic_medium: attribution.medium
-              });
-            }
+            if (secondStep && !secondStep.hidden) emit('quote_requirements_complete', { page_path: window.location.pathname, traffic_source: attribution.source, traffic_medium: attribution.medium });
           }, 0);
         });
       }
@@ -204,18 +217,11 @@
         if (window.location.pathname === '/teklif.html') {
           var context = quoteContext(form);
           safeSet(QUOTE_CONTEXT_KEY, JSON.stringify(context));
-          emit('quote_submit_attempt', Object.assign({
-            page_path: window.location.pathname,
-            traffic_source: attribution.source,
-            traffic_medium: attribution.medium
-          }, context));
+          var payload = Object.assign({ page_path: window.location.pathname, traffic_source: attribution.source, traffic_medium: attribution.medium }, context);
+          emit('quote_submit_attempt', payload);
+          emit('form_submit_attempt', payload);
         } else {
-          emit('content_form_submit', {
-            page_path: window.location.pathname,
-            form_type: form.classList.contains('article-comment-form') ? 'article_comment' : 'question',
-            traffic_source: attribution.source,
-            traffic_medium: attribution.medium
-          });
+          emit('content_form_submit', { page_path: window.location.pathname, form_type: form.classList.contains('article-comment-form') ? 'article_comment' : 'question', traffic_source: attribution.source, traffic_medium: attribution.medium });
         }
       });
     });
@@ -223,11 +229,7 @@
 
   function emitQuoteView() {
     if (window.location.pathname !== '/teklif.html') return;
-    emit('quote_view', {
-      traffic_source: attribution.source,
-      traffic_medium: attribution.medium,
-      traffic_campaign: attribution.campaign
-    });
+    emit('quote_view', { traffic_source: attribution.source, traffic_medium: attribution.medium, traffic_campaign: attribution.campaign });
   }
 
   function emitConversionOnce() {
@@ -235,46 +237,24 @@
     var key = CONVERSION_KEY + window.location.pathname;
     if (safeGet(key)) return;
     safeSet(key, '1');
-
     var context = {};
     var raw = safeGet(QUOTE_CONTEXT_KEY);
-    if (raw) {
-      try { context = JSON.parse(raw); } catch (error) {}
-    }
-
-    emit('generate_lead', Object.assign({
-      lead_type: 'batch_production_quote',
-      traffic_source: attribution.source,
-      traffic_medium: attribution.medium,
-      traffic_campaign: attribution.campaign
-    }, context));
+    if (raw) { try { context = JSON.parse(raw); } catch (error) {} }
+    emit('generate_lead', Object.assign({ lead_type: 'batch_production_quote', traffic_source: attribution.source, traffic_medium: attribution.medium, traffic_campaign: attribution.campaign }, context));
   }
 
   function onClick(event) {
     var el = findClickable(event.target);
     if (!el) return;
-
     var href = (el.getAttribute('href') || '').trim();
     var text = (el.textContent || el.getAttribute('aria-label') || '').trim().replace(/\s+/g, ' ').slice(0, 120);
     var className = (el.className || '').toString();
-    var payload = {
-      page_path: window.location.pathname,
-      link_path: href && href.charAt(0) === '/' ? href.split('?')[0] : '',
-      cta_text: text || 'unknown',
-      traffic_source: attribution.source,
-      traffic_medium: attribution.medium
-    };
-
-    if (/wa\.me|api\.whatsapp\.com/i.test(href) || el.hasAttribute('data-whatsapp-cta')) {
-      emit('click_whatsapp', payload);
-      return;
-    }
-    if (href.indexOf('mailto:') === 0) {
-      emit('click_email', payload);
-      return;
-    }
-    if (/(teklif|üretim talebi|dosyanı gönder|stl dosyanı gönder)/i.test(text) || /btn-primary/.test(className)) {
+    var payload = { page_path: window.location.pathname, link_path: href && href.charAt(0) === '/' ? href.split('?')[0] : '', cta_text: text || 'unknown', traffic_source: attribution.source, traffic_medium: attribution.medium };
+    if (/wa\.me|api\.whatsapp\.com/i.test(href) || el.hasAttribute('data-whatsapp-cta')) { emit('click_whatsapp', payload); return; }
+    if (href.indexOf('mailto:') === 0) { emit('click_email', payload); return; }
+    if (/(teklif|üretim talebi|dosyanı gönder|stl dosyanı gönder|dosyayı gönder)/i.test(text) || /btn-primary/.test(className)) {
       emit('click_quote_cta', payload);
+      emit('click_cta', payload);
     }
   }
 
@@ -283,6 +263,7 @@
   function init() {
     ensureSimpleStyles();
     simplifyArticleNavigation();
+    simplifyLandingNavigation();
     injectArticleCommentForm();
     attachAttributionToForms();
     emitQuoteView();
