@@ -13,19 +13,35 @@ Temel kurallar:
 - 1–3 adet üretim, devamında planlanan adetli üretimin numune / doğrulama aşaması olarak değerlendirilebilir.
 - Müşterinin şirket veya birey olması belirleyici değildir; kriter işin tekrarlı/adetli üretime uygun olmasıdır.
 - Evrensel sabit minimum adet veya minimum TL eşiği kullanılmaz; proje ekonomisi baskı süresi, malzeme, tabla verimliliği ve toplam hacme göre değerlendirilir.
-- Tüm talepler tek merkezden `teklif.html` üzerinden toplanır.
+- Tüm üretim talepleri `teklif.html` üzerinden toplanabilir.
 
-## Sayfa Yapısı
+## SEO Phase 2 Sayfa Mimarisi
 
-- `index.html`: Ana satış ve konumlandırma sayfası.
-- `teklif.html`: Hazır dosya + hedef adet odaklı üretim teklif formu.
-- `kurumsal/index.html`: Yüksek adetli, çok parçalı ve proje yönetimi gerektiren işler için derinleşme sayfası.
-- `islerimiz.html`: Müşteri referansı iddiası taşımayan üretim tipi örnekleri.
-- `malzeme-uretim.html`: PLA, PETG, ABS ve TPU için üretim karar rehberi.
-- `iletisim.html`: Genel iletişim ve merkezi teklif yönlendirmesi.
-- `blog/`: Adetli üretim, malzeme ve teknik kalite SEO içerikleri.
-- `bireysel/index.html`: Eski bireysel URL trafiğini yeni teklif akışına taşıyan noindex yönlendirme sayfası.
-- `tasarla.html`: Emekliye ayrılmış tasarım hizmeti için noindex yönlendirme sayfası.
+- `/`: Ana satış ve konumlandırma sayfası; adetli 3D baskı ve küçük seri üretim.
+- `/3d-baski-hizmeti-istanbul/`: İstanbul 3D baskı ticari arama niyeti.
+- `/stl-dosyasindan-3d-baski/`: STL/3MF/OBJ dosyasından üretim arama niyeti.
+- `/prototip-kucuk-seri-uretim/`: Prototip, numune ve küçük seri arama niyeti.
+- `/kurumsal/`: Kurumsal/B2B adetli 3D baskı arama niyeti.
+- `/teklif.html`: Hazır dosya + hedef adet odaklı üretim teklif formu.
+- `/blog/`: Bilgi niyetli fiyat, malzeme ve teknik kalite içerikleri.
+- `/sorular.html`: Soru/cevap ve içerik fikri toplama.
+- `/bireysel/`: `noindex,follow`; STL'den adetli üretim sayfasına yönlendirilir.
+- `/tasarla.html`: Emekliye ayrılmış tasarım hizmeti; `noindex,follow` ile ana sayfaya yönlendirilir.
+
+Ticari landing sayfaları birbirinden ayrı sorgu niyetlerine sahip olmalıdır; blog içerikleri aynı ticari sorguları birebir hedefleyerek keyword cannibalization yaratmamalıdır.
+
+## Analytics
+
+Google Analytics 4 ölçüm kimliği: `G-SGLPG3FT3V`.
+
+`assets/js/tracking.js`:
+
+- GA4 yükleyicisini başlatır.
+- `click_cta` ve geriye uyumluluk için `click_quote_cta` eventlerini gönderir.
+- `click_whatsapp` ve `click_email` eventlerini toplar.
+- Teklif gönderiminde `form_submit_attempt` ve `quote_submit_attempt` eventlerini gönderir.
+- Başarılı teklif sonrası `generate_lead` eventini üretir.
+- UTM/referrer attribution alanlarını FormSubmit formlarına ekler.
 
 ## Teklif Formu
 
@@ -35,43 +51,25 @@ Temel kurallar:
 <form action="https://formsubmit.co/info@minifabrika.com" method="POST" enctype="multipart/form-data">
 ```
 
-Formun temel girdileri:
-
-- Üretime hazır STL / 3MF / OBJ dosyası veya erişilebilir bağlantı.
-- Planlanan toplam adet (en az 2).
-- İsteniyorsa 1–3 adet numune.
-- Kullanım amacı ve kritik ölçüler.
-- Malzeme / renk tercihi.
-- Hedef teslim tarihi ve teslimat şehri.
-- İletişim bilgileri.
-
 Dosya görülmeden otomatik fiyat veya sabit teslim süresi gösterilmez. Gerçek teklif teknik inceleme sonrası hazırlanır.
-
-## Form Test Adımları
-
-1. Yerelde statik sunucu ile siteyi açın.
-2. `teklif.html` sayfasında dosyasız ilerlemenin engellendiğini doğrulayın.
-3. Planlanan toplam adet `1` iken formun ilerlemediğini doğrulayın.
-4. Adet `2+` ve geçerli dosya/link ile zorunlu alan doğrulamasını test edin.
-5. Numune alanının ana toplam adetten ayrı çalıştığını kontrol edin.
-6. Form gönderimi sonrası `tesekkurler.html` sayfasına yönlendirmeyi doğrulayın.
-7. Talebin `info@minifabrika.com` adresine ulaştığını ve dosya ekinin geldiğini kontrol edin.
 
 ## Yayına Alma
 
-Repo GitHub Pages üzerinden `minifabrika.com` alan adına yayınlanır. `CNAME` dosyası alan adını korur.
+Production branch: `main`.
 
-Deploy sonrası kontrol edilmesi gereken temel URL'ler:
+GitHub Pages üzerinden `minifabrika.com` alan adına yayınlanır. `CNAME` dosyası alan adını korur.
+
+SEO Phase 2 öncesi geri dönüş noktası: `backup/main-pre-seo-phase2-2026-09-01`.
+
+Deploy sonrası temel URL kontrolleri:
 
 - `/`
-- `/teklif.html`
+- `/3d-baski-hizmeti-istanbul/`
+- `/stl-dosyasindan-3d-baski/`
+- `/prototip-kucuk-seri-uretim/`
 - `/kurumsal/`
-- `/islerimiz.html`
-- `/malzeme-uretim.html`
-- `/iletisim.html`
-- `/blog/index.html`
-- `/bireysel/` → `/teklif.html` yönlendirmesi
-- `/tasarla.html` → `/` yönlendirmesi
+- `/teklif.html`
+- `/sitemap.xml`
 
 ## İçerik İlkeleri
 
