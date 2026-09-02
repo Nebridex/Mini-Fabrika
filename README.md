@@ -1,6 +1,8 @@
 # MiniFabrika
 
-`minifabrika.com` için hazırlanmış statik, çok sayfalı adetli 3D baskı üretim sitesi.
+Canlı site: [https://minifabrika.com/](https://minifabrika.com/)
+
+MiniFabrika.com için hazırlanmış statik, çok sayfalı adetli 3D baskı üretim sitesi. Marka ve hizmet kapsamı: [MiniFabrika.com Hakkında](https://minifabrika.com/hakkimizda.html).
 
 ## İş Modeli
 
@@ -23,6 +25,7 @@ Temel kurallar:
 - `/prototip-kucuk-seri-uretim/`: Prototip, numune ve küçük seri arama niyeti.
 - `/kurumsal/`: Kurumsal/B2B adetli 3D baskı arama niyeti.
 - `/teklif.html`: Hazır dosya + hedef adet odaklı üretim teklif formu.
+- `/hakkimizda.html`: MiniFabrika.com marka/entity sayfası.
 - `/blog/`: Bilgi niyetli fiyat, malzeme ve teknik kalite içerikleri.
 - `/sorular.html`: Soru/cevap ve içerik fikri toplama.
 - `/bireysel/`: `noindex,follow`; STL'den adetli üretim sayfasına yönlendirilir.
@@ -69,6 +72,7 @@ Deploy sonrası temel URL kontrolleri:
 - `/prototip-kucuk-seri-uretim/`
 - `/kurumsal/`
 - `/teklif.html`
+- `/hakkimizda.html`
 - `/sitemap.xml`
 
 ## İçerik İlkeleri
