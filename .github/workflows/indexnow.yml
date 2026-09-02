@@ -1,0 +1,57 @@
+name: IndexNow notify
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: indexnow-main
+  cancel-in-progress: true
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify IndexNow-enabled search engines
+        shell: bash
+        run: |
+          KEY="8ef432182ee2e250fec3d7036301e02c"
+          cat > /tmp/indexnow.json <<EOF
+          {
+            "host": "minifabrika.com",
+            "key": "${KEY}",
+            "keyLocation": "https://minifabrika.com/${KEY}.txt",
+            "urlList": [
+              "https://minifabrika.com/",
+              "https://minifabrika.com/3d-baski-hizmeti-istanbul/",
+              "https://minifabrika.com/stl-dosyasindan-3d-baski/",
+              "https://minifabrika.com/prototip-kucuk-seri-uretim/",
+              "https://minifabrika.com/kurumsal/",
+              "https://minifabrika.com/teklif.html",
+              "https://minifabrika.com/hakkimizda.html",
+              "https://minifabrika.com/blog/index.html",
+              "https://minifabrika.com/blog/istanbul-3d-baski-hizmeti.html",
+              "https://minifabrika.com/blog/malzeme-secimi-rehberi.html",
+              "https://minifabrika.com/blog/teknik-baski-kalitesi-rehberi.html",
+              "https://minifabrika.com/islerimiz.html",
+              "https://minifabrika.com/malzeme-uretim.html",
+              "https://minifabrika.com/sorular.html"
+            ]
+          }
+          EOF
+
+          HTTP_CODE=$(curl --retry 3 --retry-delay 2 --connect-timeout 15 --max-time 45 \
+            -sS -o /tmp/indexnow-response.txt -w "%{http_code}" \
+            -X POST "https://api.indexnow.org/indexnow" \
+            -H "Content-Type: application/json; charset=utf-8" \
+            --data-binary @/tmp/indexnow.json)
+
+          echo "IndexNow HTTP status: ${HTTP_CODE}"
+          cat /tmp/indexnow-response.txt || true
+          if [ "${HTTP_CODE}" != "200" ] && [ "${HTTP_CODE}" != "202" ]; then
+            exit 1
+          fi
