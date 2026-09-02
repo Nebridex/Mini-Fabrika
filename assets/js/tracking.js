@@ -161,20 +161,61 @@
     });
   }
 
-  function simplifyArticleNavigation() {
-    if (!/^\/blog\/.+\.html$/.test(window.location.pathname) || window.location.pathname === '/blog/index.html') return;
-    var nav = document.querySelector('.topbar nav');
-    if (!nav) return;
-    nav.classList.add('simple-nav');
-    nav.innerHTML = '<a href="/#uretim">Üretim</a><a class="active" href="/blog/index.html">Rehberler</a><a href="/hakkimizda.html">Hakkımızda</a><a class="nav-cta" href="/teklif.html#teklif-form">Teklif Al</a>';
+  function activeSection() {
+    var path = window.location.pathname.replace(/\/+$/, '') || '/';
+    if (path === '/teklif.html') return 'quote';
+    if (path === '/sorular.html') return 'questions';
+    if (path === '/hakkimizda.html') return 'about';
+    if (path === '/blog' || path === '/blog/index.html' || path.indexOf('/blog/') === 0) return 'guides';
+    return 'production';
   }
 
-  function simplifyLandingNavigation() {
-    if (!/^\/(3d-baski-hizmeti-istanbul|stl-dosyasindan-3d-baski|prototip-kucuk-seri-uretim)\/?$/.test(window.location.pathname) && !/^\/kurumsal\/?$/.test(window.location.pathname)) return;
+  function navLink(href, label, key, active, extraClass) {
+    var classes = [];
+    if (extraClass) classes.push(extraClass);
+    if (key === active) classes.push('active');
+    return '<a' + (classes.length ? ' class="' + classes.join(' ') + '"' : '') + (key === active ? ' aria-current="page"' : '') + ' href="' + href + '">' + label + '</a>';
+  }
+
+  function normalizePrimaryNavigation() {
     var nav = document.querySelector('.topbar nav');
     if (!nav) return;
+    var active = activeSection();
     nav.classList.add('simple-nav');
-    nav.innerHTML = '<a href="/#uretim">Üretim</a><a href="/blog/index.html">Rehberler</a><a href="/hakkimizda.html">Hakkımızda</a><a class="nav-cta" href="/teklif.html#teklif-form">Teklif Al</a>';
+    nav.innerHTML =
+      navLink('/#uretim', 'Üretim', 'production', active) +
+      navLink('/blog/index.html', 'Rehberler', 'guides', active) +
+      navLink('/hakkimizda.html', 'Hakkımızda', 'about', active) +
+      navLink('/sorular.html', 'Soru Sor', 'questions', active) +
+      navLink('/teklif.html#teklif-form', 'Teklif Al', 'quote', active, 'nav-cta');
+  }
+
+  function ensureFooterNavigation() {
+    var footer = document.querySelector('footer .container');
+    if (!footer) return;
+    var nav = footer.querySelector('.site-footer-nav') || footer.querySelector('.socials') || footer.querySelector('.footer-actions');
+    if (!nav) {
+      nav = document.createElement('div');
+      nav.className = 'socials site-footer-nav';
+      footer.appendChild(nav);
+    } else {
+      nav.classList.add('site-footer-nav');
+    }
+
+    var links = [
+      ['/hakkimizda.html', 'Hakkımızda'],
+      ['/hakkimizda.html#iletisim', 'İletişim'],
+      ['/blog/index.html', 'Rehberler'],
+      ['/sorular.html', 'Soru Sor'],
+      ['/teklif.html#teklif-form', 'Teklif Al']
+    ];
+    links.forEach(function (item) {
+      if (nav.querySelector('a[href="' + item[0] + '"]')) return;
+      var a = document.createElement('a');
+      a.href = item[0];
+      a.textContent = item[1];
+      nav.appendChild(a);
+    });
   }
 
   function injectArticleCommentForm() {
@@ -292,8 +333,8 @@
   function init() {
     ensureSimpleStyles();
     rewriteLegacyLinks();
-    simplifyArticleNavigation();
-    simplifyLandingNavigation();
+    normalizePrimaryNavigation();
+    ensureFooterNavigation();
     injectArticleCommentForm();
     attachAttributionToForms();
     emitQuoteView();
