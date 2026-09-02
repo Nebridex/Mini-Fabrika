@@ -19,10 +19,6 @@
 
   initGA4();
 
-  function findClickable(target) {
-    return target && target.closest ? target.closest('a, button') : null;
-  }
-
   function emit(eventName, payload) {
     payload = payload || {};
     if (typeof window.gtag === 'function') window.gtag('event', eventName, payload);
@@ -64,12 +60,14 @@
     if (existing) {
       try { return JSON.parse(existing); } catch (error) {}
     }
-    var source = '';
-    var medium = '';
+
     var campaign = params.get('utm_campaign') || '';
     var gclid = params.get('gclid') || '';
     var utmSource = params.get('utm_source') || '';
     var utmMedium = params.get('utm_medium') || '';
+    var source = '';
+    var medium = '';
+
     if (utmSource) {
       source = utmSource;
       medium = utmMedium || 'campaign';
@@ -86,6 +84,7 @@
         medium = '(none)';
       }
     }
+
     var attribution = {
       source: source,
       medium: medium,
@@ -152,12 +151,22 @@
     ensureStylesheet('ui-fixes.css', '/assets/css/ui-fixes.css?v=20260829-4');
   }
 
+  function rewriteLegacyLinks() {
+    Array.prototype.forEach.call(document.querySelectorAll('a[href="/islerimiz.html"],a[href="islerimiz.html"]'), function (link) {
+      link.href = '/#uretim';
+      if (/işlerimiz|örnek/i.test(link.textContent || '')) link.textContent = 'Üretim Alanları';
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('a[href="/malzeme-uretim.html"],a[href="malzeme-uretim.html"]'), function (link) {
+      link.href = '/blog/malzeme-secimi-rehberi.html';
+    });
+  }
+
   function simplifyArticleNavigation() {
     if (!/^\/blog\/.+\.html$/.test(window.location.pathname) || window.location.pathname === '/blog/index.html') return;
     var nav = document.querySelector('.topbar nav');
     if (!nav) return;
     nav.classList.add('simple-nav');
-    nav.innerHTML = '<a href="/#uretim">Üretim</a><a class="active" href="/blog/index.html">Rehberler</a><a href="/sorular.html">Soru Sor</a><a class="nav-cta" href="/teklif.html#teklif-form">Teklif Al</a>';
+    nav.innerHTML = '<a href="/#uretim">Üretim</a><a class="active" href="/blog/index.html">Rehberler</a><a href="/hakkimizda.html">Hakkımızda</a><a class="nav-cta" href="/teklif.html#teklif-form">Teklif Al</a>';
   }
 
   function simplifyLandingNavigation() {
@@ -165,13 +174,14 @@
     var nav = document.querySelector('.topbar nav');
     if (!nav) return;
     nav.classList.add('simple-nav');
-    nav.innerHTML = '<a href="/#uretim">Üretim</a><a href="/blog/index.html">Rehberler</a><a href="/sorular.html">Soru Sor</a><a class="nav-cta" href="/teklif.html#teklif-form">Teklif Al</a>';
+    nav.innerHTML = '<a href="/#uretim">Üretim</a><a href="/blog/index.html">Rehberler</a><a href="/hakkimizda.html">Hakkımızda</a><a class="nav-cta" href="/teklif.html#teklif-form">Teklif Al</a>';
   }
 
   function injectArticleCommentForm() {
     if (!/^\/blog\/.+\.html$/.test(window.location.pathname) || window.location.pathname === '/blog/index.html' || window.location.pathname === '/blog/soru-alindi.html') return;
     var article = document.querySelector('.blog-article');
     if (!article || article.querySelector('.article-comments')) return;
+
     var section = document.createElement('section');
     section.className = 'article-comments';
     section.id = 'yorumlar';
@@ -221,7 +231,15 @@
           emit('quote_submit_attempt', payload);
           emit('form_submit_attempt', payload);
         } else {
-          emit('content_form_submit', { page_path: window.location.pathname, form_type: form.classList.contains('article-comment-form') ? 'article_comment' : 'question', traffic_source: attribution.source, traffic_medium: attribution.medium });
+          emit('content_form_submit', {
+            page_path: window.location.pathname,
+            form_type: form.classList.contains('article-comment-form') ? 'article_comment' : (form.classList.contains('corporate-form') ? 'corporate_quote' : 'question'),
+            traffic_source: attribution.source,
+            traffic_medium: attribution.medium
+          });
+          if (form.classList.contains('corporate-form')) {
+            emit('form_submit_attempt', { page_path: window.location.pathname, lead_type: 'corporate', traffic_source: attribution.source, traffic_medium: attribution.medium });
+          }
         }
       });
     });
@@ -233,14 +251,24 @@
   }
 
   function emitConversionOnce() {
-    if (window.location.pathname !== '/tesekkurler.html') return;
-    var key = CONVERSION_KEY + window.location.pathname;
+    var params = new URLSearchParams(window.location.search || '');
+    var leadType = '';
+    if (window.location.pathname === '/tesekkurler.html') leadType = 'batch_production_quote';
+    if (/^\/kurumsal\/?$/.test(window.location.pathname) && params.get('sent') === '1') leadType = 'corporate';
+    if (!leadType) return;
+
+    var key = CONVERSION_KEY + leadType + ':' + window.location.pathname + window.location.search;
     if (safeGet(key)) return;
     safeSet(key, '1');
+
     var context = {};
     var raw = safeGet(QUOTE_CONTEXT_KEY);
     if (raw) { try { context = JSON.parse(raw); } catch (error) {} }
-    emit('generate_lead', Object.assign({ lead_type: 'batch_production_quote', traffic_source: attribution.source, traffic_medium: attribution.medium, traffic_campaign: attribution.campaign }, context));
+    emit('generate_lead', Object.assign({ lead_type: leadType, traffic_source: attribution.source, traffic_medium: attribution.medium, traffic_campaign: attribution.campaign }, context));
+  }
+
+  function findClickable(target) {
+    return target && target.closest ? target.closest('a, button') : null;
   }
 
   function onClick(event) {
@@ -250,6 +278,7 @@
     var text = (el.textContent || el.getAttribute('aria-label') || '').trim().replace(/\s+/g, ' ').slice(0, 120);
     var className = (el.className || '').toString();
     var payload = { page_path: window.location.pathname, link_path: href && href.charAt(0) === '/' ? href.split('?')[0] : '', cta_text: text || 'unknown', traffic_source: attribution.source, traffic_medium: attribution.medium };
+
     if (/wa\.me|api\.whatsapp\.com/i.test(href) || el.hasAttribute('data-whatsapp-cta')) { emit('click_whatsapp', payload); return; }
     if (href.indexOf('mailto:') === 0) { emit('click_email', payload); return; }
     if (/(teklif|üretim talebi|dosyanı gönder|stl dosyanı gönder|dosyayı gönder)/i.test(text) || /btn-primary/.test(className)) {
@@ -262,6 +291,7 @@
 
   function init() {
     ensureSimpleStyles();
+    rewriteLegacyLinks();
     simplifyArticleNavigation();
     simplifyLandingNavigation();
     injectArticleCommentForm();
