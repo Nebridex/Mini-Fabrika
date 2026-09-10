@@ -44,17 +44,17 @@ Google Analytics 4 ölçüm kimliği: `G-SGLPG3FT3V`.
 - `click_whatsapp` ve `click_email` eventlerini toplar.
 - Teklif gönderiminde `form_submit_attempt` ve `quote_submit_attempt` eventlerini gönderir.
 - Başarılı teklif sonrası `generate_lead` eventini üretir.
-- UTM/referrer attribution alanlarını FormSubmit formlarına ekler.
+- UTM/referrer attribution alanlarını backend formlarına ekler.
 
 ## Teklif Formu
 
-`teklif.html` formu FormSubmit üzerinden `info@minifabrika.com` adresine gönderilir.
+`teklif.html` formu MiniFabrika backend API'sine gönderilir. Talep önce PostgreSQL'e kalıcı olarak kaydedilir, dosya özel nesne depolamasında tutulur ve e-postalar veritabanı tabanlı kuyruktan gönderilir.
 
 ```html
-<form action="https://formsubmit.co/info@minifabrika.com" method="POST" enctype="multipart/form-data">
+<form action="https://api.minifabrika.com/v1/requests" method="POST" enctype="multipart/form-data">
 ```
 
-Dosya görülmeden otomatik fiyat veya sabit teslim süresi gösterilmez. Gerçek teklif teknik inceleme sonrası hazırlanır.
+Backend kurulumu, ortam değişkenleri ve güvenlik notları için [`backend/README.md`](backend/README.md) dosyasına bakın. Dosya görülmeden otomatik fiyat veya sabit teslim süresi gösterilmez. Gerçek teklif teknik inceleme sonrası hazırlanır.
 
 ## Yayına Alma
 
