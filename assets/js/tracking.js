@@ -232,9 +232,10 @@
       (success ? '<div class="submission-success">Teşekkürler. Yorumunuz bize ulaştı; kontrol sonrası yayına uygun yorumları makaleye ekliyoruz.</div>' : '') +
       '<h2>Yorum veya soru bırakın</h2>' +
       '<p class="comment-note">Makaleyle ilgili sorunuzu ya da deneyiminizi yazabilirsiniz. E-posta adresiniz yayınlanmaz. Yorumlar otomatik yayınlanmaz.</p>' +
-      '<form class="article-comment-form" action="https://api.minifabrika.com/v1/requests" method="POST" data-backend-form data-success-url="' + nextUrl + '">' +
-      '<input type="hidden" name="request_type" value="article_comment">' +
-      '<input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">' +
+      '<form class="article-comment-form" action="https://formsubmit.co/info@minifabrika.com" method="POST">' +
+      '<input type="hidden" name="_subject" value="MiniFabrika makale yorumu: ' + document.title.replace(/"/g, '&quot;') + '">' +
+      '<input type="hidden" name="_next" value="' + nextUrl + '">' +
+      '<input type="hidden" name="_template" value="table"><input type="hidden" name="_captcha" value="false">' +
       '<input type="hidden" name="article_url" value="' + window.location.href.split('?')[0] + '">' +
       '<label>İsim<input name="name" type="text" maxlength="80" required autocomplete="name"></label>' +
       '<label>E-posta <span class="muted">(opsiyonel, yayınlanmaz)</span><input name="email" type="email" autocomplete="email"></label>' +
@@ -244,7 +245,7 @@
   }
 
   function attachAttributionToForms() {
-    var forms = document.querySelectorAll('form[data-backend-form]');
+    var forms = document.querySelectorAll('form[action*="formsubmit.co"], form[data-quote-form]');
     Array.prototype.forEach.call(forms, function (form) {
       ensureHiddenInput(form, 'lead_source', attribution.source);
       ensureHiddenInput(form, 'lead_medium', attribution.medium);

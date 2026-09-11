@@ -43,9 +43,12 @@
         <div id="questionSuccess" class="submission-success" hidden>Teşekkürler. Sorunuz bize ulaştı; uygun olduğunda cevaplayıp yayınlayacağız.</div>
         <h2>Soru sor</h2>
         <p class="muted">Bu form teklif formu değildir. Hazır dosyanız ve adetiniz varsa doğrudan <a href="/teklif.html#teklif-form">teklif alın</a>.</p>
-        <form action="https://api.minifabrika.com/v1/requests" method="POST" data-backend-form data-success-url="/sorular.html?gonderildi=1#soru-sor">
-          <input type="hidden" name="request_type" value="question" />
-          <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none" />
+        <form action="https://formsubmit.co/info@minifabrika.com" method="POST">
+          <input type="hidden" name="_subject" value="MiniFabrika yeni üretim sorusu" />
+          <input type="hidden" name="_next" value="https://minifabrika.com/sorular.html?gonderildi=1#soru-sor" />
+          <input type="hidden" name="_template" value="table" />
+          <input type="hidden" name="_captcha" value="false" />
+          <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="display:none" />
           <label for="qTitle">Başlık<input id="qTitle" name="title" type="text" maxlength="120" required placeholder="Örn. PETG dış ortamda kullanılır mı?" /></label>
           <label for="qCategory">Kategori<select id="qCategory" name="category" required><option value="">Seçiniz</option><option>Malzeme</option><option>STL / Model</option><option>Teknik Kalite</option><option>Adetli Üretim</option><option>Fiyat</option><option>Diğer</option></select></label>
           <label for="qText">Sorunuz<textarea id="qText" name="question" rows="6" maxlength="1600" required placeholder="Sorunuzu mümkün olduğunca net yazın."></textarea></label>
@@ -62,7 +65,6 @@
 <footer><div class="container"><p>MiniFabrika · <a href="mailto:info@minifabrika.com">info@minifabrika.com</a></p><div class="socials"><a href="/blog/index.html">Rehberler</a><a href="/hakkimizda.html">Hakkımızda</a><a href="/hakkimizda.html#iletisim">İletişim</a><a href="/teklif.html#teklif-form">Teklif Al</a></div></div></footer>
 <script src="/script.min.js?v=20260829-3" defer></script>
 <script defer src="/assets/js/tracking.js"></script>
-<script defer src="/assets/js/backend-forms.js"></script>
 <script>if(new URLSearchParams(location.search).get('gonderildi')==='1'){document.getElementById('questionSuccess').hidden=false;}</script>
 </body>
 </html>

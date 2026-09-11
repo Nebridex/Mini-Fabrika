@@ -1,0 +1,40 @@
+name: Worker checks
+
+on:
+  pull_request:
+    paths:
+      - "worker/**"
+      - "teklif.html"
+      - "tesekkurler.html"
+      - "assets/js/quote-form.js"
+      - "assets/js/tracking.js"
+      - ".github/workflows/worker-ci.yml"
+  push:
+    branches: [main]
+    paths:
+      - "worker/**"
+      - "teklif.html"
+      - "tesekkurler.html"
+      - "assets/js/quote-form.js"
+      - "assets/js/tracking.js"
+      - ".github/workflows/worker-ci.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: worker
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: worker/package-lock.json
+      - run: npm ci
+      - run: npm test
+      - run: npm audit --audit-level=high
