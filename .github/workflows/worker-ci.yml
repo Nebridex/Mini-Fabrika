@@ -46,8 +46,12 @@ jobs:
           HEALTH="https://minifabrika-api.oz-cht-t.workers.dev/health"
           QUOTE="https://minifabrika-api.oz-cht-t.workers.dev/quote"
 
-          echo "Checking health endpoint..."
-          curl --fail --silent --show-error "$HEALTH"
+          echo "Checking Worker root and health endpoint..."
+          curl --silent --show-error -i "https://minifabrika-api.oz-cht-t.workers.dev/" | head -n 20
+          health_code="$(curl --silent --show-error -o /tmp/health-body -w '%{http_code}' "$HEALTH")"
+          echo "health_status=$health_code"
+          cat /tmp/health-body
+          test "$health_code" = "200"
 
           echo "Checking POST reachability and CORS..."
           headers="$(mktemp)"
