@@ -30,6 +30,28 @@
     return url.toString();
   }
 
+  function addHidden(form, name, value) {
+    var input = form.querySelector('input[name="' + name + '"]');
+    if (!input) {
+      input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = name;
+      form.appendChild(input);
+    }
+    input.value = value;
+  }
+
+  function fallbackToFormSubmit(form) {
+    addHidden(form, '_subject', 'Yeni MiniFabrika adetli üretim talebi');
+    addHidden(form, '_captcha', 'false');
+    addHidden(form, '_template', 'table');
+    addHidden(form, '_next', new URL('/tesekkurler.html', window.location.origin).toString());
+    form.action = 'https://formsubmit.co/info@minifabrika.com';
+    form.method = 'POST';
+    form.enctype = 'multipart/form-data';
+    HTMLFormElement.prototype.submit.call(form);
+  }
+
   function attach(form) {
     var fileInput = form.querySelector('input[type="file"][name="attachment"]');
 
@@ -72,6 +94,12 @@
         }
         window.location.assign(successUrl(form, result.quoteId));
       } catch (error) {
+        var isNetworkError = error instanceof TypeError || (error && error.message === 'Failed to fetch');
+        if (isNetworkError) {
+          showError(box, 'Bağlantı sorunu algılandı. Talebiniz yedek kanal üzerinden gönderiliyor…');
+          fallbackToFormSubmit(form);
+          return;
+        }
         showError(box, error && error.message ? error.message : 'Talep gönderilemedi. Lütfen tekrar deneyin.');
         form.removeAttribute('aria-busy');
         if (button) {
