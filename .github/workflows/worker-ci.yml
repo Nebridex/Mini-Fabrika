@@ -49,7 +49,9 @@ jobs:
           QUOTE="https://minifabrika-api.oz-cht-t.workers.dev/quote"
 
           echo "Checking Worker root and health endpoint..."
-          curl --silent --show-error -i "https://minifabrika-api.oz-cht-t.workers.dev/" | head -n 20
+          curl --silent --show-error -D /tmp/root-headers -o /tmp/root-body "https://minifabrika-api.oz-cht-t.workers.dev/" || true
+          head -n 20 /tmp/root-headers || true
+          head -n 20 /tmp/root-body || true
           health_code="000"
           for attempt in $(seq 1 12); do
             health_code="$(curl --silent --show-error -o /tmp/health-body -w '%{http_code}' "$HEALTH" || true)"
