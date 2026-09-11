@@ -38,3 +38,28 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm audit --audit-level=high
+      - name: Production Worker smoke check
+        working-directory: .
+        shell: bash
+        run: |
+          set -euo pipefail
+          HEALTH="https://minifabrika-api.oz-cht-t.workers.dev/health"
+          QUOTE="https://minifabrika-api.oz-cht-t.workers.dev/quote"
+
+          echo "Checking health endpoint..."
+          curl --fail --silent --show-error "$HEALTH"
+
+          echo "Checking POST reachability and CORS..."
+          headers="$(mktemp)"
+          body="$(mktemp)"
+          code="$(curl --silent --show-error \
+            -X POST "$QUOTE" \
+            -H 'Origin: https://minifabrika.com' \
+            -H 'Content-Type: text/plain' \
+            -D "$headers" \
+            -o "$body" \
+            -w '%{http_code}')"
+
+          test "$code" = "400"
+          grep -i '^access-control-allow-origin: https://minifabrika.com' "$headers"
+          grep -q 'multipart/form-data gerekli' "$body"
