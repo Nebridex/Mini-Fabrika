@@ -39,11 +39,11 @@
 
       var box = messageBox(form);
       var file = fileInput && fileInput.files && fileInput.files[0];
-      if (!file || !ALLOWED_EXTENSION.test(file.name)) {
-        showError(box, 'Lütfen STL, 3MF, OBJ veya ZIP dosyası seçin.');
+      if (file && !ALLOWED_EXTENSION.test(file.name)) {
+        showError(box, 'Dosya yüklerseniz STL, 3MF, OBJ veya ZIP formatında olmalıdır.');
         return;
       }
-      if (file.size > MAX_FILE_SIZE) {
+      if (file && file.size > MAX_FILE_SIZE) {
         showError(box, 'Dosya boyutu en fazla 50 MB olabilir.');
         return;
       }
