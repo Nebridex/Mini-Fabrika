@@ -9,6 +9,7 @@ on:
       - "assets/js/quote-form.js"
       - "assets/js/tracking.js"
       - ".github/workflows/worker-ci.yml"
+      - "wrangler.toml"
   push:
     branches: [main]
     paths:
@@ -18,6 +19,7 @@ on:
       - "assets/js/quote-form.js"
       - "assets/js/tracking.js"
       - ".github/workflows/worker-ci.yml"
+      - "wrangler.toml"
 
 permissions:
   contents: read
@@ -48,9 +50,16 @@ jobs:
 
           echo "Checking Worker root and health endpoint..."
           curl --silent --show-error -i "https://minifabrika-api.oz-cht-t.workers.dev/" | head -n 20
-          health_code="$(curl --silent --show-error -o /tmp/health-body -w '%{http_code}' "$HEALTH")"
-          echo "health_status=$health_code"
-          cat /tmp/health-body
+          health_code="000"
+          for attempt in $(seq 1 12); do
+            health_code="$(curl --silent --show-error -o /tmp/health-body -w '%{http_code}' "$HEALTH" || true)"
+            echo "health_attempt=$attempt status=$health_code"
+            cat /tmp/health-body || true
+            if [ "$health_code" = "200" ]; then
+              break
+            fi
+            sleep 10
+          done
           test "$health_code" = "200"
 
           echo "Checking POST reachability and CORS..."
