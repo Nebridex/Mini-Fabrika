@@ -22,7 +22,7 @@ export default {
 
     if (request.method === "GET" && url.pathname === "/health") {
       return json(
-        { ok: true, service: "minifabrika-api", time: new Date().toISOString() },
+        { ok: true, service: "minifabrika-api", version: "optional-files-v1", time: new Date().toISOString() },
         200,
         corsHeaders,
       );
