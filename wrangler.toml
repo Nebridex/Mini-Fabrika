@@ -1,0 +1,17 @@
+name = "minifabrika-api"
+main = "worker/src/index.js"
+compatibility_date = "2026-09-11"
+workers_dev = true
+
+[[d1_databases]]
+binding = "DB"
+database_name = "minifabrika-quotes"
+database_id = "1b1c75b6-01f6-47e1-8da1-855dc2fdec72"
+
+[[r2_buckets]]
+binding = "FILES"
+bucket_name = "minifabrika-quotes-files"
+
+[vars]
+MAIL_FROM = "MiniFabrika <info@minifabrika.com>"
+MAIL_TO = "info@minifabrika.com"
