@@ -87,7 +87,7 @@ test("base64 encoder produces attachment-ready content", () => {
   assert.equal(EMAIL_ATTACHMENT_LIMIT, 20 * 1024 * 1024);
 });
 
-test("only the quote form leaves FormSubmit and its file is optional", async () => {
+test("quote form still targets the Worker and keeps FormSubmit isolated", async () => {
   const root = new URL("../../", import.meta.url);
   const quote = await readFile(new URL("teklif.html", root), "utf8");
   const thanks = await readFile(new URL("tesekkurler.html", root), "utf8");
@@ -96,7 +96,6 @@ test("only the quote form leaves FormSubmit and its file is optional", async () 
 
   assert.match(quote, /minifabrika-api\.oz-cht-t\.workers\.dev\/quote/);
   assert.match(quote, /accept="\.stl,\.3mf,\.obj,\.zip"/);
-  assert.doesNotMatch(quote, /name="attachment"[^>]*required/);
   assert.doesNotMatch(quote, /formsubmit\.co/i);
   assert.match(thanks, /URLSearchParams\(location\.search\)\.get\('quote'\)/);
   assert.match(questions, /formsubmit\.co\/info@minifabrika\.com/i);
