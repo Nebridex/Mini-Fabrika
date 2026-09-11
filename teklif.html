@@ -39,17 +39,15 @@
       <div class="card">
         <h2>Üretim talebi</h2>
         <p class="lead">Hazır modeli bulunan, tekrarlı veya adetli üretim ihtiyacı olan projeleri değerlendiriyoruz.</p>
-        <form class="quote-form" action="https://formsubmit.co/info@minifabrika.com" method="POST" enctype="multipart/form-data" data-autosave="minifabrika-quote-v2">
-          <input type="hidden" name="_subject" value="Yeni MiniFabrika adetli üretim talebi" />
-          <input type="hidden" name="_next" value="https://minifabrika.com/tesekkurler.html" />
-          <input type="hidden" name="_captcha" value="false" />
+        <form class="quote-form" action="https://minifabrika-api.oz-cht-t.workers.dev/quote" method="POST" enctype="multipart/form-data" data-quote-form data-success-url="/tesekkurler.html" data-autosave="minifabrika-quote-v2">
+          <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none" />
 
           <div class="grid-3">
             <div><label for="productionType">Üretim türü *</label><select id="productionType" name="production_type" required><option value="">Seçiniz</option><option>Adetli parça üretimi</option><option>Fonksiyonel parça / aparat</option><option>Markalı / promosyon ürün</option><option>Çok parçalı set / proje</option><option>Diğer</option></select></div>
             <div><label for="quantity">Planlanan toplam adet *</label><input id="quantity" name="quantity" type="number" min="2" step="1" required placeholder="Örn. 50" /></div>
           </div>
 
-          <div><label for="modelFile">STL / 3MF / OBJ dosyası *</label><input id="modelFile" name="attachment" type="file" accept=".stl,.3mf,.obj" required /><p class="form-note">Üretime hazır dosyanızı yükleyin. Birden fazla parçalı projelerde açıklamaya parça sayısını yazabilirsiniz.</p></div>
+          <div><label for="modelFile">STL / 3MF / OBJ / ZIP dosyası *</label><input id="modelFile" name="attachment" type="file" accept=".stl,.3mf,.obj,.zip" required /><p class="form-note">Üretime hazır dosyanızı yükleyin (en fazla 50 MB). ZIP dosyaları açılmadan özel depolamada saklanır.</p></div>
 
           <div class="grid-3">
             <div><label for="material">Malzeme *</label><select id="material" name="material" required><option value="">Seçiniz</option><option>PLA</option><option>PETG</option><option>ABS</option><option>TPU</option><option>Bilmiyorum / öneri istiyorum</option></select></div>
@@ -88,5 +86,6 @@
 <footer><div class="container"><p>MiniFabrika · İstanbul merkezli adetli 3D baskı üretimi · <a href="mailto:info@minifabrika.com">info@minifabrika.com</a></p><div class="footer-actions"><a class="btn btn-secondary" href="/blog/index.html">Rehberler</a><a class="btn btn-secondary" href="/hakkimizda.html">Hakkımızda</a><a class="btn btn-secondary" href="/hakkimizda.html#iletisim">İletişim</a><a class="btn btn-secondary" href="/sorular.html">Soru Sor</a></div></div></footer>
 <script src="script.min.js?v=20260829-3" defer></script>
 <script defer src="assets/js/tracking.js"></script>
+<script defer src="assets/js/quote-form.js"></script>
 </body>
 </html>

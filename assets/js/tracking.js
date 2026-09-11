@@ -245,7 +245,7 @@
   }
 
   function attachAttributionToForms() {
-    var forms = document.querySelectorAll('form[action*="formsubmit.co"]');
+    var forms = document.querySelectorAll('form[action*="formsubmit.co"], form[data-quote-form]');
     Array.prototype.forEach.call(forms, function (form) {
       ensureHiddenInput(form, 'lead_source', attribution.source);
       ensureHiddenInput(form, 'lead_medium', attribution.medium);
