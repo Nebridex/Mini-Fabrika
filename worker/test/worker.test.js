@@ -2,16 +2,16 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 import {
-  EMAIL_ATTACHMENT_LIMIT,
+  DOWNLOAD_TTL_MS,
   MAX_FILE_SIZE,
-  arrayBufferToBase64,
   createQuoteId,
+  sha256Hex,
   sanitizeFileName,
   validateFile,
 } from "../src/index.js";
 import worker from "../src/index.js";
 
-function createDb(events = []) {
+function createDb(events = [], options = {}) {
   return {
     prepare(sql) {
       const statement = {
@@ -28,6 +28,9 @@ function createDb(events = []) {
               else events.push("d1:update");
             },
             async first() {
+              if (sql.includes("SELECT request_count FROM request_rate_limits")) {
+                return { request_count: options.rateLimitCount || 1 };
+              }
               if (sql.includes("ORDER BY created_at DESC LIMIT 1")) {
                 return {
                   id: "MF-20261003-ABCDE",
@@ -57,14 +60,14 @@ function baseForm({ withFile = true } = {}) {
   form.set("use_case", "Otomatik test");
   form.set("consent", "on");
   if (withFile) {
-    form.set("attachment", new File(["solid test\nendsolid test\n"], "test.stl", { type: "model/stl" }));
+    form.set("attachment", new File([new Uint8Array(84)], "test.stl", { type: "model/stl" }));
   }
   return form;
 }
 
-function createEnv(events = [], sent = [], { mailFails = false } = {}) {
+function createEnv(events = [], sent = [], { mailFails = false, rateLimitCount = 1 } = {}) {
   return {
-    DB: createDb(events),
+    DB: createDb(events, { rateLimitCount }),
     FILES: {
       async put() {
         events.push("r2:put");
@@ -112,10 +115,12 @@ test("the 50 MB maximum is enforced", async () => {
   assert.match(await validateFile(oversized), /50 MB/);
 });
 
-test("base64 encoder produces attachment-ready content", () => {
-  const value = arrayBufferToBase64(new TextEncoder().encode("MiniFabrika").buffer);
-  assert.equal(value, "TWluaUZhYnJpa2E=");
-  assert.equal(EMAIL_ATTACHMENT_LIMIT, 2 * 1024 * 1024);
+test("download links expire after 30 days and tokens are hashable", async () => {
+  assert.equal(DOWNLOAD_TTL_MS, 30 * 24 * 60 * 60 * 1000);
+  assert.equal(
+    await sha256Hex("minifabrika-token"),
+    "0949d5dd06d516f10597a3998caa9c53f3801773265d6393f9aec8875bccaa37",
+  );
 });
 
 test("all public forms use the first-party Worker, not FormSubmit", async () => {
@@ -190,7 +195,7 @@ test("D1 is written before R2 and email failure still returns success", async ()
   assert.ok(events.indexOf("d1:quote-insert") < events.indexOf("r2:put"));
 });
 
-test("small uploaded files are attached to the admin SMTP email", async () => {
+test("uploaded customer files stay out of email and use a private download link", async () => {
   const events = [];
   const sent = [];
   const env = createEnv(events, sent);
@@ -198,7 +203,7 @@ test("small uploaded files are attached to the admin SMTP email", async () => {
   const response = await worker.fetch(
     new Request("https://worker.example/quote", {
       method: "POST",
-      headers: { Origin: "https://minifabrika.com" },
+      headers: { Origin: "https://minifabrika.com", "CF-Connecting-IP": "203.0.113.10" },
       body: baseForm(),
     }),
     env,
@@ -206,10 +211,10 @@ test("small uploaded files are attached to the admin SMTP email", async () => {
 
   assert.equal(response.status, 201);
   const admin = sent.find((mail) => mail.subject.startsWith("Yeni MiniFabrika"));
-  assert.equal(admin.attachments.length, 1);
-  assert.equal(admin.attachments[0].filename, "test.stl");
-  assert.equal(admin.attachments[0].contentType, "model/stl");
-  assert.ok(admin.attachments[0].content.length > 0);
+  assert.deepEqual(admin.attachments || [], []);
+  assert.match(admin.html, /private R2/);
+  assert.match(admin.html, /30 gün/);
+  assert.match(admin.html, /\/download\/MF-/);
 });
 
 test("question form stores the message and sends one SMTP notification", async () => {
@@ -294,6 +299,20 @@ test("corporate form uses the same first-party message endpoint", async () => {
   assert.match(sent[0].subject, /kurumsal talep/i);
   assert.match(sent[0].html, /MiniFabrika Test A\.Ş\./);
   assert.match(sent[0].html, /50 adet/);
+});
+
+test("rate limiting blocks excessive public form submissions", async () => {
+  const env = createEnv([], [], { rateLimitCount: 9 });
+  const response = await worker.fetch(
+    new Request("https://worker.example/quote", {
+      method: "POST",
+      headers: { Origin: "https://minifabrika.com", "CF-Connecting-IP": "203.0.113.55" },
+      body: baseForm({ withFile: false }),
+    }),
+    env,
+  );
+  assert.equal(response.status, 429);
+  assert.equal(response.headers.get("Retry-After"), "600");
 });
 
 test("untrusted browser origins are rejected", async () => {
