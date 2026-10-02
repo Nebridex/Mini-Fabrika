@@ -87,6 +87,21 @@ async function handleQuote(request, env, corsHeaders) {
     const validationError = validateFields(fields);
     if (validationError) return json({ ok: false, error: validationError }, 400, corsHeaders);
 
+    const recipientLimited = await rateLimitIdentity(
+      env,
+      "/quote-recipient",
+      fields.email,
+      3,
+      60 * 60 * 1000,
+    );
+    if (recipientLimited) {
+      return json(
+        { ok: false, error: "Bu e-posta adresi için kısa sürede çok fazla talep oluşturuldu. Lütfen daha sonra tekrar deneyin." },
+        429,
+        { ...corsHeaders, "Retry-After": "3600" },
+      );
+    }
+
     const rawFile = form.get("attachment");
     const hasFile = rawFile instanceof File && Boolean(rawFile.name) && rawFile.size > 0;
     const file = hasFile ? rawFile : null;
@@ -632,22 +647,27 @@ async function rateLimitRequest(request, env, pathname) {
   const rawIp = request.headers.get("CF-Connecting-IP") ||
     (request.headers.get("X-Forwarded-For") || "").split(",")[0].trim() ||
     "unknown";
-  const ipHash = await sha256Hex(rawIp);
+  return rateLimitIdentity(env, pathname, rawIp, limit, RATE_LIMIT_WINDOW_MS);
+}
+
+async function rateLimitIdentity(env, route, identity, limit, windowMs) {
+  if (!env.DB) return false;
+  const identityHash = await sha256Hex(identity);
   const now = Date.now();
-  const windowStartMs = Math.floor(now / RATE_LIMIT_WINDOW_MS) * RATE_LIMIT_WINDOW_MS;
+  const windowStartMs = Math.floor(now / windowMs) * windowMs;
   const windowStart = new Date(windowStartMs).toISOString();
-  const key = `${pathname}:${ipHash}:${windowStartMs}`;
+  const key = `${route}:${identityHash}:${windowStartMs}`;
 
   try {
     await ensureRateLimitTable(env.DB);
     await env.DB.prepare(`
-      INSERT INTO request_rate_limits (bucket_key, route, ip_hash, window_start, request_count, updated_at)
+      INSERT INTO request_rate_limits (bucket_key, route, identity_hash, window_start, request_count, updated_at)
       VALUES (?, ?, ?, ?, 1, ?)
       ON CONFLICT(bucket_key) DO UPDATE SET
         request_count = request_count + 1,
         updated_at = excluded.updated_at
     `)
-      .bind(key, pathname, ipHash, windowStart, new Date(now).toISOString())
+      .bind(key, route, identityHash, windowStart, new Date(now).toISOString())
       .run();
 
     const row = await env.DB.prepare(
@@ -661,7 +681,7 @@ async function rateLimitRequest(request, env, pathname) {
 
     return Number(row?.request_count || 0) > limit;
   } catch (error) {
-    console.error("rate_limit_error", pathname, error);
+    console.error("rate_limit_error", route, error);
     return false;
   }
 }
@@ -671,7 +691,7 @@ async function ensureRateLimitTable(db) {
     CREATE TABLE IF NOT EXISTS request_rate_limits (
       bucket_key TEXT PRIMARY KEY,
       route TEXT NOT NULL,
-      ip_hash TEXT NOT NULL,
+      identity_hash TEXT NOT NULL,
       window_start TEXT NOT NULL,
       request_count INTEGER NOT NULL DEFAULT 0,
       updated_at TEXT NOT NULL
