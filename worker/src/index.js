@@ -1,8 +1,13 @@
 import { sendSmtpMail } from "./smtp.js";
 
 const MAX_FILE_SIZE = 50 * 1024 * 1024;
-const EMAIL_ATTACHMENT_LIMIT = 2 * 1024 * 1024;
-const DOWNLOAD_TTL_MS = 365 * 24 * 60 * 60 * 1000;
+const DOWNLOAD_TTL_MS = 30 * 24 * 60 * 60 * 1000;
+const MAX_REQUEST_SIZE = 55 * 1024 * 1024;
+const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
+const RATE_LIMITS = {
+  "/quote": 8,
+  "/message": 20,
+};
 const ALLOWED_EXTENSIONS = new Set(["stl", "3mf", "obj", "zip"]);
 const ALLOWED_ORIGINS = new Set([
   "https://minifabrika.com",
@@ -24,7 +29,7 @@ export default {
 
     if (request.method === "GET" && url.pathname === "/health") {
       return json(
-        { ok: true, service: "minifabrika-api", version: "direct-smtp-v1", time: new Date().toISOString() },
+        { ok: true, service: "minifabrika-api", version: "security-hardening-v1", time: new Date().toISOString() },
         200,
         corsHeaders,
       );
@@ -38,6 +43,21 @@ export default {
       if (origin && !ALLOWED_ORIGINS.has(origin)) {
         return json({ ok: false, error: "Origin not allowed" }, 403);
       }
+
+      const contentLength = Number(request.headers.get("Content-Length") || "0");
+      if (Number.isFinite(contentLength) && contentLength > MAX_REQUEST_SIZE) {
+        return json({ ok: false, error: "İstek boyutu çok büyük." }, 413, corsHeaders);
+      }
+
+      const limited = await rateLimitRequest(request, env, url.pathname);
+      if (limited) {
+        return json(
+          { ok: false, error: "Çok fazla istek gönderildi. Lütfen birkaç dakika sonra tekrar deneyin." },
+          429,
+          { ...corsHeaders, "Retry-After": "600" },
+        );
+      }
+
       if (url.pathname === "/message") return handleMessage(request, env, corsHeaders);
       return handleQuote(request, env, corsHeaders);
     }
@@ -87,7 +107,6 @@ async function handleQuote(request, env, corsHeaders) {
     const safeFileName = file ? sanitizeFileName(file.name) : "";
     const fileKey = file ? createFileKey(now, quoteId, safeFileName) : "";
     let downloadUrl = "";
-    let attachmentIncluded = false;
 
     await insertQuote(env.DB, {
       quoteId,
@@ -124,10 +143,11 @@ async function handleQuote(request, env, corsHeaders) {
         const token = randomDownloadToken();
         const expiresAt = new Date(Date.now() + DOWNLOAD_TTL_MS).toISOString();
         await ensureDownloadTable(env.DB);
+        const tokenHash = await sha256Hex(token);
         await env.DB.prepare(
           "INSERT OR REPLACE INTO quote_downloads (quote_id, token, expires_at, created_at) VALUES (?, ?, ?, ?)",
         )
-          .bind(quoteId, token, expiresAt, createdAt)
+          .bind(quoteId, tokenHash, expiresAt, createdAt)
           .run();
         downloadUrl = buildDownloadUrl(request, quoteId, token);
       } catch (downloadLinkError) {
@@ -135,22 +155,6 @@ async function handleQuote(request, env, corsHeaders) {
       }
 
       await updateStatus(env.DB, quoteId, "new");
-    }
-
-    let adminAttachments = [];
-    if (file && file.size <= EMAIL_ATTACHMENT_LIMIT) {
-      try {
-        adminAttachments = [
-          {
-            content: arrayBufferToBase64(await file.arrayBuffer()),
-            filename: safeFileName,
-            contentType: file.type || contentTypeFor(extension),
-          },
-        ];
-        attachmentIncluded = true;
-      } catch (attachmentError) {
-        console.error("quote_attachment_encode_error", quoteId, attachmentError);
-      }
     }
 
     const [customerResult, adminResult] = await Promise.allSettled([
@@ -173,9 +177,7 @@ async function handleQuote(request, env, corsHeaders) {
           fileSize: file ? file.size : 0,
           fileKey,
           downloadUrl,
-          attachmentIncluded,
         }),
-        attachments: adminAttachments,
       }),
     ]);
 
@@ -469,7 +471,8 @@ async function handleDownload(request, env) {
       .bind(quoteId)
       .first();
 
-    if (!row || row.token !== token) {
+    const tokenHash = await sha256Hex(token);
+    if (!row || (row.token !== tokenHash && row.token !== token)) {
       return json({ ok: false, error: "İndirme bağlantısı bulunamadı." }, 404);
     }
     if (Date.parse(row.expires_at) < Date.now()) {
@@ -541,10 +544,19 @@ async function validateFile(file) {
   if (file.size > MAX_FILE_SIZE) return "Dosya boyutu en fazla 50 MB olabilir.";
   const extension = getExtension(file.name);
   if (!ALLOWED_EXTENSIONS.has(extension)) return "Yalnızca STL, 3MF, OBJ veya ZIP dosyaları kabul edilir.";
+  const head = new Uint8Array(await file.slice(0, 512).arrayBuffer());
   if (extension === "zip" || extension === "3mf") {
-    const signature = new Uint8Array(await file.slice(0, 4).arrayBuffer());
-    const isZip = signature[0] === 0x50 && signature[1] === 0x4b && [0x03, 0x05, 0x07].includes(signature[2]);
+    const isZip = head[0] === 0x50 && head[1] === 0x4b && [0x03, 0x05, 0x07].includes(head[2]);
     if (!isZip) return `${extension.toUpperCase()} dosyası geçerli bir ZIP kapsayıcısı değil.`;
+  }
+  if (extension === "obj") {
+    const text = new TextDecoder().decode(head).replace(/^\uFEFF/, "").trimStart();
+    if (!/^(#|v\s|o\s|g\s|mtllib\s|usemtl\s)/m.test(text)) {
+      return "OBJ dosya içeriği beklenen formatla eşleşmiyor.";
+    }
+  }
+  if (extension === "stl" && file.size < 84) {
+    return "STL dosyası geçerli görünmüyor.";
   }
   return null;
 }
@@ -611,6 +623,71 @@ async function ensureDownloadTable(db) {
       created_at TEXT NOT NULL
     )
   `).run();
+}
+
+async function rateLimitRequest(request, env, pathname) {
+  const limit = RATE_LIMITS[pathname];
+  if (!limit || !env.DB) return false;
+
+  const rawIp = request.headers.get("CF-Connecting-IP") ||
+    (request.headers.get("X-Forwarded-For") || "").split(",")[0].trim() ||
+    "unknown";
+  const ipHash = await sha256Hex(rawIp);
+  const now = Date.now();
+  const windowStartMs = Math.floor(now / RATE_LIMIT_WINDOW_MS) * RATE_LIMIT_WINDOW_MS;
+  const windowStart = new Date(windowStartMs).toISOString();
+  const key = `${pathname}:${ipHash}:${windowStartMs}`;
+
+  try {
+    await ensureRateLimitTable(env.DB);
+    await env.DB.prepare(`
+      INSERT INTO request_rate_limits (bucket_key, route, ip_hash, window_start, request_count, updated_at)
+      VALUES (?, ?, ?, ?, 1, ?)
+      ON CONFLICT(bucket_key) DO UPDATE SET
+        request_count = request_count + 1,
+        updated_at = excluded.updated_at
+    `)
+      .bind(key, pathname, ipHash, windowStart, new Date(now).toISOString())
+      .run();
+
+    const row = await env.DB.prepare(
+      "SELECT request_count FROM request_rate_limits WHERE bucket_key = ?"
+    ).bind(key).first();
+
+    if (Math.random() < 0.02) {
+      const cutoff = new Date(now - 24 * 60 * 60 * 1000).toISOString();
+      env.DB.prepare("DELETE FROM request_rate_limits WHERE updated_at < ?")
+        .bind(cutoff)
+        .run()
+        .catch(() => {});
+    }
+
+    return Number(row?.request_count || 0) > limit;
+  } catch (error) {
+    console.error("rate_limit_error", pathname, error);
+    return false;
+  }
+}
+
+async function ensureRateLimitTable(db) {
+  await db.prepare(`
+    CREATE TABLE IF NOT EXISTS request_rate_limits (
+      bucket_key TEXT PRIMARY KEY,
+      route TEXT NOT NULL,
+      ip_hash TEXT NOT NULL,
+      window_start TEXT NOT NULL,
+      request_count INTEGER NOT NULL DEFAULT 0,
+      updated_at TEXT NOT NULL
+    )
+  `).run();
+}
+
+async function sha256Hex(value) {
+  const bytes = new TextEncoder().encode(String(value || ""));
+  const digest = await crypto.subtle.digest("SHA-256", bytes);
+  return Array.from(new Uint8Array(digest))
+    .map((byte) => byte.toString(16).padStart(2, "0"))
+    .join("");
 }
 
 function cors(origin) {
@@ -738,14 +815,12 @@ function adminEmailHtml(data) {
   const downloadBlock = data.downloadUrl
     ? `<div style="margin:24px 0">
         <a href="${escapeHtml(data.downloadUrl)}" style="display:inline-block;background:#0b7a75;color:#fff;text-decoration:none;padding:12px 18px;border-radius:8px;font-weight:700">Dosyayı İndir</a>
-        <div style="font-size:12px;color:#667085;margin-top:8px">Güvenli indirme bağlantısı 365 gün geçerlidir.</div>
+        <div style="font-size:12px;color:#667085;margin-top:8px">Güvenli indirme bağlantısı 30 gün geçerlidir.</div>
       </div>`
     : "";
-  const attachmentNote = data.attachmentIncluded
-    ? "<p><strong>Dosya ayrıca bu e-postaya eklenmiştir.</strong></p>"
-    : data.hasFile
-      ? "<p>Büyük dosyalarda e-posta eki yapılmaz; yukarıdaki güvenli indirme bağlantısını kullanın.</p>"
-      : "<p>Müşteri ilk talepte dosya yüklemedi. Bu e-postayı yanıtlayarak müşteriden dosyayı isteyebilirsiniz.</p>";
+  const attachmentNote = data.hasFile
+    ? "<p>Güvenlik nedeniyle müşteri dosyaları e-postaya eklenmez; yukarıdaki private R2 indirme bağlantısını kullanın.</p>"
+    : "<p>Müşteri ilk talepte dosya yüklemedi. Bu e-postayı yanıtlayarak müşteriden dosyayı isteyebilirsiniz.</p>";
 
   return `<div style="font-family:Arial,Helvetica,sans-serif;max-width:720px;margin:auto;color:#172033;line-height:1.55">
     <h2>Yeni üretim talebi</h2>
@@ -796,19 +871,22 @@ function json(body, status, headers = {}) {
       "Content-Type": "application/json; charset=utf-8",
       "Cache-Control": "no-store",
       "X-Content-Type-Options": "nosniff",
+      "Referrer-Policy": "no-referrer",
+      "X-Frame-Options": "DENY",
+      "Content-Security-Policy": "default-src 'none'; frame-ancestors 'none'; base-uri 'none'",
       ...headers,
     },
   });
 }
 
 export {
-  EMAIL_ATTACHMENT_LIMIT,
+  DOWNLOAD_TTL_MS,
   MAX_FILE_SIZE,
-  arrayBufferToBase64,
   createFileKey,
   createQuoteId,
   getExtension,
   sanitizeFileName,
+  sha256Hex,
   validateFields,
   validateFile,
 };
