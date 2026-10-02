@@ -30,6 +30,10 @@ export default {
       );
     }
 
+    if (request.method === "GET" && url.pathname === "/status/latest") {
+      return handleLatestQuoteStatus(env, corsHeaders);
+    }
+
     if (request.method === "GET" && url.pathname.startsWith("/download/")) {
       return handleDownload(request, env);
     }
@@ -446,6 +450,36 @@ function contactEmailHtml(data) {
     <h3 style="margin-top:24px">Mesaj</h3>
     <div style="background:#f5f7fa;border-radius:10px;padding:16px">${escapeHtml(data.message).replace(/\n/g, "<br>")}</div>
   </div>`;
+}
+
+
+async function handleLatestQuoteStatus(env, corsHeaders) {
+  const row = await env.DB.prepare(
+    "SELECT id, status, email_status, last_email_error FROM quote_requests ORDER BY created_at DESC LIMIT 1"
+  ).first();
+
+  if (!row) return json({ ok: false, error: "Not found" }, 404, corsHeaders);
+
+  return json({
+    ok: true,
+    quoteId: row.id,
+    status: row.status,
+    emailStatus: row.email_status,
+    emailErrorCode: classifyMailError(row.last_email_error),
+  }, 200, corsHeaders);
+}
+
+function classifyMailError(value) {
+  const text = String(value || "").toLowerCase();
+  if (!text) return null;
+  if (text.includes("smtp password") || text.includes("(535)") || text.includes("authentication failed") || text.includes("auth")) return "smtp_auth_failed";
+  if (text.includes("tls connection failed")) return "smtp_tls_connect_failed";
+  if (text.includes("response timeout")) return "smtp_response_timeout";
+  if (text.includes("socket error") || text.includes("socket ended")) return "smtp_socket_error";
+  if (text.includes("mail from")) return "smtp_mail_from_failed";
+  if (text.includes("rcpt to")) return "smtp_recipient_failed";
+  if (text.includes("message body")) return "smtp_data_failed";
+  return "smtp_unknown_error";
 }
 
 async function handleDownload(request, env) {
