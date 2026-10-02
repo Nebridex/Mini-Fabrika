@@ -12,6 +12,9 @@ on:
       - "assets/js/tracking.js"
       - ".github/workflows/worker-ci.yml"
       - "wrangler.toml"
+      - "_config.yml"
+      - ".well-known/security.txt"
+      - "**/*.html"
   push:
     branches: [main]
     paths:
@@ -22,6 +25,9 @@ on:
       - "assets/js/tracking.js"
       - ".github/workflows/worker-ci.yml"
       - "wrangler.toml"
+      - "_config.yml"
+      - ".well-known/security.txt"
+      - "**/*.html"
 
 permissions:
   contents: read
