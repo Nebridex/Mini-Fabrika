@@ -245,16 +245,19 @@ async function handleMessage(request, env, corsHeaders) {
     }
 
     const type = clean(form.get("message_type"), 40);
-    const name = clean(form.get("name"), 160);
+    const name = clean(form.get("name") || form.get("full_name"), 160);
     const email = clean(form.get("email"), 254).toLowerCase();
     const title = clean(form.get("title"), 160);
     const category = clean(form.get("category"), 120);
     const question = clean(form.get("question"), 5000);
     const comment = clean(form.get("comment"), 5000);
+    const corporateMessage = clean(form.get("message"), 5000);
     const articleUrl = clean(form.get("article_url"), 1000);
-    const message = type === "article_comment" ? comment : question;
+    const company = clean(form.get("company"), 200);
+    const quantityText = clean(form.get("quantity"), 200);
+    const message = type === "article_comment" ? comment : type === "corporate" ? corporateMessage : question;
 
-    if (!["question", "article_comment"].includes(type)) {
+    if (!["question", "article_comment", "corporate"].includes(type)) {
       return json({ ok: false, error: "Geçersiz form türü." }, 400, corsHeaders);
     }
     if (!name || !message) {
@@ -269,6 +272,9 @@ async function handleMessage(request, env, corsHeaders) {
     if (type === "article_comment" && !articleUrl) {
       return json({ ok: false, error: "Makale bilgisi eksik." }, 400, corsHeaders);
     }
+    if (type === "corporate" && (!email || !company || !quantityText)) {
+      return json({ ok: false, error: "Firma, e-posta ve hedef adet zorunludur." }, 400, corsHeaders);
+    }
 
     const now = new Date();
     const createdAt = now.toISOString();
@@ -277,10 +283,10 @@ async function handleMessage(request, env, corsHeaders) {
     await ensureContactTable(env.DB);
     await env.DB.prepare(`
       INSERT INTO contact_messages (
-        id, created_at, message_type, name, email, title, category, message,
+        id, created_at, message_type, name, email, company, quantity_text, title, category, message,
         article_url, lead_source, lead_medium, lead_campaign, lead_landing_page,
         lead_referrer_host, lead_gclid, email_status
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')
     `)
       .bind(
         messageId,
@@ -288,6 +294,8 @@ async function handleMessage(request, env, corsHeaders) {
         type,
         name,
         email || null,
+        company || null,
+        quantityText || null,
         title || null,
         category || null,
         message,
@@ -309,7 +317,9 @@ async function handleMessage(request, env, corsHeaders) {
         replyTo: email || env.MAIL_TO,
         subject: type === "article_comment"
           ? `MiniFabrika makale yorumu — ${messageId}`
-          : `MiniFabrika yeni üretim sorusu — ${messageId}`,
+          : type === "corporate"
+            ? `MiniFabrika kurumsal talep — ${messageId}`
+            : `MiniFabrika yeni üretim sorusu — ${messageId}`,
         html: contactEmailHtml({
           messageId,
           createdAt,
@@ -320,6 +330,8 @@ async function handleMessage(request, env, corsHeaders) {
           category,
           message,
           articleUrl,
+          company,
+          quantityText,
         }),
       });
     } catch (error) {
@@ -381,6 +393,8 @@ async function ensureContactTable(db) {
       message_type TEXT NOT NULL,
       name TEXT NOT NULL,
       email TEXT,
+      company TEXT,
+      quantity_text TEXT,
       title TEXT,
       category TEXT,
       message TEXT NOT NULL,
@@ -411,7 +425,11 @@ function createMessageId(date) {
 }
 
 function contactEmailHtml(data) {
-  const heading = data.type === "article_comment" ? "Yeni makale yorumu / sorusu" : "Yeni üretim sorusu";
+  const heading = data.type === "article_comment"
+    ? "Yeni makale yorumu / sorusu"
+    : data.type === "corporate"
+      ? "Yeni kurumsal 3D baskı talebi"
+      : "Yeni üretim sorusu";
   return `<div style="font-family:Arial,Helvetica,sans-serif;max-width:720px;margin:auto;color:#172033;line-height:1.55">
     <h2>${heading}</h2>
     <p><strong>Referans:</strong> ${escapeHtml(data.messageId)}</p>
@@ -419,6 +437,8 @@ function contactEmailHtml(data) {
       ${row("Tarih", data.createdAt)}
       ${row("İsim", data.name)}
       ${row("E-posta", data.email || "-")}
+      ${data.company ? row("Firma", data.company) : ""}
+      ${data.quantityText ? row("Hedef adet", data.quantityText) : ""}
       ${data.title ? row("Başlık", data.title) : ""}
       ${data.category ? row("Kategori", data.category) : ""}
       ${data.articleUrl ? row("Makale", data.articleUrl) : ""}
