@@ -1,0 +1,9 @@
+exclude:
+  - worker
+  - .github
+  - .gitignore
+  - node_modules
+  - vendor
+
+include:
+  - .well-known
