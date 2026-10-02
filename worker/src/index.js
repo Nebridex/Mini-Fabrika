@@ -689,31 +689,6 @@ function bytesToBase64(bytes) {
   return btoa(binary);
 }
 
-async function sendSmtpMail(env, options) {
-  const payload = {
-    from: env.MAIL_FROM,
-    to: options.to,
-    reply_to: options.replyTo,
-    subject: options.subject,
-    html: options.html,
-  };
-  if (options.attachments && options.attachments.length) {
-    payload.attachments = options.attachments;
-  }
-
-  const response = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${env.RESEND_API_KEY}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(payload),
-  });
-  const body = await response.text();
-  if (!response.ok) throw new Error(`Resend ${response.status}: ${body.slice(0, 1000)}`);
-  return body ? JSON.parse(body) : {};
-}
-
 function customerEmailHtml(data) {
   const fileNote = data.hasFile
     ? "Gönderdiğiniz dosya ve üretim bilgileri teknik olarak incelenecek."
