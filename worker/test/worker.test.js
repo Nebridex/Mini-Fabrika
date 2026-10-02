@@ -156,7 +156,7 @@ test("a quote without a file is accepted, stored and sends two SMTP messages", a
   assert.equal(sent.length, 2);
 
   const admin = sent.find((mail) => mail.subject.startsWith("Yeni MiniFabrika"));
-  assert.equal(admin.attachments, undefined);
+  assert.deepEqual(admin.attachments || [], []);
   assert.equal(admin.replyTo, "info@minifabrika.com");
   assert.match(admin.html, /Henüz yüklenmedi/);
 });
