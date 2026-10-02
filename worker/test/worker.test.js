@@ -28,6 +28,13 @@ function createDb(events = []) {
               else events.push("d1:update");
             },
             async first() {
+              if (sql.includes("SELECT status, email_status, last_email_error")) {
+                return {
+                  status: "new",
+                  email_status: "failed",
+                  last_email_error: "customer: SMTP password failed (535): Authentication failed",
+                };
+              }
               return null;
             },
           };
@@ -286,6 +293,23 @@ test("corporate form uses the same first-party message endpoint", async () => {
   assert.match(sent[0].subject, /kurumsal talep/i);
   assert.match(sent[0].html, /MiniFabrika Test A\.Ş\./);
   assert.match(sent[0].html, /50 adet/);
+});
+
+test("quote status diagnostics returns only safe mail status", async () => {
+  const response = await worker.fetch(
+    new Request("https://worker.example/status/MF-20261002-1K0UO", {
+      method: "GET",
+      headers: { Origin: "https://minifabrika.com" },
+    }),
+    createEnv(),
+  );
+
+  const result = await response.json();
+  assert.equal(response.status, 200);
+  assert.equal(result.ok, true);
+  assert.equal(result.emailStatus, "failed");
+  assert.equal(result.emailErrorCode, "smtp_auth_failed");
+  assert.equal("last_email_error" in result, false);
 });
 
 test("untrusted browser origins are rejected", async () => {
