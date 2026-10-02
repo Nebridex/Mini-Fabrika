@@ -19,6 +19,17 @@ function createDb(events = []) {
           if (sql.includes("CREATE TABLE")) events.push("d1:create");
           else events.push("d1:run");
         },
+        async first() {
+          if (sql.includes("ORDER BY created_at DESC LIMIT 1")) {
+            return {
+              id: "MF-20261003-ABCDE",
+              status: "new",
+              email_status: "failed",
+              last_email_error: "customer: SMTP password failed (535): Authentication failed",
+            };
+          }
+          return null;
+        },
         bind() {
           return {
             async run() {
