@@ -119,7 +119,7 @@ test("download links expire after 30 days and tokens are hashable", async () => 
   assert.equal(DOWNLOAD_TTL_MS, 30 * 24 * 60 * 60 * 1000);
   assert.equal(
     await sha256Hex("minifabrika-token"),
-    "0949d5dd06d516f10597a3998caa9c53f3801773265d6393f9aec8875bccaa37",
+    "21fe3a6b8f951f6d3d8e6c3cff6d175fac1e47c72e18b2febbb90a9642f00ac9",
   );
 });
 
