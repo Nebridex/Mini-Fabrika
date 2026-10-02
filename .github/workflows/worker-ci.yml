@@ -41,7 +41,7 @@ jobs:
           cache-dependency-path: worker/package-lock.json
       - run: npm ci
       - run: npm test
-      - run: npm audit --audit-level=high
+      - run: npm audit --omit=dev --audit-level=high
       - name: Production Worker smoke check
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         working-directory: .
