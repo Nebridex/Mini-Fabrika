@@ -15,3 +15,6 @@ bucket_name = "minifabrika-quotes-files"
 [vars]
 MAIL_FROM = "MiniFabrika <info@minifabrika.com>"
 MAIL_TO = "info@minifabrika.com"
+SMTP_HOST = "smtpout.secureserver.net"
+SMTP_PORT = "465"
+SMTP_USER = "info@minifabrika.com"
