@@ -1,7 +1,7 @@
 import { sendSmtpMail } from "./smtp.js";
 
 const MAX_FILE_SIZE = 50 * 1024 * 1024;
-const EMAIL_ATTACHMENT_LIMIT = 20 * 1024 * 1024;
+const EMAIL_ATTACHMENT_LIMIT = 2 * 1024 * 1024;
 const DOWNLOAD_TTL_MS = 365 * 24 * 60 * 60 * 1000;
 const ALLOWED_EXTENSIONS = new Set(["stl", "3mf", "obj", "zip"]);
 const ALLOWED_ORIGINS = new Set([
@@ -743,7 +743,7 @@ function adminEmailHtml(data) {
   const attachmentNote = data.attachmentIncluded
     ? "<p><strong>Dosya ayrıca bu e-postaya eklenmiştir.</strong></p>"
     : data.hasFile
-      ? "<p>Dosya 20 MB üzerindeyse e-posta eki yapılmaz; yukarıdaki güvenli indirme bağlantısını kullanın.</p>"
+      ? "<p>Büyük dosyalarda e-posta eki yapılmaz; yukarıdaki güvenli indirme bağlantısını kullanın.</p>"
       : "<p>Müşteri ilk talepte dosya yüklemedi. Bu e-postayı yanıtlayarak müşteriden dosyayı isteyebilirsiniz.</p>";
 
   return `<div style="font-family:Arial,Helvetica,sans-serif;max-width:720px;margin:auto;color:#172033;line-height:1.55">
