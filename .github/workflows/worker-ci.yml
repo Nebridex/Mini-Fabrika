@@ -50,6 +50,30 @@ jobs:
       - name: Wrangler dry-run bundle
         run: npx wrangler deploy --dry-run --outdir .wrangler-dry-run
       - run: npm audit --omit=dev --audit-level=high
+      - name: Post-hardening live audit
+        working-directory: .
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "=== worker health ==="
+          curl -sS https://minifabrika-api.oz-cht-t.workers.dev/health
+          echo
+          echo "=== source exposure ==="
+          for path in /worker/wrangler.toml /worker/src/index.js /worker/schema.sql /worker/package.json; do
+            code="$(curl -sS -o /dev/null -w '%{http_code}' "https://minifabrika.com$path")"
+            echo "$code $path"
+            test "$code" = "404"
+          done
+          echo "=== CSP/referrer meta ==="
+          curl -sS https://minifabrika.com/ -o /tmp/home.html
+          grep -q 'Content-Security-Policy' /tmp/home.html
+          grep -q "object-src 'none'" /tmp/home.html
+          grep -q 'strict-origin-when-cross-origin' /tmp/home.html
+          echo "=== security.txt ==="
+          curl -fsS https://minifabrika.com/.well-known/security.txt
+          echo
+          echo "=== HTTP status ==="
+          curl -sSI http://minifabrika.com/ | sed -n '1,8p'
       - name: Production Worker smoke check
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         working-directory: .
