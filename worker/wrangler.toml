@@ -13,8 +13,8 @@ binding = "FILES"
 bucket_name = "minifabrika-quotes-files"
 
 [vars]
-MAIL_FROM = "MiniFabrika <info@minifabrika.com>"
+MAIL_FROM = "MiniFabrika <cihat.oz@minifabrika.com>"
 MAIL_TO = "info@minifabrika.com"
-SMTP_HOST = "smtpout.secureserver.net"
+SMTP_HOST = "smtp.titan.email"
 SMTP_PORT = "465"
-SMTP_USER = "info@minifabrika.com"
+SMTP_USER = "cihat.oz@minifabrika.com"
