@@ -122,7 +122,7 @@ async function handleQuote(request, env, corsHeaders) {
     if (file) {
       try {
         await env.FILES.put(fileKey, file.stream(), {
-          httpMetadata: { contentType: file.type || contentTypeFor(extension) },
+          httpMetadata: { contentType: contentTypeFor(extension) },
           customMetadata: { quoteId, fileName: safeFileName },
         });
       } catch (uploadError) {
@@ -654,13 +654,10 @@ async function rateLimitRequest(request, env, pathname) {
       "SELECT request_count FROM request_rate_limits WHERE bucket_key = ?"
     ).bind(key).first();
 
-    if (Math.random() < 0.02) {
-      const cutoff = new Date(now - 24 * 60 * 60 * 1000).toISOString();
-      env.DB.prepare("DELETE FROM request_rate_limits WHERE updated_at < ?")
-        .bind(cutoff)
-        .run()
-        .catch(() => {});
-    }
+    const cutoff = new Date(now - 24 * 60 * 60 * 1000).toISOString();
+    await env.DB.prepare("DELETE FROM request_rate_limits WHERE updated_at < ?")
+      .bind(cutoff)
+      .run();
 
     return Number(row?.request_count || 0) > limit;
   } catch (error) {
