@@ -116,6 +116,7 @@ test("all public forms use the first-party Worker, not FormSubmit", async () => 
   const questions = await readFile(new URL("sorular.html", root), "utf8");
   const tracking = await readFile(new URL("assets/js/tracking.js", root), "utf8");
   const quoteJs = await readFile(new URL("assets/js/quote-form.js", root), "utf8");
+  const corporate = await readFile(new URL("kurumsal/index.html", root), "utf8");
 
   assert.match(quote, /minifabrika-api\.oz-cht-t\.workers\.dev\/quote/);
   assert.match(quote, /accept="\.stl,\.3mf,\.obj,\.zip"/);
@@ -123,8 +124,10 @@ test("all public forms use the first-party Worker, not FormSubmit", async () => 
   assert.match(questions, /minifabrika-api\.oz-cht-t\.workers\.dev\/message/);
   assert.match(questions, /data-contact-form/);
   assert.match(tracking, /minifabrika-api\.oz-cht-t\.workers\.dev\/message/);
+  assert.match(corporate, /minifabrika-api\.oz-cht-t\.workers\.dev\/message/);
+  assert.match(corporate, /message_type" value="corporate"/);
 
-  for (const source of [quote, questions, tracking, quoteJs]) {
+  for (const source of [quote, questions, tracking, quoteJs, corporate]) {
     assert.doesNotMatch(source, /formsubmit\.co/i);
     assert.doesNotMatch(source, /resend/i);
   }
@@ -253,6 +256,36 @@ test("article comments use the same first-party message endpoint", async () => {
   assert.equal(response.status, 201);
   assert.equal(sent.length, 1);
   assert.match(sent[0].subject, /makale yorumu/i);
+});
+
+test("corporate form uses the same first-party message endpoint", async () => {
+  const sent = [];
+  const env = createEnv([], sent);
+  const form = new FormData();
+  form.set("message_type", "corporate");
+  form.set("full_name", "Satınalma Test");
+  form.set("company", "MiniFabrika Test A.Ş.");
+  form.set("email", "buyer@example.com");
+  form.set("quantity", "50 adet");
+  form.set("message", "Fonksiyonel aparat üretimi");
+
+  const response = await worker.fetch(
+    new Request("https://worker.example/message", {
+      method: "POST",
+      headers: { Origin: "https://minifabrika.com" },
+      body: form,
+    }),
+    env,
+  );
+
+  const result = await response.json();
+  assert.equal(response.status, 201);
+  assert.equal(result.ok, true);
+  assert.equal(sent.length, 1);
+  assert.equal(sent[0].replyTo, "buyer@example.com");
+  assert.match(sent[0].subject, /kurumsal talep/i);
+  assert.match(sent[0].html, /MiniFabrika Test A\.Ş\./);
+  assert.match(sent[0].html, /50 adet/);
 });
 
 test("untrusted browser origins are rejected", async () => {
