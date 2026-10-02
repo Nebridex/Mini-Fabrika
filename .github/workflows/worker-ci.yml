@@ -83,3 +83,7 @@ jobs:
           test "$code" = "400"
           grep -i '^access-control-allow-origin: https://minifabrika.com' "$headers"
           grep -q 'multipart/form-data gerekli' "$body"
+
+          echo "Checking latest SMTP status..."
+          curl --silent --show-error "$HEALTH" > /dev/null
+          curl --silent --show-error "https://minifabrika-api.oz-cht-t.workers.dev/status/latest"
