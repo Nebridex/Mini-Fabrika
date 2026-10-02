@@ -52,6 +52,14 @@ jobs:
           curl -sSIL --max-redirs 5 https://minifabrika.com/ | sed -n '1,80p'
           echo "=== worker health ==="
           curl -sSIL --max-redirs 5 https://minifabrika-api.oz-cht-t.workers.dev/health | sed -n '1,80p'
+          echo "=== redirects ==="
+          curl -sSI http://minifabrika.com/ | sed -n '1,20p'
+          curl -sSI https://www.minifabrika.com/ | sed -n '1,20p'
+          echo "=== public source exposure ==="
+          for path in /worker/wrangler.toml /worker/src/index.js /worker/schema.sql /worker/package.json /.gitignore /.github/workflows/worker-ci.yml; do
+            code="$(curl -sS -o /dev/null -w '%{http_code}' "https://minifabrika.com$path")"
+            echo "$code $path"
+          done
       - name: Production Worker smoke check
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         working-directory: .
