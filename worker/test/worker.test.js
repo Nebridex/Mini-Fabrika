@@ -146,6 +146,27 @@ test("all public forms use the first-party Worker, not FormSubmit", async () => 
   }
 });
 
+test("GitHub Pages excludes backend sources and public pages carry a CSP", async () => {
+  const root = new URL("../../", import.meta.url);
+  const config = await readFile(new URL("_config.yml", root), "utf8");
+  assert.match(config, /- worker/);
+
+  const pages = [
+    "index.html",
+    "teklif.html",
+    "sorular.html",
+    "kurumsal/index.html",
+    "tesekkurler.html",
+  ];
+  for (const path of pages) {
+    const html = await readFile(new URL(path, root), "utf8");
+    assert.match(html, /Content-Security-Policy/);
+    assert.match(html, /object-src 'none'/);
+    assert.match(html, /upgrade-insecure-requests/);
+    assert.match(html, /strict-origin-when-cross-origin/);
+  }
+});
+
 test("a quote without a file is accepted, stored and sends two SMTP messages", async () => {
   const events = [];
   const sent = [];
