@@ -16,18 +16,16 @@ function createDb(events = []) {
     prepare(sql) {
       const statement = {
         async run() {
-          events.push(sql.includes("CREATE TABLE") ? "d1:create" : "d1:run");
+          if (sql.includes("CREATE TABLE")) events.push("d1:create");
+          else events.push("d1:run");
         },
         bind() {
           return {
             async run() {
-              events.push(
-                sql.includes("INSERT INTO quote_requests")
-                  ? "d1:insert"
-                  : sql.includes("quote_downloads")
-                    ? "d1:download"
-                    : "d1:update",
-              );
+              if (sql.includes("INSERT INTO quote_requests")) events.push("d1:quote-insert");
+              else if (sql.includes("INSERT INTO contact_messages")) events.push("d1:contact-insert");
+              else if (sql.includes("quote_downloads")) events.push("d1:download");
+              else events.push("d1:update");
             },
             async first() {
               return null;
@@ -54,6 +52,31 @@ function baseForm({ withFile = true } = {}) {
     form.set("attachment", new File(["solid test\nendsolid test\n"], "test.stl", { type: "model/stl" }));
   }
   return form;
+}
+
+function createEnv(events = [], sent = [], { mailFails = false } = {}) {
+  return {
+    DB: createDb(events),
+    FILES: {
+      async put() {
+        events.push("r2:put");
+      },
+      async get() {
+        return null;
+      },
+    },
+    MAIL_FROM: "MiniFabrika <info@minifabrika.com>",
+    MAIL_TO: "info@minifabrika.com",
+    SMTP_HOST: "smtpout.secureserver.net",
+    SMTP_PORT: "465",
+    SMTP_USER: "info@minifabrika.com",
+    SMTP_PASSWORD: "test-secret",
+    async __sendMail(options) {
+      if (mailFails) throw new Error("mail service unavailable");
+      sent.push(options);
+      return { ok: true };
+    },
+  };
 }
 
 test("quote identifiers match the public contract", () => {
@@ -84,143 +107,185 @@ test("the 50 MB maximum is enforced", async () => {
 test("base64 encoder produces attachment-ready content", () => {
   const value = arrayBufferToBase64(new TextEncoder().encode("MiniFabrika").buffer);
   assert.equal(value, "TWluaUZhYnJpa2E=");
-  assert.equal(EMAIL_ATTACHMENT_LIMIT, 20 * 1024 * 1024);
+  assert.equal(EMAIL_ATTACHMENT_LIMIT, 2 * 1024 * 1024);
 });
 
-test("quote form still targets the Worker and keeps FormSubmit isolated", async () => {
+test("all public forms use the first-party Worker, not FormSubmit", async () => {
   const root = new URL("../../", import.meta.url);
   const quote = await readFile(new URL("teklif.html", root), "utf8");
-  const thanks = await readFile(new URL("tesekkurler.html", root), "utf8");
   const questions = await readFile(new URL("sorular.html", root), "utf8");
   const tracking = await readFile(new URL("assets/js/tracking.js", root), "utf8");
+  const quoteJs = await readFile(new URL("assets/js/quote-form.js", root), "utf8");
+  const corporate = await readFile(new URL("kurumsal/index.html", root), "utf8");
 
   assert.match(quote, /minifabrika-api\.oz-cht-t\.workers\.dev\/quote/);
   assert.match(quote, /accept="\.stl,\.3mf,\.obj,\.zip"/);
-  assert.doesNotMatch(quote, /formsubmit\.co/i);
-  assert.match(thanks, /URLSearchParams\(location\.search\)\.get\('quote'\)/);
-  assert.match(questions, /formsubmit\.co\/info@minifabrika\.com/i);
-  assert.match(tracking, /formsubmit\.co\/info@minifabrika\.com/i);
+  assert.doesNotMatch(quote, /name="attachment"[^>]*required/);
+  assert.match(questions, /minifabrika-api\.oz-cht-t\.workers\.dev\/message/);
+  assert.match(questions, /data-contact-form/);
+  assert.match(tracking, /minifabrika-api\.oz-cht-t\.workers\.dev\/message/);
+  assert.match(corporate, /minifabrika-api\.oz-cht-t\.workers\.dev\/message/);
+  assert.match(corporate, /message_type" value="corporate"/);
+
+  for (const source of [quote, questions, tracking, quoteJs, corporate]) {
+    assert.doesNotMatch(source, /formsubmit\.co/i);
+    assert.doesNotMatch(source, /resend/i);
+  }
 });
 
-test("a quote without a file is accepted and does not write to R2", async () => {
+test("a quote without a file is accepted, stored and sends two SMTP messages", async () => {
   const events = [];
-  const db = createDb(events);
-  const files = {
-    async put() {
-      events.push("r2:put");
-    },
-  };
   const sent = [];
-  const originalFetch = globalThis.fetch;
-  globalThis.fetch = async (_url, options) => {
-    sent.push(JSON.parse(options.body));
-    return new Response(JSON.stringify({ id: "mail_test" }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
-  };
-  try {
-    const response = await worker.fetch(
-      new Request("https://worker.example/quote", {
-        method: "POST",
-        headers: { Origin: "https://minifabrika.com" },
-        body: baseForm({ withFile: false }),
-      }),
-      {
-        DB: db,
-        FILES: files,
-        RESEND_API_KEY: "test",
-        MAIL_FROM: "MiniFabrika <info@minifabrika.com>",
-        MAIL_TO: "info@minifabrika.com",
-      },
-    );
-    const result = await response.json();
-    assert.equal(response.status, 201);
-    assert.equal(result.ok, true);
-    assert.equal(events.includes("r2:put"), false);
-    assert.equal(sent.length, 2);
-    const admin = sent.find((mail) => mail.subject.startsWith("Yeni MiniFabrika"));
-    assert.equal(admin.attachments, undefined);
-    assert.match(admin.html, /Henüz yüklenmedi/);
-  } finally {
-    globalThis.fetch = originalFetch;
-  }
+  const env = createEnv(events, sent);
+
+  const response = await worker.fetch(
+    new Request("https://worker.example/quote", {
+      method: "POST",
+      headers: { Origin: "https://minifabrika.com" },
+      body: baseForm({ withFile: false }),
+    }),
+    env,
+  );
+
+  const result = await response.json();
+  assert.equal(response.status, 201);
+  assert.equal(result.ok, true);
+  assert.equal(result.emailStatus, "sent");
+  assert.equal(events.includes("r2:put"), false);
+  assert.ok(events.includes("d1:quote-insert"));
+  assert.equal(sent.length, 2);
+
+  const admin = sent.find((mail) => mail.subject.startsWith("Yeni MiniFabrika"));
+  assert.deepEqual(admin.attachments || [], []);
+  assert.equal(admin.replyTo, "info@minifabrika.com");
+  assert.match(admin.html, /Henüz yüklenmedi/);
 });
 
 test("D1 is written before R2 and email failure still returns success", async () => {
   const events = [];
-  const db = createDb(events);
-  const files = {
-    async put() {
-      events.push("r2:put");
-    },
-  };
+  const sent = [];
+  const env = createEnv(events, sent, { mailFails: true });
 
-  const originalFetch = globalThis.fetch;
-  globalThis.fetch = async () => {
-    throw new Error("mail service unavailable");
-  };
-  try {
-    const response = await worker.fetch(
-      new Request("https://worker.example/quote", {
-        method: "POST",
-        headers: { Origin: "https://minifabrika.com" },
-        body: baseForm(),
-      }),
-      {
-        DB: db,
-        FILES: files,
-        RESEND_API_KEY: "test",
-        MAIL_FROM: "MiniFabrika <info@minifabrika.com>",
-        MAIL_TO: "info@minifabrika.com",
-      },
-    );
-    const result = await response.json();
-    assert.equal(response.status, 201);
-    assert.equal(result.ok, true);
-    assert.equal(result.emailStatus, "failed");
-    assert.ok(events.indexOf("d1:insert") < events.indexOf("r2:put"));
-  } finally {
-    globalThis.fetch = originalFetch;
-  }
+  const response = await worker.fetch(
+    new Request("https://worker.example/quote", {
+      method: "POST",
+      headers: { Origin: "https://minifabrika.com" },
+      body: baseForm(),
+    }),
+    env,
+  );
+
+  const result = await response.json();
+  assert.equal(response.status, 201);
+  assert.equal(result.ok, true);
+  assert.equal(result.emailStatus, "failed");
+  assert.ok(events.indexOf("d1:quote-insert") < events.indexOf("r2:put"));
 });
 
-test("small uploaded files are attached to the admin email", async () => {
+test("small uploaded files are attached to the admin SMTP email", async () => {
   const events = [];
-  const db = createDb(events);
-  const files = { async put() {} };
-  const payloads = [];
-  const originalFetch = globalThis.fetch;
-  globalThis.fetch = async (_url, options) => {
-    payloads.push(JSON.parse(options.body));
-    return new Response(JSON.stringify({ id: "mail_test" }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
-  };
-  try {
-    const response = await worker.fetch(
-      new Request("https://worker.example/quote", {
-        method: "POST",
-        headers: { Origin: "https://minifabrika.com" },
-        body: baseForm(),
-      }),
-      {
-        DB: db,
-        FILES: files,
-        RESEND_API_KEY: "test",
-        MAIL_FROM: "MiniFabrika <info@minifabrika.com>",
-        MAIL_TO: "info@minifabrika.com",
-      },
-    );
-    assert.equal(response.status, 201);
-    const admin = payloads.find((mail) => mail.subject.startsWith("Yeni MiniFabrika"));
-    assert.equal(admin.attachments.length, 1);
-    assert.equal(admin.attachments[0].filename, "test.stl");
-    assert.ok(admin.attachments[0].content.length > 0);
-  } finally {
-    globalThis.fetch = originalFetch;
-  }
+  const sent = [];
+  const env = createEnv(events, sent);
+
+  const response = await worker.fetch(
+    new Request("https://worker.example/quote", {
+      method: "POST",
+      headers: { Origin: "https://minifabrika.com" },
+      body: baseForm(),
+    }),
+    env,
+  );
+
+  assert.equal(response.status, 201);
+  const admin = sent.find((mail) => mail.subject.startsWith("Yeni MiniFabrika"));
+  assert.equal(admin.attachments.length, 1);
+  assert.equal(admin.attachments[0].filename, "test.stl");
+  assert.equal(admin.attachments[0].contentType, "model/stl");
+  assert.ok(admin.attachments[0].content.length > 0);
+});
+
+test("question form stores the message and sends one SMTP notification", async () => {
+  const events = [];
+  const sent = [];
+  const env = createEnv(events, sent);
+  const form = new FormData();
+  form.set("message_type", "question");
+  form.set("title", "PETG dış ortamda kullanılır mı?");
+  form.set("category", "Malzeme");
+  form.set("question", "Uzun süre güneşte kalacak.");
+  form.set("name", "Cihat");
+  form.set("email", "test@example.com");
+
+  const response = await worker.fetch(
+    new Request("https://worker.example/message", {
+      method: "POST",
+      headers: { Origin: "https://minifabrika.com" },
+      body: form,
+    }),
+    env,
+  );
+
+  const result = await response.json();
+  assert.equal(response.status, 201);
+  assert.equal(result.ok, true);
+  assert.equal(result.emailStatus, "sent");
+  assert.ok(events.includes("d1:contact-insert"));
+  assert.equal(sent.length, 1);
+  assert.equal(sent[0].replyTo, "test@example.com");
+  assert.match(sent[0].subject, /yeni üretim sorusu/i);
+});
+
+test("article comments use the same first-party message endpoint", async () => {
+  const sent = [];
+  const env = createEnv([], sent);
+  const form = new FormData();
+  form.set("message_type", "article_comment");
+  form.set("comment", "Faydalı bir yazı.");
+  form.set("name", "Test");
+  form.set("article_url", "https://minifabrika.com/blog/test.html");
+
+  const response = await worker.fetch(
+    new Request("https://worker.example/message", {
+      method: "POST",
+      headers: { Origin: "https://www.minifabrika.com" },
+      body: form,
+    }),
+    env,
+  );
+
+  assert.equal(response.status, 201);
+  assert.equal(sent.length, 1);
+  assert.match(sent[0].subject, /makale yorumu/i);
+});
+
+test("corporate form uses the same first-party message endpoint", async () => {
+  const sent = [];
+  const env = createEnv([], sent);
+  const form = new FormData();
+  form.set("message_type", "corporate");
+  form.set("full_name", "Satınalma Test");
+  form.set("company", "MiniFabrika Test A.Ş.");
+  form.set("email", "buyer@example.com");
+  form.set("quantity", "50 adet");
+  form.set("message", "Fonksiyonel aparat üretimi");
+
+  const response = await worker.fetch(
+    new Request("https://worker.example/message", {
+      method: "POST",
+      headers: { Origin: "https://minifabrika.com" },
+      body: form,
+    }),
+    env,
+  );
+
+  const result = await response.json();
+  assert.equal(response.status, 201);
+  assert.equal(result.ok, true);
+  assert.equal(sent.length, 1);
+  assert.equal(sent[0].replyTo, "buyer@example.com");
+  assert.match(sent[0].subject, /kurumsal talep/i);
+  assert.match(sent[0].html, /MiniFabrika Test A\.Ş\./);
+  assert.match(sent[0].html, /50 adet/);
 });
 
 test("untrusted browser origins are rejected", async () => {

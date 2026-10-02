@@ -1,5 +1,7 @@
+import { sendSmtpMail } from "./smtp.js";
+
 const MAX_FILE_SIZE = 50 * 1024 * 1024;
-const EMAIL_ATTACHMENT_LIMIT = 20 * 1024 * 1024;
+const EMAIL_ATTACHMENT_LIMIT = 2 * 1024 * 1024;
 const DOWNLOAD_TTL_MS = 365 * 24 * 60 * 60 * 1000;
 const ALLOWED_EXTENSIONS = new Set(["stl", "3mf", "obj", "zip"]);
 const ALLOWED_ORIGINS = new Set([
@@ -22,7 +24,7 @@ export default {
 
     if (request.method === "GET" && url.pathname === "/health") {
       return json(
-        { ok: true, service: "minifabrika-api", version: "optional-files-v1", time: new Date().toISOString() },
+        { ok: true, service: "minifabrika-api", version: "direct-smtp-v1", time: new Date().toISOString() },
         200,
         corsHeaders,
       );
@@ -32,14 +34,15 @@ export default {
       return handleDownload(request, env);
     }
 
-    if (request.method !== "POST" || url.pathname !== "/quote") {
-      return json({ ok: false, error: "Not found" }, 404, corsHeaders);
-    }
-    if (origin && !ALLOWED_ORIGINS.has(origin)) {
-      return json({ ok: false, error: "Origin not allowed" }, 403);
+    if (request.method === "POST" && (url.pathname === "/quote" || url.pathname === "/message")) {
+      if (origin && !ALLOWED_ORIGINS.has(origin)) {
+        return json({ ok: false, error: "Origin not allowed" }, 403);
+      }
+      if (url.pathname === "/message") return handleMessage(request, env, corsHeaders);
+      return handleQuote(request, env, corsHeaders);
     }
 
-    return handleQuote(request, env, corsHeaders);
+    return json({ ok: false, error: "Not found" }, 404, corsHeaders);
   },
 };
 
@@ -141,6 +144,7 @@ async function handleQuote(request, env, corsHeaders) {
           {
             content: arrayBufferToBase64(await file.arrayBuffer()),
             filename: safeFileName,
+            contentType: file.type || contentTypeFor(extension),
           },
         ];
         attachmentIncluded = true;
@@ -150,13 +154,13 @@ async function handleQuote(request, env, corsHeaders) {
     }
 
     const [customerResult, adminResult] = await Promise.allSettled([
-      sendResend(env, {
+      sendSmtpMail(env, {
         to: [fields.email],
         replyTo: env.MAIL_TO,
         subject: `MiniFabrika üretim talebinizi aldık — ${quoteId}`,
         html: customerEmailHtml({ quoteId, ...fields, hasFile }),
       }),
-      sendResend(env, {
+      sendSmtpMail(env, {
         to: [env.MAIL_TO],
         replyTo: fields.email,
         subject: `Yeni MiniFabrika üretim talebi — ${quoteId}`,
@@ -221,6 +225,227 @@ async function handleQuote(request, env, corsHeaders) {
       corsHeaders,
     );
   }
+}
+
+
+async function handleMessage(request, env, corsHeaders) {
+  let messageId = null;
+  try {
+    const contentType = request.headers.get("Content-Type") || "";
+    const supported =
+      contentType.toLowerCase().includes("multipart/form-data") ||
+      contentType.toLowerCase().includes("application/x-www-form-urlencoded");
+    if (!supported) {
+      return json({ ok: false, error: "Form verisi gerekli." }, 400, corsHeaders);
+    }
+
+    const form = await request.formData();
+    if (clean(form.get("_honey"), 200) || clean(form.get("website"), 200)) {
+      return json({ ok: true, messageId: createMessageId(new Date()), emailStatus: "skipped" }, 201, corsHeaders);
+    }
+
+    const type = clean(form.get("message_type"), 40);
+    const name = clean(form.get("name") || form.get("full_name"), 160);
+    const email = clean(form.get("email"), 254).toLowerCase();
+    const title = clean(form.get("title"), 160);
+    const category = clean(form.get("category"), 120);
+    const question = clean(form.get("question"), 5000);
+    const comment = clean(form.get("comment"), 5000);
+    const corporateMessage = clean(form.get("message"), 5000);
+    const articleUrl = clean(form.get("article_url"), 1000);
+    const company = clean(form.get("company"), 200);
+    const quantityText = clean(form.get("quantity"), 200);
+    const message = type === "article_comment" ? comment : type === "corporate" ? corporateMessage : question;
+
+    if (!["question", "article_comment", "corporate"].includes(type)) {
+      return json({ ok: false, error: "Geçersiz form türü." }, 400, corsHeaders);
+    }
+    if (!name || !message) {
+      return json({ ok: false, error: "Zorunlu alanlar eksik." }, 400, corsHeaders);
+    }
+    if (email && !isValidEmail(email)) {
+      return json({ ok: false, error: "Geçerli bir e-posta adresi girin." }, 400, corsHeaders);
+    }
+    if (type === "question" && (!title || !category)) {
+      return json({ ok: false, error: "Başlık ve kategori zorunludur." }, 400, corsHeaders);
+    }
+    if (type === "article_comment" && !articleUrl) {
+      return json({ ok: false, error: "Makale bilgisi eksik." }, 400, corsHeaders);
+    }
+    if (type === "corporate" && (!email || !company || !quantityText)) {
+      return json({ ok: false, error: "Firma, e-posta ve hedef adet zorunludur." }, 400, corsHeaders);
+    }
+
+    const now = new Date();
+    const createdAt = now.toISOString();
+    messageId = createMessageId(now);
+
+    await ensureContactTable(env.DB);
+    await env.DB.prepare(`
+      INSERT INTO contact_messages (
+        id, created_at, message_type, name, email, company, quantity_text, title, category, message,
+        article_url, lead_source, lead_medium, lead_campaign, lead_landing_page,
+        lead_referrer_host, lead_gclid, email_status
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')
+    `)
+      .bind(
+        messageId,
+        createdAt,
+        type,
+        name,
+        email || null,
+        company || null,
+        quantityText || null,
+        title || null,
+        category || null,
+        message,
+        articleUrl || null,
+        clean(form.get("lead_source"), 500) || null,
+        clean(form.get("lead_medium"), 500) || null,
+        clean(form.get("lead_campaign"), 500) || null,
+        clean(form.get("lead_landing_page"), 1000) || null,
+        clean(form.get("lead_referrer_host"), 500) || null,
+        clean(form.get("lead_gclid"), 500) || null,
+      )
+      .run();
+
+    let emailStatus = "sent";
+    let emailError = null;
+    try {
+      await sendSmtpMail(env, {
+        to: [env.MAIL_TO],
+        replyTo: email || env.MAIL_TO,
+        subject: type === "article_comment"
+          ? `MiniFabrika makale yorumu — ${messageId}`
+          : type === "corporate"
+            ? `MiniFabrika kurumsal talep — ${messageId}`
+            : `MiniFabrika yeni üretim sorusu — ${messageId}`,
+        html: contactEmailHtml({
+          messageId,
+          createdAt,
+          type,
+          name,
+          email,
+          title,
+          category,
+          message,
+          articleUrl,
+          company,
+          quantityText,
+        }),
+      });
+    } catch (error) {
+      emailStatus = "failed";
+      emailError = errorMessage(error);
+      console.error("contact_email_error", messageId, error);
+    }
+
+    try {
+      await env.DB.prepare(`
+        UPDATE contact_messages
+        SET email_status = ?, email_sent_at = ?, last_email_error = ?
+        WHERE id = ?
+      `)
+        .bind(
+          emailStatus,
+          emailStatus === "sent" ? new Date().toISOString() : null,
+          emailError ? emailError.slice(0, 3000) : null,
+          messageId,
+        )
+        .run();
+    } catch (statusError) {
+      console.error("contact_email_status_update_error", messageId, statusError);
+    }
+
+    return json(
+      {
+        ok: true,
+        messageId,
+        emailStatus,
+        message: emailStatus === "sent"
+          ? "Mesajınız alındı."
+          : "Mesajınız kaydedildi; e-posta bildirimi daha sonra tekrar denenecek.",
+      },
+      201,
+      corsHeaders,
+    );
+  } catch (error) {
+    console.error("contact_submit_error", messageId, error);
+    return json(
+      {
+        ok: false,
+        messageId,
+        error: messageId
+          ? `Mesaj kaydedilirken bir sorun oluştu. Referans: ${messageId}`
+          : "Mesaj şu anda gönderilemedi. Lütfen tekrar deneyin.",
+      },
+      500,
+      corsHeaders,
+    );
+  }
+}
+
+async function ensureContactTable(db) {
+  await db.prepare(`
+    CREATE TABLE IF NOT EXISTS contact_messages (
+      id TEXT PRIMARY KEY,
+      created_at TEXT NOT NULL,
+      message_type TEXT NOT NULL,
+      name TEXT NOT NULL,
+      email TEXT,
+      company TEXT,
+      quantity_text TEXT,
+      title TEXT,
+      category TEXT,
+      message TEXT NOT NULL,
+      article_url TEXT,
+      lead_source TEXT,
+      lead_medium TEXT,
+      lead_campaign TEXT,
+      lead_landing_page TEXT,
+      lead_referrer_host TEXT,
+      lead_gclid TEXT,
+      email_status TEXT NOT NULL DEFAULT 'pending',
+      email_sent_at TEXT,
+      last_email_error TEXT
+    )
+  `).run();
+}
+
+function createMessageId(date) {
+  const yyyy = String(date.getUTCFullYear());
+  const mm = String(date.getUTCMonth() + 1).padStart(2, "0");
+  const dd = String(date.getUTCDate()).padStart(2, "0");
+  const random = crypto.getRandomValues(new Uint32Array(1))[0]
+    .toString(36)
+    .toUpperCase()
+    .padStart(5, "0")
+    .slice(0, 5);
+  return `MSG-${yyyy}${mm}${dd}-${random}`;
+}
+
+function contactEmailHtml(data) {
+  const heading = data.type === "article_comment"
+    ? "Yeni makale yorumu / sorusu"
+    : data.type === "corporate"
+      ? "Yeni kurumsal 3D baskı talebi"
+      : "Yeni üretim sorusu";
+  return `<div style="font-family:Arial,Helvetica,sans-serif;max-width:720px;margin:auto;color:#172033;line-height:1.55">
+    <h2>${heading}</h2>
+    <p><strong>Referans:</strong> ${escapeHtml(data.messageId)}</p>
+    <table cellpadding="8" cellspacing="0" style="border-collapse:collapse;width:100%;border:1px solid #ddd">
+      ${row("Tarih", data.createdAt)}
+      ${row("İsim", data.name)}
+      ${row("E-posta", data.email || "-")}
+      ${data.company ? row("Firma", data.company) : ""}
+      ${data.quantityText ? row("Hedef adet", data.quantityText) : ""}
+      ${data.title ? row("Başlık", data.title) : ""}
+      ${data.category ? row("Kategori", data.category) : ""}
+      ${data.articleUrl ? row("Makale", data.articleUrl) : ""}
+    </table>
+    <h3 style="margin-top:24px">Mesaj</h3>
+    <div style="background:#f5f7fa;border-radius:10px;padding:16px">${escapeHtml(data.message).replace(/\n/g, "<br>")}</div>
+  </div>`;
 }
 
 async function handleDownload(request, env) {
@@ -484,31 +709,6 @@ function bytesToBase64(bytes) {
   return btoa(binary);
 }
 
-async function sendResend(env, options) {
-  const payload = {
-    from: env.MAIL_FROM,
-    to: options.to,
-    reply_to: options.replyTo,
-    subject: options.subject,
-    html: options.html,
-  };
-  if (options.attachments && options.attachments.length) {
-    payload.attachments = options.attachments;
-  }
-
-  const response = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${env.RESEND_API_KEY}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(payload),
-  });
-  const body = await response.text();
-  if (!response.ok) throw new Error(`Resend ${response.status}: ${body.slice(0, 1000)}`);
-  return body ? JSON.parse(body) : {};
-}
-
 function customerEmailHtml(data) {
   const fileNote = data.hasFile
     ? "Gönderdiğiniz dosya ve üretim bilgileri teknik olarak incelenecek."
@@ -543,7 +743,7 @@ function adminEmailHtml(data) {
   const attachmentNote = data.attachmentIncluded
     ? "<p><strong>Dosya ayrıca bu e-postaya eklenmiştir.</strong></p>"
     : data.hasFile
-      ? "<p>Dosya 20 MB üzerindeyse e-posta eki yapılmaz; yukarıdaki güvenli indirme bağlantısını kullanın.</p>"
+      ? "<p>Büyük dosyalarda e-posta eki yapılmaz; yukarıdaki güvenli indirme bağlantısını kullanın.</p>"
       : "<p>Müşteri ilk talepte dosya yüklemedi. Bu e-postayı yanıtlayarak müşteriden dosyayı isteyebilirsiniz.</p>";
 
   return `<div style="font-family:Arial,Helvetica,sans-serif;max-width:720px;margin:auto;color:#172033;line-height:1.55">

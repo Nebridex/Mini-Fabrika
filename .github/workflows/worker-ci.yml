@@ -7,6 +7,8 @@ on:
       - "teklif.html"
       - "tesekkurler.html"
       - "assets/js/quote-form.js"
+      - "sorular.html"
+      - "assets/js/contact-form.js"
       - "assets/js/tracking.js"
       - ".github/workflows/worker-ci.yml"
       - "wrangler.toml"
@@ -39,8 +41,11 @@ jobs:
           cache-dependency-path: worker/package-lock.json
       - run: npm ci
       - run: npm test
-      - run: npm audit --audit-level=high
+      - name: Wrangler dry-run bundle
+        run: npx wrangler deploy --dry-run --outdir .wrangler-dry-run
+      - run: npm audit --omit=dev --audit-level=high
       - name: Production Worker smoke check
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         working-directory: .
         shell: bash
         run: |

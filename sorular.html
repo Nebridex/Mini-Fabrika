@@ -33,7 +33,7 @@
         <p class="lead">Başlangıç için en sık gelen konular. Yeni sorular geldikçe bu alan büyüyecek.</p>
         <div class="question-list" style="margin-top:20px;">
           <article class="question-card"><span class="guide-meta">Adetli üretim</span><h3>Tek adet baskı yapıyor musunuz?</h3><p>Tek parça hobi baskısı ana hizmetimiz değil. Devamında adetli üretim planlanan projelerde 1–3 adet numune değerlendirebiliriz.</p></article>
-          <article class="question-card"><span class="guide-meta">Dosya</span><h3>STL dosyam yoksa teklif alabilir miyim?</h3><p>Üretim teklifi için hazır STL, 3MF veya OBJ dosyası gerekiyor. Şu anda sıfırdan 3D modelleme hizmeti sunmuyoruz.</p></article>
+          <article class="question-card"><span class="guide-meta">Dosya</span><h3>STL dosyam yoksa teklif alabilir miyim?</h3><p>Evet. İlk talebi dosyasız bırakabilirsiniz; üretime geçmeden önce hazır STL, 3MF, OBJ veya ZIP dosyasını sonradan iletebilirsiniz. Şu anda sıfırdan 3D modelleme hizmeti sunmuyoruz.</p></article>
           <article class="question-card"><span class="guide-meta">Malzeme</span><h3>PLA mı PETG mi seçmeliyim?</h3><p>Parçanın sıcaklık, darbe, esneklik ve yüzey beklentisine göre değişir. Detaylı karşılaştırmayı <a href="/blog/malzeme-secimi-rehberi.html">malzeme rehberinde</a> bulabilirsiniz.</p></article>
           <article class="question-card"><span class="guide-meta">Fiyat</span><h3>Adet arttıkça birim fiyat düşer mi?</h3><p>Tabla verimliliği, hazırlık süresi ve tekrarlı üretim avantajı uygunsa düşebilir. Gerçek sonuç dosyanın slicer'da incelenmesinden sonra belli olur.</p></article>
         </div>
@@ -43,12 +43,9 @@
         <div id="questionSuccess" class="submission-success" hidden>Teşekkürler. Sorunuz bize ulaştı; uygun olduğunda cevaplayıp yayınlayacağız.</div>
         <h2>Soru sor</h2>
         <p class="muted">Bu form teklif formu değildir. Hazır dosyanız ve adetiniz varsa doğrudan <a href="/teklif.html#teklif-form">teklif alın</a>.</p>
-        <form action="https://formsubmit.co/info@minifabrika.com" method="POST">
-          <input type="hidden" name="_subject" value="MiniFabrika yeni üretim sorusu" />
-          <input type="hidden" name="_next" value="https://minifabrika.com/sorular.html?gonderildi=1#soru-sor" />
-          <input type="hidden" name="_template" value="table" />
-          <input type="hidden" name="_captcha" value="false" />
-          <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="display:none" />
+        <form action="https://minifabrika-api.oz-cht-t.workers.dev/message" method="POST" data-contact-form data-success-url="/sorular.html?gonderildi=1#soru-sor">
+          <input type="hidden" name="message_type" value="question" />
+          <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none" />
           <label for="qTitle">Başlık<input id="qTitle" name="title" type="text" maxlength="120" required placeholder="Örn. PETG dış ortamda kullanılır mı?" /></label>
           <label for="qCategory">Kategori<select id="qCategory" name="category" required><option value="">Seçiniz</option><option>Malzeme</option><option>STL / Model</option><option>Teknik Kalite</option><option>Adetli Üretim</option><option>Fiyat</option><option>Diğer</option></select></label>
           <label for="qText">Sorunuz<textarea id="qText" name="question" rows="6" maxlength="1600" required placeholder="Sorunuzu mümkün olduğunca net yazın."></textarea></label>
@@ -65,6 +62,7 @@
 <footer><div class="container"><p>MiniFabrika · <a href="mailto:info@minifabrika.com">info@minifabrika.com</a></p><div class="socials"><a href="/blog/index.html">Rehberler</a><a href="/hakkimizda.html">Hakkımızda</a><a href="/hakkimizda.html#iletisim">İletişim</a><a href="/teklif.html#teklif-form">Teklif Al</a></div></div></footer>
 <script src="/script.min.js?v=20260829-3" defer></script>
 <script defer src="/assets/js/tracking.js"></script>
+<script defer src="/assets/js/contact-form.js?v=20261003-1"></script>
 <script>if(new URLSearchParams(location.search).get('gonderildi')==='1'){document.getElementById('questionSuccess').hidden=false;}</script>
 </body>
 </html>
