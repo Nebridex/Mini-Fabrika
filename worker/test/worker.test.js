@@ -107,7 +107,7 @@ test("the 50 MB maximum is enforced", async () => {
 test("base64 encoder produces attachment-ready content", () => {
   const value = arrayBufferToBase64(new TextEncoder().encode("MiniFabrika").buffer);
   assert.equal(value, "TWluaUZhYnJpa2E=");
-  assert.equal(EMAIL_ATTACHMENT_LIMIT, 20 * 1024 * 1024);
+  assert.equal(EMAIL_ATTACHMENT_LIMIT, 2 * 1024 * 1024);
 });
 
 test("all public forms use the first-party Worker, not FormSubmit", async () => {
