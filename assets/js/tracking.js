@@ -151,6 +151,14 @@
     ensureStylesheet('ui-fixes.css', '/assets/css/ui-fixes.css?v=20260829-4');
   }
 
+  function ensureContactFormScript() {
+    if (document.querySelector('script[src*="contact-form.js"]')) return;
+    var script = document.createElement('script');
+    script.src = '/assets/js/contact-form.js?v=20261003-1';
+    script.defer = true;
+    document.head.appendChild(script);
+  }
+
   function rewriteLegacyLinks() {
     Array.prototype.forEach.call(document.querySelectorAll('a[href="/islerimiz.html"],a[href="islerimiz.html"]'), function (link) {
       link.href = '/#uretim';
@@ -232,11 +240,10 @@
       (success ? '<div class="submission-success">Teşekkürler. Yorumunuz bize ulaştı; kontrol sonrası yayına uygun yorumları makaleye ekliyoruz.</div>' : '') +
       '<h2>Yorum veya soru bırakın</h2>' +
       '<p class="comment-note">Makaleyle ilgili sorunuzu ya da deneyiminizi yazabilirsiniz. E-posta adresiniz yayınlanmaz. Yorumlar otomatik yayınlanmaz.</p>' +
-      '<form class="article-comment-form" action="https://formsubmit.co/info@minifabrika.com" method="POST">' +
-      '<input type="hidden" name="_subject" value="MiniFabrika makale yorumu: ' + document.title.replace(/"/g, '&quot;') + '">' +
-      '<input type="hidden" name="_next" value="' + nextUrl + '">' +
-      '<input type="hidden" name="_template" value="table"><input type="hidden" name="_captcha" value="false">' +
+      '<form class="article-comment-form" action="https://minifabrika-api.oz-cht-t.workers.dev/message" method="POST" data-contact-form data-success-url="' + nextUrl + '">' +
+      '<input type="hidden" name="message_type" value="article_comment">' +
       '<input type="hidden" name="article_url" value="' + window.location.href.split('?')[0] + '">' +
+      '<input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">' +
       '<label>İsim<input name="name" type="text" maxlength="80" required autocomplete="name"></label>' +
       '<label>E-posta <span class="muted">(opsiyonel, yayınlanmaz)</span><input name="email" type="email" autocomplete="email"></label>' +
       '<label>Yorumunuz / Sorunuz<textarea name="comment" rows="5" maxlength="1600" required></textarea></label>' +
@@ -245,7 +252,7 @@
   }
 
   function attachAttributionToForms() {
-    var forms = document.querySelectorAll('form[action*="formsubmit.co"], form[data-quote-form]');
+    var forms = document.querySelectorAll('form[data-contact-form], form[data-quote-form]');
     Array.prototype.forEach.call(forms, function (form) {
       ensureHiddenInput(form, 'lead_source', attribution.source);
       ensureHiddenInput(form, 'lead_medium', attribution.medium);
@@ -332,6 +339,7 @@
 
   function init() {
     ensureSimpleStyles();
+    ensureContactFormScript();
     rewriteLegacyLinks();
     normalizePrimaryNavigation();
     ensureFooterNavigation();
